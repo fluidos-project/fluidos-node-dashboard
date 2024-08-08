@@ -11,6 +11,7 @@ import (
 
 func main() {
 	router := mux.NewRouter()
+	corsRouter := utils.EnableCors(router)
 
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
 	router.HandleFunc("/api/discoveries", utils.GetDiscoveries).Methods("GET")
@@ -22,5 +23,5 @@ func main() {
 	router.HandleFunc("/api/allocations", utils.GetAllocations).Methods("GET")
 
 	log.Println("Server is starting on port 3001...")
-	log.Fatal(http.ListenAndServe(":3001", router))
+	log.Fatal(http.ListenAndServe(":3001", corsRouter))
 }

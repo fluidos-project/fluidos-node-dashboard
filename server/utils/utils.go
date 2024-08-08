@@ -1,55 +1,45 @@
 package utils
 
 import (
-	"os"
-
-	"fmt"
-	"sync"
+	"log"
+	"net/http"
 
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/clientcmd"
-
-	"k8s.io/client-go/kubernetes"
 )
 
-func getKubernetesConfig() (*rest.Config, error) {
-	if os.Getenv("KUBERNETES_SERVICE_HOST") != "" {
-		return rest.InClusterConfig()
-	}
-	kubeconfig := os.Getenv("KUBECONFIG")
+func KubernetesConfig() *rest.Config {
 
-	return clientcmd.BuildConfigFromFlags("", kubeconfig)
-}
+	// it's the path of the local KUBECONFIG
+	kubeconfig := "/Users/marco/Desktop/fluidosUpdate/node/tools/scripts/fluidos-consumer-1-config"
 
-// Struct to manage K8s config
-type KubernetesClient struct {
-	clientset *kubernetes.Clientset
-}
-
-var kubeClient *KubernetesClient
-var once sync.Once
-
-// create new K8s client
-func initKubernetesClient() error {
-	config, err := getKubernetesConfig()
+	config, err := rest.InClusterConfig()
 	if err != nil {
-		return fmt.Errorf("error defining configuration: %v", err)
+		log.Println("InClusterConfig not found, attempting to load kubeconfig from file...")
+		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
+		if err != nil {
+			log.Fatalf("Failed to create Kubernetes config: %v", err)
+		}
+	} else {
+		log.Println("InClusterConfig loaded successfully")
 	}
-
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		return fmt.Errorf("error creating clientset: %v", err)
-	}
-
-	kubeClient = &KubernetesClient{clientset: clientset}
-	return nil
+	return config
 }
 
-// retrieve the clientset
-func GetKubernetesClient() (*KubernetesClient, error) {
-	var err error
-	once.Do(func() {
-		err = initKubernetesClient()
+// CORS for development
+func EnableCors(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println("CORS middleware: handling request")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+
+		// Gestione delle richieste preflight (OPTIONS)
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		next.ServeHTTP(w, r)
 	})
-	return kubeClient, err
 }
