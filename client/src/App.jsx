@@ -17,6 +17,7 @@ import { SolverPage } from './pages/SolverPage';
 import { PeeringCandidatePage } from './pages/PeeringCandidatePage';
 import { TransactionPage } from './pages/TransactionPage';
 import { NotFoundPage } from './pages/NotFoundPage';
+import SingleFlavorPage from './pages/SingleFlavorPage';
 
 
 
@@ -38,12 +39,14 @@ function App() {
           >
             <Routes>
               <Route path="/flavors" element={<FlavorsPage />} />
+              <Route path="/flavors/:name" element={<SingleFlavorPage />} />
               <Route path="/reservations" element={<ReservationPage />} />
               <Route path="/contracts" element={<ContractPage />} />
               <Route path="/allocations" element={<AllocationPage />} />
               <Route path="/solvers" element={<SolverPage />} />
               <Route path="/peeringcandidates" element={<PeeringCandidatePage />} />
               <Route path="/transactions" element={<TransactionPage />} />
+              
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>

@@ -6,7 +6,6 @@ const getFlavors = async () => {
     const response = await fetch(`${SERVER_URL}/flavors`, {
       method: 'GET'
     })
-    //console.log(response)
   
     if (response.ok) {
       const flavors = await response.json();
@@ -19,5 +18,22 @@ const getFlavors = async () => {
     }
   }
 
-const API = {getFlavors};
+  const getSingleFlavor = async (name) => {
+    const response = await fetch(`${SERVER_URL}/flavors/${name}`, {
+      method: 'GET'
+    })
+  
+    if (response.ok) {
+      const flavor = await response.json();
+      const flavorObj = new Flavor(flavor);
+      return flavorObj
+    }
+    else {
+      const errDetails = await response.text();
+      throw errDetails;
+    }
+  }
+
+
+const API = {getFlavors, getSingleFlavor};
 export default API 

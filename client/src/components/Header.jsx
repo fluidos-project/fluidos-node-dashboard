@@ -6,7 +6,7 @@ function Header(){
         <AppBar position="fixed">
           <Toolbar>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              Progetto
+              Fluidos Node Dashboard
             </Typography>
             <Button color="inherit" component={Link} to="/info">
               Info
