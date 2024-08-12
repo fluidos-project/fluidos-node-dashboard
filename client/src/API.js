@@ -1,4 +1,5 @@
 import { Flavor } from "./models/flavor";
+import { NodeInfo } from "./models/node";
 const SERVER_URL = "http://localhost:3001/api";
 
 // Flavor API
@@ -35,5 +36,22 @@ const getFlavors = async () => {
   }
 
 
-const API = {getFlavors, getSingleFlavor};
+  const getNodeInfo = async () => {
+    const response = await fetch(`${SERVER_URL}/nodes`, {
+      method: 'GET'
+    })
+  
+    if (response.ok) {
+      const nodesArray = await response.json();
+      const nodesArrayObj = nodesArray.map(n => new NodeInfo(n));
+      //console.log(nodesArrayObj)
+      return nodesArrayObj
+    }
+    else {
+      const errDetails = await response.text();
+      throw errDetails;
+    }
+  }
+
+const API = {getFlavors, getSingleFlavor, getNodeInfo};
 export default API 

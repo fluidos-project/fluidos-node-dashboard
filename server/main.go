@@ -14,6 +14,7 @@ func main() {
 	corsRouter := utils.EnableCors(router)
 
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
+	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
 
 	router.HandleFunc("/api/discoveries", utils.GetDiscoveries).Methods("GET")
 	router.HandleFunc("/api/reservations", utils.GetReservations).Methods("GET")
@@ -23,7 +24,7 @@ func main() {
 	router.HandleFunc("/api/peeringcandidates", utils.GetPeeringCandidates).Methods("GET")
 	router.HandleFunc("/api/allocations", utils.GetAllocations).Methods("GET")
 
-	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
+	router.HandleFunc("/api/nodes", utils.GetNodeInfo).Methods("GET")
 
 	log.Println("Server is starting on port 3001...")
 	log.Fatal(http.ListenAndServe(":3001", corsRouter))

@@ -1,6 +1,5 @@
 import { Link, useParams } from "react-router-dom";
-import API
-    from "../API";
+import API from "../API";
 import { useState, useEffect } from "react";
 import { Breadcrumbs, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
@@ -86,10 +85,10 @@ function DisplayFlavorInfo(props) {
 
                 <Grid item md={6} xs={12}>
                     <Paper
-                        elevation={4} // Aggiunge un'ombra leggera
+                        elevation={4} 
                         sx={{
-                            padding: 2, // Padding interno
-                            borderRadius: 1, // Bordo smussato
+                            padding: 2, 
+                            borderRadius: 1, 
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -107,10 +106,10 @@ function DisplayFlavorInfo(props) {
 
                 <Grid item md={6} xs={12}>
                     <Paper
-                        elevation={4} // Aggiunge un'ombra leggera
+                        elevation={4} 
                         sx={{
-                            padding: 1, // Padding interno
-                            borderRadius: 2, // Bordo smussato
+                            padding: 1, 
+                            borderRadius: 2, 
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -122,7 +121,7 @@ function DisplayFlavorInfo(props) {
                         <Typography variant="body1" > Type of Flavor: {props.flavor.spec.flavorType.typeIdentifier}</Typography>
                         <Typography variant="body1" > Architecture: {props.flavor.spec.flavorType.typeData.characteristics.architecture}</Typography>
                         <Typography variant="body1" > CPU: {props.flavor.spec.flavorType.typeData.characteristics.cpu}</Typography>
-                        <Typography variant="body1" > GPU: {props.flavor.spec.flavorType.typeData.characteristics.gpu.model}</Typography>
+                        <Typography variant="body1" > GPU: {props.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</Typography>
                         <Typography variant="body1" > Storage: {props.flavor.spec.flavorType.typeData.characteristics.storage }</Typography>
 
                     </Paper>
@@ -130,10 +129,10 @@ function DisplayFlavorInfo(props) {
 
                 <Grid item md={6} xs={12}>
                     <Paper
-                        elevation={4} // Aggiunge un'ombra leggera
+                        elevation={4}
                         sx={{
-                            padding: 1, // Padding interno
-                            borderRadius: 2, // Bordo smussato
+                            padding: 1, 
+                            borderRadius: 2, 
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -149,10 +148,10 @@ function DisplayFlavorInfo(props) {
 
                 <Grid item md={6} xs={12}>
                     <Paper
-                        elevation={4} // Aggiunge un'ombra leggera
+                        elevation={4} 
                         sx={{
-                            padding: 1, // Padding interno
-                            borderRadius: 2, // Bordo smussato
+                            padding: 1, 
+                            borderRadius: 2, 
                             display: 'flex',
                             flexDirection: 'column',
                             justifyContent: 'center',
@@ -160,7 +159,9 @@ function DisplayFlavorInfo(props) {
                         <Typography variant="h6" gutterBottom>
                             Location
                         </Typography>
-                        <p>info</p>
+                        <Typography variant="body1" >Country: {props.flavor.spec.location.country}</Typography>
+                        <Typography variant="body1" >City: {props.flavor.spec.location.city}</Typography>
+                        <Typography variant="body1" >Additional Note: {props.flavor.spec.location.additionalNotes}</Typography>
                     </Paper>
                 </Grid>
 

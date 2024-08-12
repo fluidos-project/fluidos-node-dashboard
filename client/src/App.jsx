@@ -16,9 +16,9 @@ import { AllocationPage } from './pages/AllocationPage';
 import { SolverPage } from './pages/SolverPage';
 import { PeeringCandidatePage } from './pages/PeeringCandidatePage';
 import { TransactionPage } from './pages/TransactionPage';
-import { NotFoundPage } from './pages/NotFoundPage';
+import  {NotFoundPage}  from './pages/NotFoundPage';
 import SingleFlavorPage from './pages/SingleFlavorPage';
-
+import  NodeInfoPage  from './pages/NodeInfoPage';
 
 
 function App() {
@@ -46,7 +46,7 @@ function App() {
               <Route path="/solvers" element={<SolverPage />} />
               <Route path="/peeringcandidates" element={<PeeringCandidatePage />} />
               <Route path="/transactions" element={<TransactionPage />} />
-              
+              <Route path="/info" element={<NodeInfoPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>
