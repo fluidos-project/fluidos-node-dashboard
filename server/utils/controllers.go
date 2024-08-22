@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"server/models"
 	"strconv"
 	"strings"
 
@@ -68,7 +69,7 @@ func GetSingleFlavor(w http.ResponseWriter, r *http.Request) {
 
 	flavor, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), flavorName, metav1.GetOptions{})
 	if err != nil {
-		http.Error(w, "Failed to get Flavor", http.StatusInternalServerError)
+		http.Error(w, "Failed to get Flavor or Flavor Not Found", http.StatusInternalServerError)
 		return
 	}
 
@@ -93,14 +94,12 @@ func GetPeeringCandidates(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed to create dynamic client: %v", err)
 	}
 
-	//path to Flavor
 	gvr := schema.GroupVersionResource{
 		Group:    "advertisement.fluidos.eu",
 		Version:  "v1alpha1",
 		Resource: "peeringcandidates",
 	}
 
-	// retrieve Flavor from API
 	peeringcandidates, err := clientset.Resource(gvr).List(r.Context(), metav1.ListOptions{})
 	if err != nil {
 		http.Error(w, "Failed to list Flavors", http.StatusInternalServerError)
@@ -108,11 +107,42 @@ func GetPeeringCandidates(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Send the JSON
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(peeringcandidates)
 
+}
+
+func GetSingleSolver(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	solverName := vars["name"]
+	if solverName == "" {
+		http.Error(w, "Solver name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "nodecore.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "solvers",
+	}
+
+	solver, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), solverName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Solver or Solver Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(solver)
 }
 
 // retrieve all Reservations
@@ -252,16 +282,6 @@ func GetContracts(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(contracts)
 }
 
-type NodeUsage struct {
-	Name            string  `json:"name"`
-	CPUUsage_m      int64   `json:"cpu_usage_m"`       // CPU usage in milli-core
-	CPUTotal_m      int64   `json:"cpu_total_m"`       // Total CPU in milli-core
-	CPUUsagePerc    float64 `json:"cpu_usage_perc"`    // CPU usage percentage
-	MemoryUsage_Ki  int64   `json:"memory_usage_Ki"`   // Memory usage in Ki
-	MemoryTotal_Ki  int64   `json:"memory_total_Ki"`   // Total memory in Ki
-	MemoryUsagePerc float64 `json:"memory_usage_perc"` // Memory usage percentage
-}
-
 func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
 
@@ -270,7 +290,6 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed to create dynamic client: %v", err)
 	}
 
-	// Recupera le metriche dei nodi
 	metricsGVR := schema.GroupVersionResource{
 		Group:    "metrics.k8s.io",
 		Version:  "v1beta1",
@@ -315,7 +334,7 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	var nodeUsages []NodeUsage
+	var nodeUsages []models.NodeUsage
 	for _, item := range metrics.Items {
 		metadata := item.Object["metadata"].(map[string]interface{})
 		name := metadata["name"].(string)
@@ -358,7 +377,7 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 		cpuUsagePerc := float64(cpuUsageMilli) / float64(cpuTotalMilli) * 100
 		memoryUsagePerc := float64(memoryUsageKi) / float64(memoryTotalKi) * 100
 
-		nodeUsage := NodeUsage{
+		nodeUsage := models.NodeUsage{
 			Name:            name,
 			CPUUsage_m:      cpuUsageMilli,
 			CPUTotal_m:      cpuTotalMilli,

@@ -1,13 +1,13 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import Grid from '@mui/system/Unstable_Grid/Grid';
 import { Breadcrumbs, Paper, Typography } from '@mui/material';
-import API from '../API';
+import API from '../utils/API';
 import { useEffect, useState } from 'react';
 import categories from '../utils/palette';
 export function SingleNode(props) {
 
-    const CPU_used = props.node.cpuUsageM / props.node.cpuTotalM
-    const Memory_used = props.node.memoryUsageKi / props.node.memoryTotalKi
+    const CPU_used = (props.node.cpuUsageM / props.node.cpuTotalM)*100
+    const Memory_used = (props.node.memoryUsageKi / props.node.memoryTotalKi)*100
 
     const paletteNames = Object.keys(categories);
 
@@ -39,7 +39,7 @@ export function SingleNode(props) {
                             {
                                 data: [
                                     { id: 0, value: CPU_used, label: `%Used (${CPU_used.toFixed(2)}%)` },
-                                    { id: 1, value: 1 - CPU_used, label: `%Free (${100 - CPU_used.toFixed(2)}%)` },
+                                    { id: 1, value: 100 - CPU_used, label: `%Free (${100 - CPU_used.toFixed(2)}%)` },
                                 ],
 
                             },
@@ -69,7 +69,7 @@ export function SingleNode(props) {
                             {
                                 data: [
                                     { id: 0, value: Memory_used, label: `%Used (${Memory_used.toFixed(2)}%)` },
-                                    { id: 1, value: 1 - Memory_used, label: `%Free (${100 - Memory_used.toFixed(2)}%)` },
+                                    { id: 1, value: 100 - Memory_used, label: `%Free (${100 - Memory_used.toFixed(2)}%)` },
                                 ],
 
                             },

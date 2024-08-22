@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import './App.css'
-import {Routes, Route } from "react-router-dom"
-import { FlavorsPage } from './pages/FlavourPage';
-import { Box } from '@mui/material';
+import {Routes, Route, Navigate } from "react-router-dom"
+import { FlavorsPage } from './pages/Flavor/FlavourPage';
+import { Alert, Box, Breadcrumbs, Typography } from '@mui/material';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
+import { AlertComponent } from './components/AlertComponent';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -13,15 +14,29 @@ import '@fontsource/roboto/700.css';
 import { ReservationPage } from './pages/ReservationPage';
 import { ContractPage } from './pages/ContracPage';
 import { AllocationPage } from './pages/AllocationPage';
-import { SolverPage } from './pages/SolverPage';
-import { PeeringCandidatePage } from './pages/PeeringCandidatePage';
+import { SolverPage } from './pages/Solver/SolverPage';
+import { PeeringCandidatePage } from './pages/PeeringCandidates/PeeringCandidatePage';
 import { TransactionPage } from './pages/TransactionPage';
 import  {NotFoundPage}  from './pages/NotFoundPage';
-import SingleFlavorPage from './pages/SingleFlavorPage';
+import SingleFlavorPage from './pages/Flavor/SingleFlavorPage';
 import  NodeInfoPage  from './pages/NodeInfoPage';
+import { BreadcrumbsComponent } from './components/BreadcrumbsComponent';
+import SingleSolverPage from './pages/Solver/SingleSolverPage';
+import SinglePeeringCandidatePage from './pages/PeeringCandidates/SinglePeeringCandidatePage';
+
 
 
 function App() {
+
+  const [alert, setAlert] = useState({type: "", message: ""});
+
+  const configureAlert = (msg) => {
+    setAlert({
+      type: msg.type,
+      message: msg.message
+    })
+    //console.log(msg)
+  }
 
   return (
     <>
@@ -34,19 +49,28 @@ function App() {
             sx={{
               flexGrow: 1,
               p: 3,
-              
             }}
           >
+            {alert && <AlertComponent alert={alert} configureAlert={configureAlert}/>}
+            <BreadcrumbsComponent />
             <Routes>
-              <Route path="/flavors" element={<FlavorsPage />} />
-              <Route path="/flavors/:name" element={<SingleFlavorPage />} />
+              <Route path="/" element={<Navigate to="/flavors" replace />} />
+
+              <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
+              <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
+              
               <Route path="/reservations" element={<ReservationPage />} />
               <Route path="/contracts" element={<ContractPage />} />
               <Route path="/allocations" element={<AllocationPage />} />
-              <Route path="/solvers" element={<SolverPage />} />
-              <Route path="/peeringcandidates" element={<PeeringCandidatePage />} />
-              <Route path="/transactions" element={<TransactionPage />} />
-              <Route path="/info" element={<NodeInfoPage />} />
+
+              <Route path="/solvers" element={<SolverPage configureAlert={configureAlert} />} />
+              <Route path="/solvers/:name" element={<SingleSolverPage configureAlert={configureAlert} />} />
+
+              <Route path="/peeringcandidates" element={<PeeringCandidatePage configureAlert={configureAlert} />} />
+              <Route path="/peeringcandidates/:name" element={<SinglePeeringCandidatePage configureAlert={configureAlert} />} />
+
+              <Route path="/transactions" element={<TransactionPage configureAlert={configureAlert} />} />
+              <Route path="/info" element={<NodeInfoPage configureAlert={configureAlert}/>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>

@@ -1,7 +1,7 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import Grid from '@mui/system/Unstable_Grid/Grid';
 import { Breadcrumbs, Paper, Typography } from '@mui/material';
-import API from '../API';
+import API from '../utils/API';
 import { useEffect, useState } from 'react';
 import categories from '../utils/palette';
 import { SingleNode } from '../components/SingleNodeInfo';
@@ -19,7 +19,8 @@ function NodeInfoPage() {
                 setnodeArray(nodes);
                 //console.log(nodes);
             } catch (error) {
-                console.log(error)
+                console.error(error)
+                props.configureAlert({type: "error", message: error})
             }
         }
 

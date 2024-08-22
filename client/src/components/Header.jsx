@@ -11,7 +11,7 @@ function Header() {
         </Typography>
 
         <Button color="inherit" component={Link} to="/info">
-          Info
+          Nodes Info
         </Button>
       </Toolbar>
     </AppBar>
