@@ -5,7 +5,7 @@ function Header() {
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <img src="src/assets/Fluidos-logo-white-768x768.png" style={{ height: 40, marginRight: 8 }} />
+        <img src="/src/assets/Fluidos-logo-white-768x768.png" style={{ height: 40, marginRight: 8 }} />
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Fluidos Node Dashboard
         </Typography>

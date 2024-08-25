@@ -2,9 +2,10 @@ import { Button, Card, CardActions, CardContent, Typography } from "@mui/materia
 import { Box } from "@mui/system"
 import { Link } from "react-router-dom";
 import calculateAge from "../utils/age";
+import dayjs from "dayjs";
 
 
-export function SolverCard(props) {
+export function ReservationCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
@@ -14,28 +15,30 @@ export function SolverCard(props) {
         <>
             <Card sx={{ minWidth: 300 }}>
                 <CardContent>
-                    <Typography variant="body1"  component="div" >
+                    <Typography variant="body1" component="div" >
                         Name: {props.element.metadata.name}
                     </Typography>
-                    <Typography variant="body1"component="div" color="blue">
-                        {props.element.status.solverPhase.message}
-                    </Typography>
+
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.secondary">
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Flavor Type: {props.element.spec.selector.flavorType}</span>
+                            <span>Resource Reserved: {props.element.spec.configuration.type}</span>
                             <span>AGE: {age}</span>
                         </Box>
                     </Typography>
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
+                           Solver Request ID: {props.element.spec.solverID}
+                    </Typography>
+
+                    <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Candidate Phase:
-                            {props.element.status.findCandidate === 'Solved' ? (
-                                <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
+                            Reserving Status:
+                            {props.element.spec.reserve ? (
+                                <Typography color="red" sx={{ ml: 1 }}>
+                                    Resource is reserved
                                 </Typography>
                             ) : (
-                                <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
+                                <Typography color="green" sx={{ ml: 1 }}>
+                                    Not Reserved
                                 </Typography>
                             )}
                         </Box>
@@ -43,32 +46,21 @@ export function SolverCard(props) {
 
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Reserving Phase:
-                            {props.element.status.reserveAndBuy === 'Solved' ? (
+                            Purchasing Status:
+                            {props.element.spec.purchase ? (
                                 <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
+                                    Correctly Purchased
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
+                                    Not Purchased
                                 </Typography>
                             )}
                         </Box>
                     </Typography>
 
-                    <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Peering Phase:
-                            {props.element.status.peering === 'Solved' ? (
-                                <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
-                                </Typography>
-                            ) : (
-                                <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
-                                </Typography>
-                            )}
-                        </Box>
+                    <Typography component="div" sx={{ mb: 1.5 }} color="blue">
+                          {props.element.status.phase.message}
                     </Typography>
 
                 </CardContent>

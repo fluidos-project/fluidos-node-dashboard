@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import API from "../../utils/API";
 import { Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
-import { SolverCard } from "../../components/SolverCard";
 import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
 
 
-export function PeeringCandidatePage() {
+export function PeeringCandidatePage(props) {
 
     const [peeringArray, setPeeringArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true)

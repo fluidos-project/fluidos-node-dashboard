@@ -22,7 +22,6 @@ function SingleFlavorPage(props) {
         const fetchFlavor = async () => {
             try {
                 const singleflavor = await API.getSingleFlavor(name);
-                console.log(singleflavor)
                 setFlavor(singleflavor);
             } catch (error) {
                 console.error(error)

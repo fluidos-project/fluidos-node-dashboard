@@ -21,6 +21,7 @@ export class Flavor {
     }
   }
   
+  
   class ManagedField {
     constructor(data) {
       this.apiVersion = data.apiVersion || '';

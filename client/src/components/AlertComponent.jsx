@@ -1,21 +1,41 @@
 import { Alert } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-export function AlertComponent(props){
-    const [hide, setHide] = useState(false);
-    //console.log(props.alert);
+export function AlertComponent(props) {
+    const [visible, setVisible] = useState(false);
 
-    const hideAlert = ()=> {
-        props.configureAlert({type:"", message:""});
-        setHide(true);
+    useEffect(() => {
+        if (props.alert.type !== "") {
+            setVisible(true);  // Rendi visibile l'Alert
+            const timer = setTimeout(() => {
+                setVisible(false);  // Nascondi l'Alert dopo 2 secondi
+                props.configureAlert({ type: "", message: "" });  // Resetta l'alert
+            }, 2000);
 
-    }
-
-    return(
-        <>{
-            (props.alert.type!="") && <Alert onClose={hideAlert} hidden={hide}variant="filled" severity={props.alert.type}>{props.alert.message}</Alert>
+            return () => clearTimeout(timer);  // Pulisce il timer
         }
-        </>
-    )
+    }, [props.alert]);
 
+    return (
+        <>
+            {visible && (
+                <Alert
+                    onClose={() => setVisible(false)}
+                    variant="filled"
+                    severity={props.alert.type}
+                    sx={{
+                        position: 'fixed',
+                        top: '70px',
+                        left: '50%',
+                        transform: 'translateX(-50%)',
+                        zIndex: 1300,
+                        width: '80%',
+                        maxWidth: '600px'
+                    }}
+                >
+                    {props.alert.message.toString()}
+                </Alert>
+            )}
+        </>
+    );
 }

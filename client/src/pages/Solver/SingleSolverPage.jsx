@@ -21,7 +21,6 @@ function SingleSolverPage(props) {
         const fetchSolver = async () => {
             try {
                 const singlesolver = await API.getSingleSolver(name);
-                console.log(singlesolver)
                 setsolver(singlesolver);
             } catch (error) {
                 console.error(error)
@@ -41,7 +40,7 @@ function SingleSolverPage(props) {
                     <Typography variant="h3"> Solvers</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {solver ? <DisplaySolverInfo solver={solver} /> :
+                    {solver ? <DisplaySolverInfo configureAlert= {props.configureAlert} solver={solver} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -67,7 +66,7 @@ function DisplaySolverInfo(props) {
 
     const age = calculateAge(props.solver.metadata.creationTimestamp);
 
-    function getFilterString(filter) {
+    const getFilterString= (filter) => {
         if (filter.name === "Match") {
             return `match ${filter.data.value}`;
         } else if (filter.name === "Range") {
@@ -75,6 +74,12 @@ function DisplaySolverInfo(props) {
         }
         return "Unknown filter type";
     }
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(props.solver.status.credentials.token).then(() => {
+            props.configureAlert({type: "success", message: "text copied"});
+        });
+    };
 
 
     return (
@@ -220,7 +225,7 @@ function DisplaySolverInfo(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Liqo Token</TableCell>
-                                <TableCell>{props.solver.status.credentials.token}</TableCell>
+                                <TableCell onClick={handleCopy}  sx={{ cursor: 'pointer' }}>{props.solver.status.credentials.token}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>

@@ -11,9 +11,9 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { ReservationPage } from './pages/ReservationPage';
-import { ContractPage } from './pages/ContracPage';
-import { AllocationPage } from './pages/AllocationPage';
+import { ReservationPage } from './pages/Reservation/ReservationPage';
+import { ContractPage } from './pages/Contracts/ContractPage';
+import { AllocationPage } from './pages/Allocations/AllocationPage';
 import { SolverPage } from './pages/Solver/SolverPage';
 import { PeeringCandidatePage } from './pages/PeeringCandidates/PeeringCandidatePage';
 import { TransactionPage } from './pages/TransactionPage';
@@ -23,6 +23,8 @@ import  NodeInfoPage  from './pages/NodeInfoPage';
 import { BreadcrumbsComponent } from './components/BreadcrumbsComponent';
 import SingleSolverPage from './pages/Solver/SingleSolverPage';
 import SinglePeeringCandidatePage from './pages/PeeringCandidates/SinglePeeringCandidatePage';
+import SingleContractPage from './pages/Contracts/SingleContractPage';
+import SingleReservationPage from './pages/Reservation/SingleReservationPage';
 
 
 
@@ -59,9 +61,13 @@ function App() {
               <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
               
-              <Route path="/reservations" element={<ReservationPage />} />
-              <Route path="/contracts" element={<ContractPage />} />
-              <Route path="/allocations" element={<AllocationPage />} />
+              <Route path="/reservations" element={<ReservationPage configureAlert={configureAlert} />} />
+              <Route path="/reservations/:name" element={<SingleReservationPage configureAlert={configureAlert} />} />
+
+              <Route path="/contracts" element={<ContractPage configureAlert={configureAlert} />} />
+              <Route path="/contracts/:name" element={<SingleContractPage configureAlert={configureAlert} />} />
+
+              <Route path="/allocations" element={<AllocationPage configureAlert={configureAlert} />} />
 
               <Route path="/solvers" element={<SolverPage configureAlert={configureAlert} />} />
               <Route path="/solvers/:name" element={<SingleSolverPage configureAlert={configureAlert} />} />

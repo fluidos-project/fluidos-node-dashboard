@@ -113,7 +113,7 @@ func GetPeeringCandidates(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func GetSingleSolver(w http.ResponseWriter, r *http.Request) {
+func GetSinglePeeringCandidate(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
 
 	clientset, err := dynamic.NewForConfig(config)
@@ -122,27 +122,27 @@ func GetSingleSolver(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	solverName := vars["name"]
-	if solverName == "" {
-		http.Error(w, "Solver name is required", http.StatusBadRequest)
+	candidateName := vars["name"]
+	if candidateName == "" {
+		http.Error(w, "Candidate name is required", http.StatusBadRequest)
 		return
 	}
 
 	gvr := schema.GroupVersionResource{
-		Group:    "nodecore.fluidos.eu",
+		Group:    "advertisement.fluidos.eu",
 		Version:  "v1alpha1",
-		Resource: "solvers",
+		Resource: "peeringcandidates",
 	}
 
-	solver, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), solverName, metav1.GetOptions{})
+	pcandidate, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), candidateName, metav1.GetOptions{})
 	if err != nil {
-		http.Error(w, "Failed to get Solver or Solver Not Found", http.StatusInternalServerError)
+		http.Error(w, "Failed to get Peering Candidate or Peering Candidate Not Found", http.StatusInternalServerError)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(solver)
+	json.NewEncoder(w).Encode(pcandidate)
 }
 
 // retrieve all Reservations
@@ -170,6 +170,38 @@ func GetReservations(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(reservations)
+}
+
+func GetSingleReservation(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	reservationName := vars["name"]
+	if reservationName == "" {
+		http.Error(w, "Reservation name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "reservation.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "reservations",
+	}
+
+	pcandidate, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), reservationName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Reservation or Reservation Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(pcandidate)
 }
 
 // retrieve all Transactions
@@ -228,6 +260,38 @@ func GetSolvers(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func GetSingleSolver(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	solverName := vars["name"]
+	if solverName == "" {
+		http.Error(w, "Solver name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "nodecore.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "solvers",
+	}
+
+	solver, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), solverName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Solver or Solver Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(solver)
+}
+
 // retrieve all Allocations
 func GetAllocations(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
@@ -265,7 +329,7 @@ func GetContracts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	gvr := schema.GroupVersionResource{
-		Group:    "nodecore.fluidos.eu",
+		Group:    "reservation.fluidos.eu",
 		Version:  "v1alpha1",
 		Resource: "contracts",
 	}
@@ -280,6 +344,38 @@ func GetContracts(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(contracts)
+}
+
+func GetSingleContract(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	contractName := vars["name"]
+	if contractName == "" {
+		http.Error(w, "Contract name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "reservation.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "contracts",
+	}
+
+	solver, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), contractName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Contract or Contract Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(solver)
 }
 
 func GetNodeInfo(w http.ResponseWriter, r *http.Request) {

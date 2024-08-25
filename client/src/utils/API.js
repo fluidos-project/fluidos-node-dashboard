@@ -1,95 +1,97 @@
+import { Allocation } from "../models/allocation";
+import { Contract } from "../models/contract";
 import { Flavor } from "../models/flavor";
 import { NodeInfo } from "../models/node";
-import { PeeringCandidate } from "../models/peeringCandidates";
+import { PeeringCandidate } from "../models/peeringCandidate";
+import { Reservation } from "../models/reservation";
 import { Solver } from "../models/solver";
 const SERVER_URL = "http://localhost:3001/api";
 
 // FLAVOR API
 const getFlavors = async () => {
-    const response = await fetch(`${SERVER_URL}/flavors`, {
-      method: 'GET'
-    })
-  
-    if (response.ok) {
-      const flavors = await response.json();
-      const flavorObj = flavors.items.map(f => new Flavor(f));
-      return flavorObj
-    }
-    else {
-      const errDetails = await response.text();
-      throw errDetails;
-    }
-  }
+  const response = await fetch(`${SERVER_URL}/flavors`, {
+    method: 'GET'
+  })
 
-  const getSingleFlavor = async (name) => {
-    const response = await fetch(`${SERVER_URL}/flavors/${name}`, {
-      method: 'GET'
-    })
-  
-    if (response.ok) {
-      const flavor = await response.json();
-      const flavorObj = new Flavor(flavor);
-      return flavorObj
-    }
-    else {
-      const errDetails = await response.text();
-      throw errDetails;
-    }
+  if (response.ok) {
+    const flavors = await response.json();
+    const flavorObj = flavors.items.map(f => new Flavor(f));
+    return flavorObj
   }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getSingleFlavor = async (name) => {
+  const response = await fetch(`${SERVER_URL}/flavors/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const flavor = await response.json();
+    const flavorObj = new Flavor(flavor);
+    return flavorObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
 
 // NODES API
-  const getNodeInfo = async () => {
-    const response = await fetch(`${SERVER_URL}/nodes`, {
-      method: 'GET'
-    })
-  
-    if (response.ok) {
-      const nodesArray = await response.json();
-      const nodesArrayObj = nodesArray.map(n => new NodeInfo(n));
-      //console.log(nodesArrayObj)
-      return nodesArrayObj
-    }
-    else {
-      const errDetails = await response.text();
-      throw errDetails;
-    }
+const getNodeInfo = async () => {
+  const response = await fetch(`${SERVER_URL}/nodes`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const nodesArray = await response.json();
+    const nodesArrayObj = nodesArray.map(n => new NodeInfo(n));
+    return nodesArrayObj
   }
-
-  //SOLVER API
-  const getSolvers = async () => {
-    const response = await fetch(`${SERVER_URL}/solvers`, {
-      method: 'GET'
-    })
-  
-    if (response.ok) {
-      const solvers = await response.json();
-      const solversObj = solvers.items.map(s => new Solver(s));
-      return solversObj
-    }
-    else {
-      const errDetails = await response.text();
-      throw errDetails;
-    }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
   }
+}
 
-  const getSingleSolver = async (name) => {
-    const response = await fetch(`${SERVER_URL}/solvers/${name}`, {
-      method: 'GET'
-    })
-  
-    if (response.ok) {
-      const solver = await response.json();
-      const solverObj = new Solver(solver);
-      return solverObj
-    }
-    else {
-      const errDetails = await response.text();
-      throw errDetails;
-    }
+//SOLVER API
+const getSolvers = async () => {
+  const response = await fetch(`${SERVER_URL}/solvers`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const solvers = await response.json();
+    const solversObj = solvers.items.map(s => new Solver(s));
+    return solversObj
   }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getSingleSolver = async (name) => {
+  const response = await fetch(`${SERVER_URL}/solvers/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const solver = await response.json();
+    const solverObj = new Solver(solver);
+    return solverObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
 
 
-  // PEERING CANDIDATES API
+// PEERING CANDIDATES API
 const getPeeringCandidates = async () => {
   const response = await fetch(`${SERVER_URL}/peeringcandidates`, {
     method: 'GET'
@@ -98,15 +100,118 @@ const getPeeringCandidates = async () => {
   if (response.ok) {
     const peeringcandidates = await response.json();
     const peeringcandidatesObj = peeringcandidates.items.map(p => new PeeringCandidate(p));
-   
+
     return peeringcandidatesObj
   }
   else {
     const errDetails = await response.text();
     throw errDetails;
   }
-
 }
 
-const API = {getFlavors, getSingleFlavor, getSolvers, getSingleSolver, getPeeringCandidates ,getNodeInfo};
+const getSinglePeeringCandidate = async (name) => {
+  const response = await fetch(`${SERVER_URL}/peeringcandidates/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const candidate = await response.json();
+    const candidateObj = new PeeringCandidate(candidate);
+    return candidateObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+// CONTRACTS API
+const getContracts = async () => {
+  const response = await fetch(`${SERVER_URL}/contracts`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const contracts = await response.json();
+    const contractsObj = contracts.items.map(c => new Contract(c));
+
+    return contractsObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getSingleContract = async (name) => {
+  const response = await fetch(`${SERVER_URL}/contracts/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const contract = await response.json();
+    const contractObj = new Contract(contract);
+
+    return contractObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+// RESERVATIONS API
+const getReservations = async () => {
+  const response = await fetch(`${SERVER_URL}/reservations`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const reservations = await response.json();
+    const reservationsObj = reservations.items.map(r => new Reservation(r));
+
+    return reservationsObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getSingleReservation = async (name) => {
+  const response = await fetch(`${SERVER_URL}/reservations/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const reservation = await response.json();
+    const reservationObj = new Reservation(reservation);
+
+    return reservationObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+// ALLOCATIONS API
+const getAllocations = async () => {
+  const response = await fetch(`${SERVER_URL}/allocations`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const allocations = await response.json();
+    const allocationsObj = allocations.items.map(a => new Allocation(a));
+
+    return allocationsObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const API = { getFlavors, getSingleFlavor, getSolvers, getSingleSolver, getPeeringCandidates, getSinglePeeringCandidate, getContracts, getSingleContract, getReservations, getSingleReservation, getAllocations, getNodeInfo };
 export default API 

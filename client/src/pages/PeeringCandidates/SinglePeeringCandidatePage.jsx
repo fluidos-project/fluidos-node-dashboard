@@ -21,9 +21,8 @@ function SinglePeeringCandidatePage(props) {
 
         const fetchPeeringCandidate = async () => {
             try {
-                const singlepeer = await API.getPeeringCandidates();
-                console.log(singlepeer[0])
-                setPeeringCandidate(singlepeer[0]); // -- FIX API -- 
+                const singlepeer = await API.getSinglePeeringCandidate(name);
+                setPeeringCandidate(singlepeer);
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -53,9 +52,6 @@ function SinglePeeringCandidatePage(props) {
                             <CircularProgress />
                         </Box>}
                 </Grid>
-
-
-
             </Grid>
         </>
     )
@@ -67,7 +63,6 @@ export default SinglePeeringCandidatePage
 function DisplayPeeringCInfo(props) {
 
     const age = calculateAge(props.peeringCandidate.metadata.creationTimestamp);
-
 
     return (
         <><Grid container spacing={2}>
@@ -87,31 +82,31 @@ function DisplayPeeringCInfo(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Name</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.metadata.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Namespace</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.metadata.namespace}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Age</TableCell>
                                 <TableCell>{age}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Solver Request Name</TableCell>
-                                <TableCell>{age}</TableCell>
+                                <TableCell component="th" scope="row">Solver Request</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.solverID}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Associated Flavor Name</TableCell>
-                                <TableCell>{age}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.metadata.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Availability</TableCell>
-                                <TableCell>{age}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.available ? "True" : "False"}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Price</TableCell>
-                                <TableCell>{age}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.price.amount != "" ? `${props.peeringCandidate.spec.flavor.spec.price.amount} ${props.peeringCandidate.spec.flavor.spec.currency}` : "-"}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -134,27 +129,27 @@ function DisplayPeeringCInfo(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Type of Candidate</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Architecture</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.architecture}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">CPU cores</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.cpu}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Memory</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Pods</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.pods}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Storage</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.storage}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -176,20 +171,20 @@ function DisplayPeeringCInfo(props) {
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell component="th" scope="row">CPU (min - step) </TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell component="th" scope="row">CPU (min ; step) </TableCell>
+                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuStep}`}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Memory (min - step) </TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell component="th" scope="row">Memory (min ; step) </TableCell>
+                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryStep}`}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">GPU (min - step) </TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell component="th" scope="row">GPU (min ; step) </TableCell>
+                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuStep}`}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Pods (min - step) </TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell component="th" scope="row">Pods (min ; step) </TableCell>
+                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsStep}`}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -204,7 +199,7 @@ function DisplayPeeringCInfo(props) {
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
                                     <Typography variant="h6" gutterBottom>
-                                        Status
+                                        Location
                                     </Typography>
                                 </TableCell>
                             </TableRow>
@@ -212,15 +207,15 @@ function DisplayPeeringCInfo(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Country</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.location.country}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">City</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.location.city}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Notes</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.location.additionalNotes}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -243,21 +238,21 @@ function DisplayPeeringCInfo(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Domain</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.owner.domain}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">IPv4</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.owner.ip}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Node ID</TableCell>
-                                <TableCell>{}</TableCell>
+                                <TableCell>{props.peeringCandidate.spec.flavor.spec.owner.nodeID}</TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
                 </TableContainer>
             </Grid>
-            
+
         </Grid>
 
         </>

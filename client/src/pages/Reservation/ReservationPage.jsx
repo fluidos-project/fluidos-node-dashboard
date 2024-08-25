@@ -2,23 +2,20 @@ import { useEffect, useState } from "react";
 import API from "../../utils/API";
 import { Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
-import { SolverCard } from "../../components/SolverCard";
+import { ReservationCard } from "../../components/ReservationCard";
 
+export function ReservationPage(props){
 
-
-
-export function SolverPage(props) {
-
-    const [solversArray, setSolversArray] = useState([]);
+    const [reservationsArray, setReservationsArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
 
-        const fetchSolvers = async () => {
+        const fetchReservations = async () => {
             try {
-                const solvers = await API.getSolvers();
+                const reservations = await API.getReservations();
                 
-                setSolversArray(solvers);
+                setReservationsArray(reservations);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error)
@@ -26,14 +23,14 @@ export function SolverPage(props) {
             }
         }
 
-        fetchSolvers();
-        
+        fetchReservations();
+
     }, [])
 
     return (<>
         <Grid container spacing={2}>
             <Grid item md={12}>
-                <Typography variant="h3"> Solvers</Typography>
+                <Typography variant="h3"> Reservations</Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
@@ -41,12 +38,12 @@ export function SolverPage(props) {
                         <SkeletonCard />
                     </Grid>
                 )) :
-                    solversArray.length > 0 ? solversArray.map(solver =>
-                        <Grid item md={4} key={solver.metadata.name} >
-                           <SolverCard element={solver} />
+                    reservationsArray.length > 0 ? reservationsArray.map(reservation =>
+                        <Grid item md={4} key={reservation.metadata.name} >
+                            <ReservationCard element={reservation} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
-                        <Typography variant="h5"> No solver requests have been made in this Node.</Typography>
+                        <Typography variant="h5"> No Reservations available at the moment.</Typography>
 
                     </Grid>
             }
