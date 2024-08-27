@@ -15,7 +15,7 @@ export function ContractPage() {
         const fetchContracts = async () => {
             try {
                 const contracts = await API.getContracts();
-                console.log(contracts)
+
                 setContractsArray(contracts);
                 setIsLoading(false);
             } catch (error) {

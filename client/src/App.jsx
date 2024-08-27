@@ -16,15 +16,17 @@ import { ContractPage } from './pages/Contracts/ContractPage';
 import { AllocationPage } from './pages/Allocations/AllocationPage';
 import { SolverPage } from './pages/Solver/SolverPage';
 import { PeeringCandidatePage } from './pages/PeeringCandidates/PeeringCandidatePage';
-import { TransactionPage } from './pages/TransactionPage';
-import  {NotFoundPage}  from './pages/NotFoundPage';
+import { TransactionPage } from './pages/Transaction/TransactionPage';
+import  {NotFoundPage}  from './pages/utils/NotFoundPage';
 import SingleFlavorPage from './pages/Flavor/SingleFlavorPage';
-import  NodeInfoPage  from './pages/NodeInfoPage';
+import  NodeInfoPage  from './pages/Nodes/NodeInfoPage';
 import { BreadcrumbsComponent } from './components/BreadcrumbsComponent';
 import SingleSolverPage from './pages/Solver/SingleSolverPage';
 import SinglePeeringCandidatePage from './pages/PeeringCandidates/SinglePeeringCandidatePage';
 import SingleContractPage from './pages/Contracts/SingleContractPage';
 import SingleReservationPage from './pages/Reservation/SingleReservationPage';
+import SingleAllocationPage from './pages/Allocations/SingleAllocationPage';
+import SingleTransactionPage from './pages/Transaction/SingleTransactionPage';
 
 
 
@@ -68,6 +70,7 @@ function App() {
               <Route path="/contracts/:name" element={<SingleContractPage configureAlert={configureAlert} />} />
 
               <Route path="/allocations" element={<AllocationPage configureAlert={configureAlert} />} />
+              <Route path="/allocations/:name" element={<SingleAllocationPage configureAlert={configureAlert} />} />
 
               <Route path="/solvers" element={<SolverPage configureAlert={configureAlert} />} />
               <Route path="/solvers/:name" element={<SingleSolverPage configureAlert={configureAlert} />} />
@@ -76,6 +79,8 @@ function App() {
               <Route path="/peeringcandidates/:name" element={<SinglePeeringCandidatePage configureAlert={configureAlert} />} />
 
               <Route path="/transactions" element={<TransactionPage configureAlert={configureAlert} />} />
+              <Route path="/transactions/:name" element={<SingleTransactionPage configureAlert={configureAlert} />} />
+
               <Route path="/info" element={<NodeInfoPage configureAlert={configureAlert}/>} />
               <Route path="*" element={<NotFoundPage />} />
             </Routes>

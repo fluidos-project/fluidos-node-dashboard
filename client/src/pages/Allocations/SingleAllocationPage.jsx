@@ -10,26 +10,26 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import calculateAge from "../../utils/age";
 
 
-// Check when reservation or buy is not done yet, if there are some errors
 
-function SingleReservationPage(props) {
-    const [reservation, setReservation] = useState();
+function SingleAllocationPage(props) {
+    const [allocation, setAllocation] = useState();
     const { name } = useParams();
     //console.log(name);
 
     useEffect(() => {
 
-        const fetchReservation = async () => {
+        const fetchAllocation = async () => {
             try {
-                const singlereservation = await API.getSingleReservation(name);
-                setReservation(singlereservation);
+                const singleAllocation = await API.getSingleAllocation(name); 
+                setAllocation(singleAllocation);
+               
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
             }
         }
 
-        fetchReservation();
+        fetchAllocation();
     }, [])
 
 
@@ -38,10 +38,10 @@ function SingleReservationPage(props) {
             <Grid container spacing={2}>
 
                 <Grid item md={12}>
-                    <Typography variant="h3"> Reservations</Typography>
+                    <Typography variant="h3"> Allocations</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {reservation ? <DisplayReservationInfo reservation={reservation} /> :
+                    {allocation ? <DisplayAllocationInfo allocation={allocation} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -58,11 +58,11 @@ function SingleReservationPage(props) {
 
 }
 
-export default SingleReservationPage
+export default SingleAllocationPage
 
-function DisplayReservationInfo(props) {
+function DisplayAllocationInfo(props) {
 
-    const age = calculateAge(props.reservation.metadata.creationTimestamp);
+    const age = calculateAge(props.allocation.metadata.creationTimestamp);
 
     return (
         <><Grid container spacing={2}>
@@ -82,23 +82,27 @@ function DisplayReservationInfo(props) {
                         <TableBody>
                             <TableRow>
                                 <TableCell component="th" scope="row">Name</TableCell>
-                                <TableCell>{props.reservation.metadata.name}</TableCell>
+                                <TableCell>{props.allocation.metadata.name}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Namespace</TableCell>
-                                <TableCell>{props.reservation.metadata.namespace}</TableCell>
+                                <TableCell>{props.allocation.metadata.namespace}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Age</TableCell>
                                 <TableCell>{age}</TableCell>
                             </TableRow>
-                            
+                            <TableRow>
+                                <TableCell component="th" scope="row">Intent ID</TableCell>
+                                <TableCell>{props.allocation.spec.intentID}</TableCell>
+                            </TableRow>
+
                         </TableBody>
                     </Table>
                 </TableContainer>
             </Grid>
 
-            {/* Reservation Specs Table */}
+            {/* Allocation Specs Table */}
             <Grid item xs={12}>
                 <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                     <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
@@ -106,32 +110,17 @@ function DisplayReservationInfo(props) {
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
                                     <Typography variant="h6" gutterBottom>
-                                       Reservation Specs
+                                        Allocation Specs
                                     </Typography>
                                 </TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             <TableRow>
-                                <TableCell component="th" scope="row">Type of Resource</TableCell>
-                                <TableCell>{props.reservation.spec.configuration.type}</TableCell>
+                                <TableCell component="th" scope="row">Contract</TableCell>
+                                <TableCell><Link relative="path" to={`../../contracts/${props.allocation.spec.contract.name}`}>{props.allocation.spec.contract.name}</Link></TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Solver ID</TableCell>
-                                <TableCell>{props.reservation.spec.solverID}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Configuration requested</TableCell>
-                                <TableCell>{`${props.reservation.spec.configuration.data.cpu} CPU - ${props.reservation.spec.configuration.data.memory} Memory - ${props.reservation.spec.configuration.data.pods} Pods`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Seller Node ID</TableCell>
-                                <TableCell>{`${props.reservation.spec.seller.nodeID} (${props.reservation.spec.seller.ip})`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Peering Candidate Reserved</TableCell>
-                                <TableCell><Link relative="path" to={`../../peeringcandidates/${props.reservation.spec.peeringCandidate.name}`}>{props.reservation.spec.peeringCandidate.name}</Link></TableCell>
-                            </TableRow>
+                           
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -151,26 +140,19 @@ function DisplayReservationInfo(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            <TableRow> 
-                                <TableCell component="th" scope="row">Contract </TableCell>
-                                <TableCell><Link relative="path" to={`../../contracts/${props.reservation.status.contract.name}`}>{props.reservation.status.contract.name}</Link></TableCell>
+                            <TableRow>
+                                <TableCell component="th" scope="row">Message </TableCell>
+                                <TableCell>{props.allocation.status.message}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Transaction ID </TableCell>
-                                <TableCell><Link relative="path" to={`../../transactions/${props.reservation.status.transactionID}`}>{props.reservation.status.transactionID}</Link></TableCell>
+                                <TableCell component="th" scope="row">Last Update  </TableCell>
+                                <TableCell>{dayjs(props.allocation.status.lastUpdateTime).toString()}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Message from Candidate </TableCell>
-                                <TableCell>{props.reservation.status.phase.message}</TableCell>
+                                <TableCell component="th" scope="row">Allocation status </TableCell>
+                                <TableCell>{props.allocation.status.status}</TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Reservation  Phase </TableCell>
-                                <TableCell>{props.reservation.status.reservePhase}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Purchase Phase </TableCell>
-                                <TableCell>{props.reservation.status.purchasePhase}</TableCell>
-                            </TableRow>
+                            
                         </TableBody>
                     </Table>
                 </TableContainer>

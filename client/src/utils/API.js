@@ -5,6 +5,7 @@ import { NodeInfo } from "../models/node";
 import { PeeringCandidate } from "../models/peeringCandidate";
 import { Reservation } from "../models/reservation";
 import { Solver } from "../models/solver";
+import { Transaction } from "../models/transactions";
 const SERVER_URL = "http://localhost:3001/api";
 
 // FLAVOR API
@@ -213,5 +214,58 @@ const getAllocations = async () => {
   }
 }
 
-const API = { getFlavors, getSingleFlavor, getSolvers, getSingleSolver, getPeeringCandidates, getSinglePeeringCandidate, getContracts, getSingleContract, getReservations, getSingleReservation, getAllocations, getNodeInfo };
+const getSingleAllocation = async (name) => {
+  const response = await fetch(`${SERVER_URL}/allocations/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const allocation = await response.json();
+    const allocationObj = new Allocation(allocation);
+
+    return allocationObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+// TRANSACTIONS API
+const getTransactions = async () => {
+  const response = await fetch(`${SERVER_URL}/transactions`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const transactions = await response.json();
+    const transactionsObj = transactions.items.map(t => new Transaction(t));
+
+    return transactionsObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getSingleTransaction = async (name) => {
+  const response = await fetch(`${SERVER_URL}/transactions/${name}`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const transaction = await response.json();
+    const transactionObj = new Transaction(transaction);
+
+    return transactionObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+
+const API = { getFlavors, getSingleFlavor, getSolvers, getSingleSolver, getPeeringCandidates, getSinglePeeringCandidate, getContracts, getSingleContract, getReservations, getSingleReservation, getAllocations, getSingleAllocation, getTransactions, getSingleTransaction, getNodeInfo };
 export default API 

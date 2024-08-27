@@ -221,7 +221,7 @@ func GetTransactions(w http.ResponseWriter, r *http.Request) {
 
 	transactions, err := clientset.Resource(gvr).List(r.Context(), metav1.ListOptions{})
 	if err != nil {
-		http.Error(w, "Failed to list Reservations", http.StatusInternalServerError)
+		http.Error(w, "Failed to list Transactions", http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
@@ -230,6 +230,38 @@ func GetTransactions(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(transactions)
 
+}
+
+func GetSingleTransaction(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	transactionName := vars["name"]
+	if transactionName == "" {
+		http.Error(w, "Transaction name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "reservation.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "transactions",
+	}
+
+	transaction, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), transactionName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Transaction or Transaction Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(transaction)
 }
 
 // retrieve all Solvers
@@ -317,6 +349,38 @@ func GetAllocations(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(allocations)
+}
+
+func GetSingleAllocation(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	vars := mux.Vars(r)
+	allocationName := vars["name"]
+	if allocationName == "" {
+		http.Error(w, "Allocation name is required", http.StatusBadRequest)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "nodecore.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "allocations",
+	}
+
+	allocation, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), allocationName, metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get Allocation or Allocation Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(allocation)
 }
 
 // retrieve all Contracts

@@ -1,10 +1,10 @@
 import { PieChart } from '@mui/x-charts/PieChart';
 import Grid from '@mui/system/Unstable_Grid/Grid';
 import { Breadcrumbs, CircularProgress, Paper, Typography } from '@mui/material';
-import API from '../utils/API';
+import API from '../../utils/API';
 import { useEffect, useState } from 'react';
-import categories from '../utils/palette';
-import { SingleNode } from '../components/SingleNodeInfo';
+import categories from '../../utils/palette';
+import { SingleNode } from '../../components/SingleNodeInfo';
 import { Box } from '@mui/system';
 
 function NodeInfoPage(props) {

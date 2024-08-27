@@ -2,22 +2,21 @@ import { useEffect, useState } from "react";
 import API from "../../utils/API";
 import { Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
-import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
-import { AllocationCard } from "../../components/AllocationCard";
+import { TransactionCard } from "../../components/TransactionCard";
 
 
-export function AllocationPage(props) {
+export function TransactionPage(props){
 
-    const [allocationsArray, setAllocationsArray] = useState([]);
+    const [transactionsArray, setTransactionsArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
 
-        const fetchAllocations = async () => {
+        const fetchTransactions = async () => {
             try {
-                const allocations = await API.getAllocations();
-               
-                setAllocationsArray(allocations);
+                const transactions = await API.getTransactions();
+                
+                setTransactionsArray(transactions);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error)
@@ -25,14 +24,14 @@ export function AllocationPage(props) {
             }
         }
 
-        fetchAllocations();
+        fetchTransactions();
 
     }, [])
 
     return (<>
         <Grid container spacing={2}>
             <Grid item md={12}>
-                <Typography variant="h3"> Allocations</Typography>
+                <Typography variant="h3"> Transactions</Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
@@ -40,12 +39,12 @@ export function AllocationPage(props) {
                         <SkeletonCard />
                     </Grid>
                 )) :
-                    allocationsArray.length > 0 ? allocationsArray.map(allocation =>
-                        <Grid item md={4} key={allocation.metadata.name} >
-                            <AllocationCard element={allocation} />
+                    transactionsArray.length > 0 ? transactionsArray.map(transaction =>
+                        <Grid item md={4} key={transaction.metadata.name} >
+                            <TransactionCard element={transaction} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
-                        <Typography variant="h5"> No Allocations available at the moment.</Typography>
+                        <Typography variant="h5"> No Transactions available at the moment.</Typography>
 
                     </Grid>
             }
@@ -53,6 +52,5 @@ export function AllocationPage(props) {
         </Grid>
     </>
     )
-
 
 }

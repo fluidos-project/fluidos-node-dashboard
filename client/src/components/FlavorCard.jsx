@@ -49,16 +49,7 @@ export default function FlavorCard(props) {
                 >
                     More Info
                 </Button>
-                { /* TO BE IMPLEMENTED*/}
-                <Button
-                    component={Link}
-                    relative="path"
-                    size="medium"
-                    variant="contained"
-                    color="success"
-                >
-                    BUY
-                </Button>
+                
             </CardActions>
         </Card>
     )

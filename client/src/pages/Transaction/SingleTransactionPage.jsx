@@ -12,25 +12,24 @@ import calculateAge from "../../utils/age";
 
 
 
-function SingleContractPage(props) {
-    const [contract, setContract] = useState();
+function SingleTransactionPage(props) {
+    const [transaction, setTransaction] = useState();
     const { name } = useParams();
     //console.log(name);
 
     useEffect(() => {
 
-        const fetchcontract = async () => {
+        const fetchTransaction = async () => {
             try {
-                const singlecontract = await API.getSingleContract(name);
-                console.log(singlecontract)
-                setContract(singlecontract);
+                const singleTransaction = await API.getSingleTransaction(name);
+                setTransaction(singleTransaction);
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
             }
         }
 
-        fetchcontract();
+        fetchTransaction();
     }, [])
 
 
@@ -39,10 +38,10 @@ function SingleContractPage(props) {
             <Grid container spacing={2}>
 
                 <Grid item md={12}>
-                    <Typography variant="h3"> Contracts</Typography>
+                    <Typography variant="h3"> Transactions</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {contract ? <DisplayContractInfo contract={contract} /> :
+                    {transaction ? <DisplayTransactionInfo transaction={transaction} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -62,11 +61,11 @@ function SingleContractPage(props) {
 
 }
 
-export default SingleContractPage
+export default SingleTransactionPage
 
-function DisplayContractInfo(props) {
+function DisplayTransactionInfo(props) {
 
-    const age = calculateAge(props.contract.metadata.creationTimestamp);
+    const age = calculateAge(props.transaction.metadata.creationTimestamp);
 
 
     return (
@@ -88,55 +87,52 @@ function DisplayContractInfo(props) {
                             <TableBody>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Name</TableCell>
-                                    <TableCell>{props.contract.metadata.name}</TableCell>
+                                    <TableCell>{props.transaction.metadata.name}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Namespace</TableCell>
-                                    <TableCell>{props.contract.metadata.namespace}</TableCell>
+                                    <TableCell>{props.transaction.metadata.namespace}</TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Age</TableCell>
                                     <TableCell>{age}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Expiration Time</TableCell>
+                                    <TableCell>{new dayjs(props.transaction.spec.expirationTime).toString()}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
 
-                {/* contract info Table */}
+                {/* Transaction info Table */}
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="contract specs table">
+                        <Table sx={{ minWidth: 300 }} aria-label="Transaction specs table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
-                                            Contract info
+                                            Transaction info
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell component="th" scope="row">Seller Node ID</TableCell>
-                                    <TableCell>{props.contract.spec.seller.nodeID}</TableCell>
+                                    <TableCell component="th" scope="row">Flavor requested</TableCell>
+                                    <TableCell>{props.transaction.spec.flavorID}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th" scope="row">Seller Cluster Name</TableCell>
-                                    <TableCell>{`${props.contract.spec.peeringTargetCredentials.clusterName} (${props.contract.spec.peeringTargetCredentials.endpoint})`}</TableCell>
+                                    <TableCell component="th" scope="row">Buyer Node ID</TableCell>
+                                    <TableCell>{props.transaction.spec.buyer.nodeID}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th" scope="row">Expiration Date</TableCell>
-                                    <TableCell>{new dayjs(props.contract.spec.expirationTime).toString()}</TableCell>
+                                    <TableCell component="th" scope="row">Liqo ID</TableCell>
+                                    <TableCell>{props.transaction.spec.buyer.liqoID}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Transaction ID</TableCell>
-                                    <TableCell><Link relative="path" to={`../../transactions/${props.contract.spec.transactionID}`}>{props.contract.spec.transactionID}</Link></TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Flavor Bought</TableCell>
-                                    <TableCell>{props.contract.spec.flavor.metadata.name}</TableCell>
-                                </TableRow>
+
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -150,7 +146,7 @@ function DisplayContractInfo(props) {
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
-                                            Contract specs
+                                            Configuration Details
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -158,11 +154,11 @@ function DisplayContractInfo(props) {
                             <TableBody>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Type of Flavor requested</TableCell>
-                                    <TableCell>{props.contract.spec.flavor.spec.flavorType.typeIdentifier}</TableCell>
+                                    <TableCell>{props.transaction.spec.configuration.type}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th" scope="row">Specification</TableCell>
-                                    <TableCell>{`${props.contract.spec.configuration.data.cpu} CPU - ${props.contract.spec.configuration.data.memory} Memory - ${props.contract.spec.configuration.data.pods} Pods  `}</TableCell>
+                                    <TableCell component="th" scope="row">Specifications</TableCell>
+                                    <TableCell>{`${props.transaction.spec.configuration.data.cpu} CPU - ${props.transaction.spec.configuration.data.memory} Memory - ${props.transaction.spec.configuration.data.pods} Pods  `}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
