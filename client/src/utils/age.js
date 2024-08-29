@@ -15,7 +15,7 @@ function calculateAge (timestamp){
         hours > 0 ? `${hours} hour${hours === 1 ? '' : 's'}` : ''
     ].filter(Boolean).join(', ');
 
-    return age;
+    return age || "<0 hours";
 
 }
 

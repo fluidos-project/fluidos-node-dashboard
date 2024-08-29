@@ -35,7 +35,7 @@ export function SolverCard(props) {
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
+                                   {props.element.status.findCandidate}
                                 </Typography>
                             )}
                         </Box>
@@ -50,7 +50,7 @@ export function SolverCard(props) {
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
+                                    {props.element.status.reserveAndBuy}
                                 </Typography>
                             )}
                         </Box>
@@ -65,7 +65,7 @@ export function SolverCard(props) {
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Established
+                                   {props.element.status.peering}
                                 </Typography>
                             )}
                         </Box>

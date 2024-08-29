@@ -36,6 +36,18 @@ const Sidebar = () => {
             <ListItem
               button
               component={NavLink}
+              to="/flavors-remote"
+              sx={{
+                '&.active': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)', // BG color active element
+                },
+              }}
+            >
+              <ListItemText primary="Remote Purchased Flavors" />
+            </ListItem>
+            <ListItem
+              button
+              component={NavLink}
               to="/solvers"
               sx={{
                 '&.active': {

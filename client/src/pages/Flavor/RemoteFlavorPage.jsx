@@ -7,47 +7,39 @@ import FlavorCard from "../../components/FlavorCard"
 import { SkeletonCard } from "../../components/SkeletonCard"
 import { Flavor } from "../../models/flavor";
 
-export function FlavorsPage(props) {
+
+export function RemoteFlavorPage(props) {
     const [isLoading, setIsLoading] = useState(true)
     const [flavorsArray, setFlavorsArray] = useState([]);
 
 
-
     useEffect(() => {
 
-        const fetchLocalFlavors = async () => {
+        const fetchRemoteFlavors = async () => {
             try {
-                const flavors = await API.getFlavors();
-                //console.log(flavors)
+                const contracts = await API.getContracts();
+                const flavors = contracts.map(c => new Flavor(c.spec.flavor));
                 setFlavorsArray(flavors);
-                setIsLoading(false);
+                setIsLoading(false)
+                console.log(flavors)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
 
             }
         }
-        fetchLocalFlavors();
+
+        fetchRemoteFlavors();
     }, [])
 
-    // Make the Skeleton last at leats 1 second
-    /*
-    useEffect(() => {
-        
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 1000);
 
-        // Cleanup del timer
-        return () => clearTimeout(timer);
-    }, []);
-    */
+
 
     return (
         <>
             <Grid container spacing={2}>
                 <Grid item md={12}>
-                    <Typography variant="h3"> Flavors</Typography>
+                    <Typography variant="h3"> Remote Purchased Flavors</Typography>
                 </Grid>
 
                 {
@@ -61,7 +53,7 @@ export function FlavorsPage(props) {
                                 <FlavorCard element={flavor} />
                             </Grid>
                         ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
-                            <Typography variant="h5"> There are no flavors available at the moment</Typography>
+                            <Typography variant="h5"> There are no flavors purchased</Typography>
 
                         </Grid>
                 }
@@ -70,5 +62,4 @@ export function FlavorsPage(props) {
             </Grid>
         </>
     )
-
 }

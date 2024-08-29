@@ -122,7 +122,7 @@ function DisplayTransactionInfo(props) {
                             <TableBody>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Flavor requested</TableCell>
-                                    <TableCell>{props.transaction.spec.flavorID}</TableCell>
+                                    <TableCell><Link relative="path" to={`../../flavors-remote/${props.transaction.spec.flavorID}`}>{props.transaction.spec.flavorID}</Link></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Buyer Node ID</TableCell>

@@ -7,6 +7,7 @@ import dayjs from "dayjs"
 import calculateAge from "../utils/age";
 import { K8SliceType } from "./FlavorType/K8SliceType";
 
+
 export default function FlavorCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
@@ -31,7 +32,7 @@ export default function FlavorCard(props) {
                 <Typography component="div"sx={{ mb: 1.5 }} color="text.secondary">
                     <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                         <span>Type: {props.element.spec.flavorType.typeIdentifier}</span>
-                        <span>AGE: {age}</span>
+                        
                     </Box>
                 </Typography>
 

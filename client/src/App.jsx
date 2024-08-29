@@ -27,6 +27,9 @@ import SingleContractPage from './pages/Contracts/SingleContractPage';
 import SingleReservationPage from './pages/Reservation/SingleReservationPage';
 import SingleAllocationPage from './pages/Allocations/SingleAllocationPage';
 import SingleTransactionPage from './pages/Transaction/SingleTransactionPage';
+import { RemoteFlavorPage } from './pages/Flavor/RemoteFlavorPage';
+import SingleRemoteFlavorPage from './pages/Flavor/SingleRemoteFlavorPage';
+import { CreateSolverRequestPage } from './pages/Solver/CreateSolverRequestPage';
 
 
 
@@ -62,6 +65,9 @@ function App() {
 
               <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
+
+              <Route path="/flavors-remote" element={<RemoteFlavorPage configureAlert={configureAlert}/>} />
+              <Route path="/flavors-remote/:name" element={<SingleRemoteFlavorPage configureAlert={configureAlert}/>} />
               
               <Route path="/reservations" element={<ReservationPage configureAlert={configureAlert} />} />
               <Route path="/reservations/:name" element={<SingleReservationPage configureAlert={configureAlert} />} />
@@ -74,6 +80,7 @@ function App() {
 
               <Route path="/solvers" element={<SolverPage configureAlert={configureAlert} />} />
               <Route path="/solvers/:name" element={<SingleSolverPage configureAlert={configureAlert} />} />
+              <Route path="/solvers/buy" element={<CreateSolverRequestPage configureAlert={configureAlert} />} />
 
               <Route path="/peeringcandidates" element={<PeeringCandidatePage configureAlert={configureAlert} />} />
               <Route path="/peeringcandidates/:name" element={<SinglePeeringCandidatePage configureAlert={configureAlert} />} />

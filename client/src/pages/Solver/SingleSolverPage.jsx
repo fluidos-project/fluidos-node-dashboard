@@ -8,7 +8,7 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import calculateAge from "../../utils/age";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
-
+import handleCopy from "../../utils/handleCopy";
 
 
 function SingleSolverPage(props) {
@@ -22,6 +22,7 @@ function SingleSolverPage(props) {
             try {
                 const singlesolver = await API.getSingleSolver(name);
                 setsolver(singlesolver);
+                console.log(singlesolver)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -40,7 +41,7 @@ function SingleSolverPage(props) {
                     <Typography variant="h3"> Solvers</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {solver ? <DisplaySolverInfo configureAlert= {props.configureAlert} solver={solver} /> :
+                    {solver ? <DisplaySolverInfo configureAlert={props.configureAlert} solver={solver} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -66,7 +67,7 @@ function DisplaySolverInfo(props) {
 
     const age = calculateAge(props.solver.metadata.creationTimestamp);
 
-    const getFilterString= (filter) => {
+    const getFilterString = (filter) => {
         if (filter.name === "Match") {
             return `match ${filter.data.value}`;
         } else if (filter.name === "Range") {
@@ -75,11 +76,10 @@ function DisplaySolverInfo(props) {
         return "Unknown filter type";
     }
 
-    const handleCopy = () => {
-        navigator.clipboard.writeText(props.solver.status.credentials.token).then(() => {
-            props.configureAlert({type: "success", message: "text copied"});
-        });
-    };
+
+    const copyClipboard=() =>{
+        handleCopy(props.solver.status.credentials.token, props.configureAlert);
+       };
 
 
     return (
@@ -198,39 +198,41 @@ function DisplaySolverInfo(props) {
             </Grid>
 
             {/* Credentials Table */}
-            <Grid item xs={12}>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 300 }} aria-label="credentials table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
-                                    <Typography variant="h6" gutterBottom>
-                                        Credentials
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">clusterID</TableCell>
-                                <TableCell>{props.solver.status.credentials.clusterID}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Cluster Name</TableCell>
-                                <TableCell>{props.solver.status.credentials.clusterName}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Access Endpoint</TableCell>
-                                <TableCell>{props.solver.status.credentials.endpoint}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Liqo Token</TableCell>
-                                <TableCell onClick={handleCopy}  sx={{ cursor: 'pointer' }}>{props.solver.status.credentials.token}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+            {props.solver.status.credentials.clusterID != '' &&
+                <Grid item xs={12}>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 300 }} aria-label="credentials table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Credentials
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">clusterID</TableCell>
+                                    <TableCell>{props.solver.status.credentials.clusterID}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Cluster Name</TableCell>
+                                    <TableCell>{props.solver.status.credentials.clusterName}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Access Endpoint</TableCell>
+                                    <TableCell>{props.solver.status.credentials.endpoint}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Liqo Token</TableCell>
+                                    <TableCell onClick={copyClipboard} sx={{ cursor: 'pointer' }}>{props.solver.status.credentials.token}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            }
         </Grid>
 
         </>

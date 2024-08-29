@@ -22,7 +22,7 @@ function SingleAllocationPage(props) {
             try {
                 const singleAllocation = await API.getSingleAllocation(name); 
                 setAllocation(singleAllocation);
-               
+               console.log(allocation)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })

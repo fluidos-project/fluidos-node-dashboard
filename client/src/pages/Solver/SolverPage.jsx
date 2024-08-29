@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../utils/API";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { SolverCard } from "../../components/SolverCard";
+import { Link } from "react-router-dom";
 
 
 
@@ -17,7 +18,7 @@ export function SolverPage(props) {
         const fetchSolvers = async () => {
             try {
                 const solvers = await API.getSolvers();
-                
+
                 setSolversArray(solvers);
                 setIsLoading(false);
             } catch (error) {
@@ -27,13 +28,24 @@ export function SolverPage(props) {
         }
 
         fetchSolvers();
-        
+
     }, [])
 
     return (<>
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Solvers</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Button
+                    component={Link}
+                    relative="path"
+                    size="medium"
+                    variant="contained"
+                    to="buy"
+                >
+                    Buy resources
+                </Button>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
@@ -43,7 +55,7 @@ export function SolverPage(props) {
                 )) :
                     solversArray.length > 0 ? solversArray.map(solver =>
                         <Grid item md={4} key={solver.metadata.name} >
-                           <SolverCard element={solver} />
+                            <SolverCard element={solver} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
                         <Typography variant="h5"> No solver requests have been made in this Node.</Typography>

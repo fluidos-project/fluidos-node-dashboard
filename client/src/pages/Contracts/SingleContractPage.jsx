@@ -8,6 +8,8 @@ import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import calculateAge from "../../utils/age";
+import handleCopy from "../../utils/handleCopy";
+
 
 
 
@@ -34,6 +36,7 @@ function SingleContractPage(props) {
     }, [])
 
 
+
     return (
         <>
             <Grid container spacing={2}>
@@ -42,7 +45,7 @@ function SingleContractPage(props) {
                     <Typography variant="h3"> Contracts</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {contract ? <DisplayContractInfo contract={contract} /> :
+                    {contract ? <DisplayContractInfo contract={contract} configureAlert={props.configureAlert} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -67,6 +70,11 @@ export default SingleContractPage
 function DisplayContractInfo(props) {
 
     const age = calculateAge(props.contract.metadata.creationTimestamp);
+    const copyClipboard=() =>{
+     handleCopy(props.contract.spec.peeringTargetCredentials.token, props.configureAlert);
+    };
+
+    
 
 
     return (
@@ -135,7 +143,7 @@ function DisplayContractInfo(props) {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Flavor Bought</TableCell>
-                                    <TableCell>{props.contract.spec.flavor.metadata.name}</TableCell>
+                                    <TableCell><Link relative="path" to={`../../flavors-remote/${props.contract.spec.flavor.metadata.name}`}>{props.contract.spec.flavor.metadata.name}</Link></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -163,6 +171,40 @@ function DisplayContractInfo(props) {
                                 <TableRow>
                                     <TableCell component="th" scope="row">Specification</TableCell>
                                     <TableCell>{`${props.contract.spec.configuration.data.cpu} CPU - ${props.contract.spec.configuration.data.memory} Memory - ${props.contract.spec.configuration.data.pods} Pods  `}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 300 }} aria-label="credentials table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Credentials
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">clusterID</TableCell>
+                                    <TableCell>{props.contract.spec.peeringTargetCredentials.clusterID}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Cluster Name</TableCell>
+                                    <TableCell>{props.contract.spec.peeringTargetCredentials.clusterName}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Access Endpoint</TableCell>
+                                    <TableCell>{props.contract.spec.peeringTargetCredentials.endpoint}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Liqo Token</TableCell>
+                                    <TableCell onClick={copyClipboard} sx={{ cursor: 'pointer' }}>{props.contract.spec.peeringTargetCredentials.token}</TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>

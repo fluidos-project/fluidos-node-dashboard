@@ -30,14 +30,14 @@ export function AllocationCard(props) {
 
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Peering Phase:
-                            {props.element.status.findCandidate === 'Solved' ? (
+                            Allocation Status:
+                            {props.element.status.status === 'Active' ? (
                                 <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
+                                    Active
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Solved
+                                    Not Active
                                 </Typography>
                             )}
                         </Box>
