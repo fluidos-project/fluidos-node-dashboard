@@ -42,9 +42,9 @@ export function SolverPage(props) {
                     relative="path"
                     size="medium"
                     variant="contained"
-                    to="buy"
+                    to="new"
                 >
-                    Buy resources
+                    New Solver Request
                 </Button>
             </Grid>
             {

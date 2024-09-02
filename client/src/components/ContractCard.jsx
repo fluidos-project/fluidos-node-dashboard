@@ -29,13 +29,13 @@ export function ContractCard(props) {
                     </Typography>
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Flavor Bought: {props.element.spec.flavor.metadata.name}
+                            Flavor Bought: <Link relative="path" to={`../../flavors/acquired/${props.element.spec.flavor.metadata.name}`}>{props.element.spec.flavor.metadata.name}</Link>
                         </Box>
                     </Typography>
 
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                           Transaction ID:{props.element.spec.transactionID}
+                           Transaction ID: <Link relative="path" to={`../../transactions/${props.element.spec.transactionID}`}>{props.element.spec.transactionID}</Link>
                         </Box>
                     </Typography>
 

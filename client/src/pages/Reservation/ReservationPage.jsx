@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import API from "../../utils/API";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { ReservationCard } from "../../components/ReservationCard";
+import { Link } from "react-router-dom";
 
 export function ReservationPage(props){
 
@@ -14,7 +15,7 @@ export function ReservationPage(props){
         const fetchReservations = async () => {
             try {
                 const reservations = await API.getReservations();
-                
+                console.log(reservations)
                 setReservationsArray(reservations);
                 setIsLoading(false);
             } catch (error) {
@@ -31,6 +32,17 @@ export function ReservationPage(props){
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Reservations</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Button
+                    component={Link}
+                    relative="path"
+                    size="medium"
+                    variant="contained"
+                    to="new"
+                >
+                    New Reservation
+                </Button>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

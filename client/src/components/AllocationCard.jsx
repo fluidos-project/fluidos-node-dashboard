@@ -14,13 +14,13 @@ export function AllocationCard(props) {
         <>
             <Card sx={{ minWidth: 300 }}>
                 <CardContent>
-                    <Typography variant="body1"  component="div" >
+                    <Typography variant="body1" component="div" >
                         Name: {props.element.metadata.name}
                     </Typography>
-                    <Typography variant="body1"component="div" color="blue">
+                    <Typography variant="body1" component="div" color="blue">
                         {props.element.status.message}
                     </Typography>
-                    
+
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.secondary">
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <span>Intent ID: {props.element.spec.intentID}</span>
@@ -35,11 +35,14 @@ export function AllocationCard(props) {
                                 <Typography color="green" sx={{ ml: 1 }}>
                                     Active
                                 </Typography>
-                            ) : (
+                            ) : props.element.status.status === 'Error' ? (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Active
+                                    Error
                                 </Typography>
-                            )}
+                            ) : <Typography color="purple" sx={{ ml: 1 }}>
+                                On going
+                            </Typography>
+                            }
                         </Box>
                     </Typography>
 

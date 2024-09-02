@@ -33,12 +33,12 @@ export function ReservationCard(props) {
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             Reserving Status:
                             {props.element.spec.reserve ? (
-                                <Typography color="red" sx={{ ml: 1 }}>
-                                    Resource is reserved
+                                <Typography color="green" sx={{ ml: 1 }}>
+                                    Reservation Successful
                                 </Typography>
                             ) : (
-                                <Typography color="green" sx={{ ml: 1 }}>
-                                    Not Reserved
+                                <Typography color="red" sx={{ ml: 1 }}>
+                                   Reservation Not successful
                                 </Typography>
                             )}
                         </Box>
@@ -53,14 +53,10 @@ export function ReservationCard(props) {
                                 </Typography>
                             ) : (
                                 <Typography color="red" sx={{ ml: 1 }}>
-                                    Not Purchased
+                                   Error
                                 </Typography>
                             )}
                         </Box>
-                    </Typography>
-
-                    <Typography component="div" sx={{ mb: 1.5 }} color="blue">
-                          {props.element.status.phase.message}
                     </Typography>
 
                 </CardContent>

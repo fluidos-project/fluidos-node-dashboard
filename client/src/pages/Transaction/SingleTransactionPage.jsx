@@ -122,7 +122,7 @@ function DisplayTransactionInfo(props) {
                             <TableBody>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Flavor requested</TableCell>
-                                    <TableCell><Link relative="path" to={`../../flavors-remote/${props.transaction.spec.flavorID}`}>{props.transaction.spec.flavorID}</Link></TableCell>
+                                    <TableCell><Link relative="path" to={`../../flavors/acquired/${props.transaction.spec.flavorID}`}>{props.transaction.spec.flavorID}</Link></TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Buyer Node ID</TableCell>
@@ -144,7 +144,7 @@ function DisplayTransactionInfo(props) {
                         <Table sx={{ minWidth: 300 }} aria-label="owner table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
                                             Configuration Details
                                         </Typography>

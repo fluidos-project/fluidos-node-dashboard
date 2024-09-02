@@ -21,6 +21,19 @@ const Sidebar = () => {
           }}
         >
           <List>
+          <ListItem
+              button
+              component={NavLink}
+              to="/info"
+              sx={{
+                '&.active': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)', // BG color active element
+                },
+              }}
+            >
+              <ListItemText primary="Overview" />
+            </ListItem>
+
             <ListItem
               button
               component={NavLink}
@@ -33,18 +46,7 @@ const Sidebar = () => {
             >
               <ListItemText primary="Flavors" />
             </ListItem>
-            <ListItem
-              button
-              component={NavLink}
-              to="/flavors-remote"
-              sx={{
-                '&.active': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)', // BG color active element
-                },
-              }}
-            >
-              <ListItemText primary="Remote Purchased Flavors" />
-            </ListItem>
+
             <ListItem
               button
               component={NavLink}
@@ -57,30 +59,7 @@ const Sidebar = () => {
             >
               <ListItemText primary="Solvers" />
             </ListItem>
-            <ListItem
-              button
-              component={NavLink}
-              to="/peeringCandidates"
-              sx={{
-                '&.active': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)', 
-                },
-              }}
-            >
-              <ListItemText primary="Peering Candidates" />
-            </ListItem>
-            <ListItem
-              button
-              component={NavLink}
-              to="/contracts"
-              sx={{
-                '&.active': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)', 
-                },
-              }}
-            >
-              <ListItemText primary="Contracts" />
-            </ListItem>
+
             <ListItem
               button
               component={NavLink}
@@ -93,18 +72,7 @@ const Sidebar = () => {
             >
               <ListItemText primary="Reservations" />
             </ListItem>
-            <ListItem
-              button
-              component={NavLink}
-              to="/allocations"
-              sx={{
-                '&.active': {
-                  backgroundColor: 'rgba(0, 0, 0, 0.08)', 
-                },
-              }}
-            >
-              <ListItemText primary="Allocations" />
-            </ListItem>
+
             <ListItem
               button
               component={NavLink}
@@ -117,6 +85,35 @@ const Sidebar = () => {
             >
               <ListItemText primary="Transactions" />
             </ListItem>
+    
+            <ListItem
+              button
+              component={NavLink}
+              to="/contracts"
+              sx={{
+                '&.active': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)', 
+                },
+              }}
+            >
+              <ListItemText primary="Contracts" />
+            </ListItem>
+            
+            <ListItem
+              button
+              component={NavLink}
+              to="/allocations"
+              sx={{
+                '&.active': {
+                  backgroundColor: 'rgba(0, 0, 0, 0.08)', 
+                },
+              }}
+            >
+              <ListItemText primary="Allocations" />
+            </ListItem>
+
+            
+
           </List>
         </Drawer>
       );

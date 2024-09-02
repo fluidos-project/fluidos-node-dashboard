@@ -28,7 +28,7 @@ export function TransactionCard(props) {
                         </Box>
                     </Typography>
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
-                        Flavor Associated: {props.element.spec.flavorID}
+                        Flavor Associated: <Link relative="path" to={`../../flavors/acquired/${props.element.spec.flavorID}`}>{props.element.spec.flavorID}</Link>
                     </Typography>
 
 

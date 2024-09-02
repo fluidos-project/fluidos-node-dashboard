@@ -266,6 +266,73 @@ const getSingleTransaction = async (name) => {
   }
 }
 
+const addSolver = async (request) => {
+  const response = await fetch(`${SERVER_URL}/solvers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
 
-const API = { getFlavors, getSingleFlavor, getSolvers, getSingleSolver, getPeeringCandidates, getSinglePeeringCandidate, getContracts, getSingleContract, getReservations, getSingleReservation, getAllocations, getSingleAllocation, getTransactions, getSingleTransaction, getNodeInfo };
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const addReservation = async (request) => {
+  const response = await fetch(`${SERVER_URL}/reservations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const addAllocation = async (request) => {
+  const response = await fetch(`${SERVER_URL}/allocations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+
+}
+
+
+const API = {
+  getFlavors, getSingleFlavor,
+  getSolvers, getSingleSolver, addSolver,
+  getPeeringCandidates, getSinglePeeringCandidate,
+  getContracts, getSingleContract,
+  getReservations, getSingleReservation, addReservation,
+  getAllocations, getSingleAllocation, addAllocation,
+  getTransactions, getSingleTransaction,
+  getNodeInfo
+};
 export default API 

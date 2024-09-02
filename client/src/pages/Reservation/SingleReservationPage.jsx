@@ -118,7 +118,7 @@ function DisplayReservationInfo(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Solver ID</TableCell>
-                                <TableCell>{props.reservation.spec.solverID}</TableCell>
+                                <TableCell><Link relative="path" to={`../../solvers/${props.reservation.spec.solverID}`}>{props.reservation.spec.solverID}</Link></TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Configuration requested</TableCell>
@@ -130,7 +130,7 @@ function DisplayReservationInfo(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Peering Candidate Reserved</TableCell>
-                                <TableCell><Link relative="path" to={`../../peeringcandidates/${props.reservation.spec.peeringCandidate.name}`}>{props.reservation.spec.peeringCandidate.name}</Link></TableCell>
+                                <TableCell><Link relative="path" to={`../../flavors/available/${props.reservation.spec.peeringCandidate.name}`}>{props.reservation.spec.peeringCandidate.name}</Link></TableCell>
                             </TableRow>
                         </TableBody>
                     </Table>
@@ -153,11 +153,11 @@ function DisplayReservationInfo(props) {
                         <TableBody>
                             <TableRow> 
                                 <TableCell component="th" scope="row">Contract </TableCell>
-                                <TableCell><Link relative="path" to={`../../contracts/${props.reservation.status.contract.name}`}>{props.reservation.status.contract.name}</Link></TableCell>
+                                <TableCell>{props.reservation.status.contract.name !='' ? <Link relative="path" to={`../../contracts/${props.reservation.status.contract.name}`}>{props.reservation.status.contract.name}</Link> : "Not Available"} </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Transaction ID </TableCell>
-                                <TableCell><Link relative="path" to={`../../transactions/${props.reservation.status.transactionID}`}>{props.reservation.status.transactionID}</Link></TableCell>
+                                <TableCell>{props.reservation.status.transactionID != '' ? <Link relative="path" to={`../../transactions/${props.reservation.status.transactionID}`}>{props.reservation.status.transactionID}</Link> : "Not Available"}</TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Message from Candidate </TableCell>

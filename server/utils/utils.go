@@ -15,13 +15,13 @@ func KubernetesConfig() *rest.Config {
 
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		log.Println("InClusterConfig not found, attempting to load kubeconfig from file...")
+		//log.Println("InClusterConfig not found, attempting to load kubeconfig from file...")
 		config, err = clientcmd.BuildConfigFromFlags("", kubeconfig)
 		if err != nil {
 			log.Fatalf("Failed to create Kubernetes config: %v", err)
 		}
 	} else {
-		log.Println("InClusterConfig loaded successfully")
+		//log.Println("InClusterConfig loaded successfully")
 	}
 	return config
 }

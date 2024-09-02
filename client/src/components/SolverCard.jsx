@@ -41,35 +41,6 @@ export function SolverCard(props) {
                         </Box>
                     </Typography>
 
-                    <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Reserving Phase:
-                            {props.element.status.reserveAndBuy === 'Solved' ? (
-                                <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
-                                </Typography>
-                            ) : (
-                                <Typography color="red" sx={{ ml: 1 }}>
-                                    {props.element.status.reserveAndBuy}
-                                </Typography>
-                            )}
-                        </Box>
-                    </Typography>
-
-                    <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            Peering Phase:
-                            {props.element.status.peering === 'Solved' ? (
-                                <Typography color="green" sx={{ ml: 1 }}>
-                                    Solved
-                                </Typography>
-                            ) : (
-                                <Typography color="red" sx={{ ml: 1 }}>
-                                   {props.element.status.peering}
-                                </Typography>
-                            )}
-                        </Box>
-                    </Typography>
 
                 </CardContent>
                 <CardActions>

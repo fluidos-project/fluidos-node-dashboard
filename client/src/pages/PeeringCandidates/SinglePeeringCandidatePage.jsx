@@ -94,7 +94,7 @@ function DisplayPeeringCInfo(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Solver Request</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.solverID}</TableCell>
+                                <TableCell><Link relative="path" to={`../../solvers/${props.peeringCandidate.spec.solverID}`}>{props.peeringCandidate.spec.solverID}</Link></TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Associated Flavor Name</TableCell>
@@ -197,7 +197,7 @@ function DisplayPeeringCInfo(props) {
                     <Table sx={{ minWidth: 300 }} aria-label="location table">
                         <TableHead>
                             <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
+                                <TableCell colSpan={2} sx={{ backgroundColor: 'success.main', color: 'white' }} >
                                     <Typography variant="h6" gutterBottom>
                                         Location
                                     </Typography>
@@ -228,7 +228,7 @@ function DisplayPeeringCInfo(props) {
                     <Table sx={{ minWidth: 300 }} aria-label="owner table">
                         <TableHead>
                             <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'success.main', color: 'white' }} >
+                                <TableCell colSpan={2} sx={{ backgroundColor: 'info.main', color: 'white' }} >
                                     <Typography variant="h6" gutterBottom>
                                         Owner Info
                                     </Typography>
@@ -245,7 +245,7 @@ function DisplayPeeringCInfo(props) {
                                 <TableCell>{props.peeringCandidate.spec.flavor.spec.owner.ip}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Node ID</TableCell>
+                                <TableCell component="th" scope="row">Cluster Name (Fluidos Node)</TableCell>
                                 <TableCell>{props.peeringCandidate.spec.flavor.spec.owner.nodeID}</TableCell>
                             </TableRow>
                         </TableBody>

@@ -18,10 +18,9 @@ func main() {
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
 	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
 
-	router.HandleFunc("/api/discoveries", utils.GetDiscoveries).Methods("GET")
-
 	router.HandleFunc("/api/reservations", utils.GetReservations).Methods("GET")
 	router.HandleFunc("/api/reservations/{name}", utils.GetSingleReservation).Methods("GET")
+	router.HandleFunc("/api/reservations", utils.AddReservation).Methods("POST")
 
 	router.HandleFunc("/api/contracts", utils.GetContracts).Methods("GET")
 	router.HandleFunc("/api/contracts/{name}", utils.GetSingleContract).Methods("GET")
@@ -31,14 +30,17 @@ func main() {
 
 	router.HandleFunc("/api/solvers", utils.GetSolvers).Methods("GET")
 	router.HandleFunc("/api/solvers/{name}", utils.GetSingleSolver).Methods("GET")
+	router.HandleFunc("/api/solvers", utils.AddSolver).Methods("POST")
 
 	router.HandleFunc("/api/peeringcandidates", utils.GetPeeringCandidates).Methods("GET")
 	router.HandleFunc("/api/peeringcandidates/{name}", utils.GetSinglePeeringCandidate).Methods("GET")
 
 	router.HandleFunc("/api/allocations", utils.GetAllocations).Methods("GET")
 	router.HandleFunc("/api/allocations/{name}", utils.GetSingleAllocation).Methods("GET")
+	router.HandleFunc("/api/allocations", utils.AddAllocation).Methods("POST")
 
 	router.HandleFunc("/api/nodes", utils.GetNodeInfo).Methods("GET")
+	router.HandleFunc("/api/configmaps/{name}", utils.GetConfigMapByName).Methods("GET")
 
 	distDir := "./dist"
 

@@ -143,7 +143,7 @@ function DisplayContractInfo(props) {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Flavor Bought</TableCell>
-                                    <TableCell><Link relative="path" to={`../../flavors-remote/${props.contract.spec.flavor.metadata.name}`}>{props.contract.spec.flavor.metadata.name}</Link></TableCell>
+                                    <TableCell><Link relative="path" to={`../../flavors/acquired/${props.contract.spec.flavor.metadata.name}`}>{props.contract.spec.flavor.metadata.name}</Link></TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
@@ -156,7 +156,7 @@ function DisplayContractInfo(props) {
                         <Table sx={{ minWidth: 300 }} aria-label="owner table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'info.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
                                             Contract specs
                                         </Typography>

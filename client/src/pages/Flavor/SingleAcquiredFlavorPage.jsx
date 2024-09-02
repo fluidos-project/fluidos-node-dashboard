@@ -107,7 +107,7 @@ function DisplayFlavorInfo(props) {
                                 </TableRow>
                                 <TableRow>
                                     <TableCell component="th" scope="row">Contract ID</TableCell>
-                                    <TableCell><Link relative="path" to={`../../contracts/${props.contract.metadata.name}`}>{props.contract.metadata.name}</Link></TableCell>
+                                    <TableCell><Link relative="path" to={`../../../contracts/${props.contract.metadata.name}`}>{props.contract.metadata.name}</Link></TableCell>
                                 </TableRow>
                                 
                             </TableBody>
@@ -164,7 +164,7 @@ function DisplayFlavorInfo(props) {
                         <Table sx={{ minWidth: 300 }} aria-label="owner table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'info.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
                                             Owner
                                         </Typography>
@@ -181,7 +181,7 @@ function DisplayFlavorInfo(props) {
                                     <TableCell>{props.flavor.spec.owner.ip}</TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell component="th" scope="row">Node ID</TableCell>
+                                    <TableCell component="th" scope="row">Cluster Name (Fluidos Node)</TableCell>
                                     <TableCell>{props.flavor.spec.owner.nodeID}</TableCell>
                                 </TableRow>
                             </TableBody>

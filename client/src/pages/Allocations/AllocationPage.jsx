@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import API from "../../utils/API";
-import { Grid, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
 import { AllocationCard } from "../../components/AllocationCard";
+import { Link } from "react-router-dom";
 
 
 export function AllocationPage(props) {
@@ -16,7 +17,7 @@ export function AllocationPage(props) {
         const fetchAllocations = async () => {
             try {
                 const allocations = await API.getAllocations();
-               
+
                 setAllocationsArray(allocations);
                 setIsLoading(false);
             } catch (error) {
@@ -34,6 +35,18 @@ export function AllocationPage(props) {
             <Grid item md={12}>
                 <Typography variant="h3"> Allocations</Typography>
             </Grid>
+            <Grid item md={12}>
+                <Button
+                    component={Link}
+                    relative="path"
+                    size="medium"
+                    variant="contained"
+                    to="new"
+                >
+                    New Allocation
+                </Button>
+            </Grid>
+
             {
                 isLoading ? [...Array(6)].map((_, index) => (
                     <Grid item md={4} key={index} >

@@ -15,7 +15,7 @@ import { ReservationPage } from './pages/Reservation/ReservationPage';
 import { ContractPage } from './pages/Contracts/ContractPage';
 import { AllocationPage } from './pages/Allocations/AllocationPage';
 import { SolverPage } from './pages/Solver/SolverPage';
-import { PeeringCandidatePage } from './pages/PeeringCandidates/PeeringCandidatePage';
+import { AvailableFlavorPage } from './pages/Flavor/AvailableFlavorPage';
 import { TransactionPage } from './pages/Transaction/TransactionPage';
 import  {NotFoundPage}  from './pages/utils/NotFoundPage';
 import SingleFlavorPage from './pages/Flavor/SingleFlavorPage';
@@ -27,9 +27,11 @@ import SingleContractPage from './pages/Contracts/SingleContractPage';
 import SingleReservationPage from './pages/Reservation/SingleReservationPage';
 import SingleAllocationPage from './pages/Allocations/SingleAllocationPage';
 import SingleTransactionPage from './pages/Transaction/SingleTransactionPage';
-import { RemoteFlavorPage } from './pages/Flavor/RemoteFlavorPage';
-import SingleRemoteFlavorPage from './pages/Flavor/SingleRemoteFlavorPage';
+import { RemoteFlavorPage } from './pages/Flavor/AcquiredFlavorPage';
+import SingleRemoteFlavorPage from './pages/Flavor/SingleAcquiredFlavorPage';
 import { CreateSolverRequestPage } from './pages/Solver/CreateSolverRequestPage';
+import { CreateReservationPage } from './pages/Reservation/CreateReservationPage';
+import { CreateAllocationPage } from './pages/Allocations/CreateAllocationPage';
 
 
 
@@ -66,24 +68,27 @@ function App() {
               <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
 
-              <Route path="/flavors-remote" element={<RemoteFlavorPage configureAlert={configureAlert}/>} />
-              <Route path="/flavors-remote/:name" element={<SingleRemoteFlavorPage configureAlert={configureAlert}/>} />
+              <Route path="/flavors/acquired" element={<RemoteFlavorPage configureAlert={configureAlert}/>} />
+              <Route path="/flavors/acquired/:name" element={<SingleRemoteFlavorPage configureAlert={configureAlert}/>} />
               
+              <Route path="/flavors/available" element={<AvailableFlavorPage configureAlert={configureAlert} />} />
+              <Route path="/flavors/available/:name" element={<SinglePeeringCandidatePage configureAlert={configureAlert} />} />
+
               <Route path="/reservations" element={<ReservationPage configureAlert={configureAlert} />} />
               <Route path="/reservations/:name" element={<SingleReservationPage configureAlert={configureAlert} />} />
+              <Route path="/reservations/new" element={<CreateReservationPage configureAlert={configureAlert} />} />
 
               <Route path="/contracts" element={<ContractPage configureAlert={configureAlert} />} />
               <Route path="/contracts/:name" element={<SingleContractPage configureAlert={configureAlert} />} />
 
               <Route path="/allocations" element={<AllocationPage configureAlert={configureAlert} />} />
               <Route path="/allocations/:name" element={<SingleAllocationPage configureAlert={configureAlert} />} />
+              <Route path="/allocations/new" element={<CreateAllocationPage configureAlert={configureAlert} />} />
 
               <Route path="/solvers" element={<SolverPage configureAlert={configureAlert} />} />
               <Route path="/solvers/:name" element={<SingleSolverPage configureAlert={configureAlert} />} />
-              <Route path="/solvers/buy" element={<CreateSolverRequestPage configureAlert={configureAlert} />} />
+              <Route path="/solvers/new" element={<CreateSolverRequestPage configureAlert={configureAlert} />} />
 
-              <Route path="/peeringcandidates" element={<PeeringCandidatePage configureAlert={configureAlert} />} />
-              <Route path="/peeringcandidates/:name" element={<SinglePeeringCandidatePage configureAlert={configureAlert} />} />
 
               <Route path="/transactions" element={<TransactionPage configureAlert={configureAlert} />} />
               <Route path="/transactions/:name" element={<SingleTransactionPage configureAlert={configureAlert} />} />

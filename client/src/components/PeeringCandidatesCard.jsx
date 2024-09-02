@@ -36,9 +36,7 @@ export function PeeringCadidateCard(props) {
                         </Box>
                     </Typography>
                     {props.element.spec.available ? <Typography color="green" sx={{ mb: 1.5 }}> Available </Typography> : <Typography sx={{ mb: 1.5 }} color="red"> Not Available </Typography>}
-                    <Typography variant="body1" component="div" sx={{ mb: 1.5 }} >
-                        Associated Solver Request : {props.element.spec.solverID}
-                    </Typography>
+                    
                     <Typography variant="body1" component="div" sx={{ mb: 1.5 }} >
                         Associated Flavor : {props.element.spec.flavor.metadata.name}
                     </Typography>

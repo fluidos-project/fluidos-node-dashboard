@@ -49,6 +49,37 @@ export function FlavorsPage(props) {
                 <Grid item md={12}>
                     <Typography variant="h3"> Flavors</Typography>
                 </Grid>
+                <Grid item md={12}>
+                    <ButtonGroup>
+                        <Button
+                            component={Link}
+                            relative="path"
+                            size="medium"
+                            variant="contained"
+                            to="/flavors"
+                        >
+                            Local
+                        </Button>
+                        <Button
+                            component={Link}
+                            relative="path"
+                            size="medium"
+                            variant="outlined"
+                            to="/flavors/available"
+                        >
+                            Available
+                        </Button>
+                        <Button
+                            component={Link}
+                            relative="path"
+                            size="medium"
+                            variant="outlined"
+                            to="/flavors/acquired"
+                        >
+                            Acquired
+                        </Button>
+                    </ButtonGroup>
+                </Grid>
 
                 {
                     isLoading ? [...Array(6)].map((_, index) => (
