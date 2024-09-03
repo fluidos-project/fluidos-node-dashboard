@@ -4,15 +4,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-	"server/models"
-	"strconv"
-	"strings"
 
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime/schema"
 	"k8s.io/client-go/dynamic"
 )
 
+/*
 func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
 
@@ -39,13 +37,14 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 		return
 	}
-
+	log.Print(metrics)
 	nodes, err := clientset.Resource(nodesGVR).List(r.Context(), v1.ListOptions{})
 	if err != nil {
 		http.Error(w, "Failed to list nodes", http.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
+	log.Print(nodes)
 
 	nodeMap := make(map[string]map[string]string)
 
@@ -93,15 +92,47 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 		cpuTotalMilli := int64(cpuTotalInt * 1000)
 
 		// Converti la memoria da Ki a byte
-		memoryUsageKi, err := strconv.ParseInt(strings.TrimSuffix(memoryUsage, "Ki"), 10, 64)
-		if err != nil {
-			log.Printf("Failed to parse memory usage for node %s: %v", name, err)
+		memoryUsageKi := int64(0)
+
+		//  "Gi" or "Ki"
+		if strings.HasSuffix(memoryUsage, "Gi") {
+			memoryGi, err := strconv.ParseInt(strings.TrimSuffix(memoryUsage, "Gi"), 10, 64)
+			if err != nil {
+				log.Printf("Failed to parse memory usage in Gi for node %s: %v", name, err)
+				continue
+			}
+			// Converti Gi in Ki
+			memoryUsageKi = memoryGi * 1048576 // 1 Gi = 1048576 Ki
+		} else if strings.HasSuffix(memoryUsage, "Ki") {
+			memoryKi, err := strconv.ParseInt(strings.TrimSuffix(memoryUsage, "Ki"), 10, 64)
+			if err != nil {
+				log.Printf("Failed to parse memory usage in Ki for node %s: %v", name, err)
+				continue
+			}
+			memoryUsageKi = memoryKi
+		} else {
+			log.Printf("Unknown memory unit for node %s: %s", name, memoryUsage)
 			continue
 		}
 
-		memoryTotalKi, err := strconv.ParseInt(strings.TrimSuffix(memoryTotal, "Ki"), 10, 64)
-		if err != nil {
-			log.Printf("Failed to parse total memory for node %s: %v", name, err)
+		memoryTotalKi := int64(0)
+		if strings.HasSuffix(memoryTotal, "Gi") {
+			memoryGi, err := strconv.ParseInt(strings.TrimSuffix(memoryTotal, "Gi"), 10, 64)
+			if err != nil {
+				log.Printf("Failed to parse total memory in Gi for node %s: %v", name, err)
+				continue
+			}
+
+			memoryTotalKi = memoryGi * 1048576 // 1 Gi = 1048576 Ki
+		} else if strings.HasSuffix(memoryTotal, "Ki") {
+			memoryKi, err := strconv.ParseInt(strings.TrimSuffix(memoryTotal, "Ki"), 10, 64)
+			if err != nil {
+				log.Printf("Failed to parse total memory in Ki for node %s: %v", name, err)
+				continue
+			}
+			memoryTotalKi = memoryKi
+		} else {
+			log.Printf("Unknown memory unit for node %s: %s", name, memoryTotal)
 			continue
 		}
 
@@ -120,8 +151,61 @@ func GetNodeInfo(w http.ResponseWriter, r *http.Request) {
 
 		nodeUsages = append(nodeUsages, nodeUsage)
 	}
-
+	//log.Print(nodeUsages)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(nodeUsages)
+}
+*/
+
+func GetNodesMetric(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	metricsGVR := schema.GroupVersionResource{
+		Group:    "metrics.k8s.io",
+		Version:  "v1beta1",
+		Resource: "nodes",
+	}
+
+	metrics, err := clientset.Resource(metricsGVR).List(r.Context(), v1.ListOptions{})
+	if err != nil {
+		http.Error(w, "Failed to list node metrics", http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(metrics)
+}
+
+func GetNodes(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	nodesGVR := schema.GroupVersionResource{
+		Group:    "",
+		Version:  "v1",
+		Resource: "nodes",
+	}
+
+	nodes, err := clientset.Resource(nodesGVR).List(r.Context(), v1.ListOptions{})
+	if err != nil {
+		http.Error(w, "Failed to list node nodes", http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(nodes)
 }

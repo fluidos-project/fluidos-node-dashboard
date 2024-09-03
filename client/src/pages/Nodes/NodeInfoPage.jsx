@@ -10,16 +10,23 @@ import { Box } from '@mui/system';
 function NodeInfoPage(props) {
 
     const [nodearray, setnodeArray] = useState([]);
+    const [metricarray, setMetricArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
+    const [ips, setIPs] = useState([]);
 
     useEffect(() => {
 
         const fetchNodes = async () => {
             try {
-                const nodes = await API.getNodeInfo();
+                const nodes = await API.getNodes();
+                const metrics = await API.getMetrics();
+                const cm = await API.getNetManagerConfigCM();
+                console.log(nodes)
                 setnodeArray(nodes);
+                setMetricArray(metrics)
+                setIPs(cm.data.local)
                 setIsLoading(false);
-                //console.log(nodes);
+                
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -33,8 +40,17 @@ function NodeInfoPage(props) {
     return (
         <>
             <Grid container spacing={2}>
+            <Grid md={12}>
+                    <Typography variant="h3"sx={{mb:2}}>Overview</Typography>
+                </Grid> 
                 <Grid md={12}>
-                    <Typography variant="h3"> Node Info</Typography>
+                    <Typography variant="h4">Remote Fluidos Node IP</Typography>
+                    {ips && ips.map((ip, idx) => <Typography key={ip} variant="body1">IP{idx+1}: {ip}</Typography> )}
+                   
+                </Grid> 
+
+                <Grid md={12}>
+                    <Typography variant="h4"> Nodes Metric</Typography>
                 </Grid> 
                 {
                     isLoading ? <Grid md={12}><Box sx={{
@@ -46,7 +62,7 @@ function NodeInfoPage(props) {
                     }} component="div">
                         <CircularProgress />
                     </Box> </Grid> : 
-                    nodearray && nodearray.map(node => <SingleNode key={node.name} node={node} />)
+                    nodearray && metricarray && nodearray.map(node => <SingleNode configureAlert={props.configureAlert} key={node.metadata.name} node={node} metric={metricarray.find(x=> x.metadata.name==node.metadata.name)} />)
                 }
 
             </Grid>

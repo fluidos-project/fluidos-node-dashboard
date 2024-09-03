@@ -1,7 +1,8 @@
 import { Allocation } from "../models/allocation";
 import { Contract } from "../models/contract";
 import { Flavor } from "../models/flavor";
-import { NodeInfo } from "../models/node";
+import { NetworkManagerConfigurationCM } from "../models/networkManagerConfigurationCM";
+import { NodeInfo, NodeMetric } from "../models/node";
 import { PeeringCandidate } from "../models/peeringCandidate";
 import { Reservation } from "../models/reservation";
 import { Solver } from "../models/solver";
@@ -324,6 +325,58 @@ const addAllocation = async (request) => {
 
 }
 
+const getNodes = async () => {
+  const response = await fetch(`${SERVER_URL}/nodes`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const nodes = await response.json();
+    const nodesObj = nodes.items.map(n => new NodeInfo(n));
+
+    return nodesObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getMetrics = async () => {
+  const response = await fetch(`${SERVER_URL}/metrics`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const nodes = await response.json();
+    const nodesObj = nodes.items.map(n => new NodeMetric(n));
+
+    return nodesObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const getNetManagerConfigCM = async () => {
+  const response = await fetch(`${SERVER_URL}/configmaps/fluidos-network-manager-config`, {
+    method: 'GET'
+  })
+
+  if (response.ok) {
+    const cm = await response.json();
+    const cmObj = new NetworkManagerConfigurationCM(cm);
+
+    return cmObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+
 
 const API = {
   getFlavors, getSingleFlavor,
@@ -333,6 +386,6 @@ const API = {
   getReservations, getSingleReservation, addReservation,
   getAllocations, getSingleAllocation, addAllocation,
   getTransactions, getSingleTransaction,
-  getNodeInfo
+  getNodeInfo, getNodes, getMetrics, getNetManagerConfigCM
 };
 export default API 

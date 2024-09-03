@@ -39,7 +39,9 @@ func main() {
 	router.HandleFunc("/api/allocations/{name}", utils.GetSingleAllocation).Methods("GET")
 	router.HandleFunc("/api/allocations", utils.AddAllocation).Methods("POST")
 
-	router.HandleFunc("/api/nodes", utils.GetNodeInfo).Methods("GET")
+	//router.HandleFunc("/api/nodes", utils.GetNodeInfo).Methods("GET")
+	router.HandleFunc("/api/metrics", utils.GetNodesMetric).Methods("GET")
+	router.HandleFunc("/api/nodes", utils.GetNodes).Methods("GET")
 	router.HandleFunc("/api/configmaps/{name}", utils.GetConfigMapByName).Methods("GET")
 
 	distDir := "./dist"
