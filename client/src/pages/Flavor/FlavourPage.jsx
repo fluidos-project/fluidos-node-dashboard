@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import FlavorCard from "../../components/FlavorCard"
 import { SkeletonCard } from "../../components/SkeletonCard"
 import { Flavor } from "../../models/flavor";
+import InfoIcon from '@mui/icons-material/Info';
 
 export function FlavorsPage(props) {
     const [isLoading, setIsLoading] = useState(true)
@@ -80,25 +81,29 @@ export function FlavorsPage(props) {
                         </Button>
                     </ButtonGroup>
                 </Grid>
-
-                {
+                <Grid item md={12}>
+                    <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Local Flavors are resources that providers make available for sale</Typography>
+                </Grid>
+                
+                    {
                     isLoading ? [...Array(6)].map((_, index) => (
                         <Grid item md={4} key={index} >
                             <SkeletonCard />
                         </Grid>
                     )) :
                         flavorsArray.length > 0 ? flavorsArray.map(flavor =>
-                            <Grid item md={4} key={flavor.metadata.name} >
+                            <Grid item md={4} mb={4} key={flavor.metadata.name} >
                                 <FlavorCard element={flavor} />
                             </Grid>
                         ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
                             <Typography variant="h5"> There are no flavors available at the moment</Typography>
 
                         </Grid>
-                }
+                    }
+                   
 
-
-            </Grid>
+               
+        </Grid >
         </>
     )
 

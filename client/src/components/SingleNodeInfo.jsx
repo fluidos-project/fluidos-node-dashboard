@@ -47,12 +47,12 @@ export function SingleNode(props) {
         CPU_usage_Milli = parseInt(props.metric.usage.cpu.replace('n', ''), 10) / 1000000;
         CPU_total_Milli = parseInt(props.node.status.capacity.cpu) * 1000;
         CPU_used = (CPU_usage_Milli / CPU_total_Milli) * 100;
-        CPU_used= CPU_used.toFixed(2)
+        CPU_used= Math.round(CPU_used*100)/100;
 
         Memory_usage_Ki = convertToKiB(props.metric.usage.memory);
         MemoryTotal_Ki = convertToKiB(props.node.status.capacity.memory);
         Memory_used = (Memory_usage_Ki / MemoryTotal_Ki) * 100;
-        Memory_used = Memory_used.toFixed(2);
+        Memory_used = Math.round(Memory_used*100) / 100;
     }else{
        err = true;
     }

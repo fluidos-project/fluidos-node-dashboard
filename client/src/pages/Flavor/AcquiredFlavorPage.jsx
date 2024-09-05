@@ -6,7 +6,7 @@ import { Link } from "react-router-dom"
 import FlavorCard from "../../components/FlavorCard"
 import { SkeletonCard } from "../../components/SkeletonCard"
 import { Flavor } from "../../models/flavor";
-
+import InfoIcon from '@mui/icons-material/Info';
 
 export function RemoteFlavorPage(props) {
     const [isLoading, setIsLoading] = useState(true)
@@ -72,6 +72,9 @@ export function RemoteFlavorPage(props) {
                         </Button>
                     </ButtonGroup>
                 </Grid>
+                <Grid item md={12}>
+                    <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Acquired Flavors are flavors already purchased from remote providers  </Typography>
+                </Grid>
 
                 {
                     isLoading ? [...Array(6)].map((_, index) => (
@@ -83,7 +86,7 @@ export function RemoteFlavorPage(props) {
                             <Grid item md={4} key={flavor.metadata.name} >
                                 <FlavorCard element={flavor} />
                             </Grid>
-                        ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
+                        ) : <Grid item md={4} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
                             <Typography variant="h5"> There are no flavors purchased</Typography>
 
                         </Grid>

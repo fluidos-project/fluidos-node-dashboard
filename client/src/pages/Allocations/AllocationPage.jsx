@@ -5,7 +5,7 @@ import { SkeletonCard } from "../../components/SkeletonCard";
 import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
 import { AllocationCard } from "../../components/AllocationCard";
 import { Link } from "react-router-dom";
-
+import InfoIcon from '@mui/icons-material/Info';
 
 export function AllocationPage(props) {
 
@@ -34,6 +34,9 @@ export function AllocationPage(props) {
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Allocations</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Allocations are used to activate the resources providers just purchased</Typography>
             </Grid>
             <Grid item md={12}>
                 <Button

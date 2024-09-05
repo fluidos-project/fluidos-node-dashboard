@@ -5,7 +5,7 @@ import { SkeletonCard } from "../../components/SkeletonCard";
 import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
 import { Link } from "react-router-dom";
 import FlavorCard from "../../components/FlavorCard";
-
+import InfoIcon from '@mui/icons-material/Info';
 
 export function AvailableFlavorPage(props) {
 
@@ -65,6 +65,9 @@ export function AvailableFlavorPage(props) {
                             Acquired
                         </Button>
                     </ButtonGroup>
+                </Grid>
+                <Grid item md={12}>
+                    <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Available Flavors represent Fluidos Peering Candidates resources: Flavors that can satisfy a specific Solver Request</Typography>
                 </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

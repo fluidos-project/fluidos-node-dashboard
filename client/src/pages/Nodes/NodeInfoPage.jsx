@@ -26,7 +26,7 @@ function NodeInfoPage(props) {
                 setMetricArray(metrics)
                 setIPs(cm.data.local)
                 setIsLoading(false);
-                
+
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -40,18 +40,27 @@ function NodeInfoPage(props) {
     return (
         <>
             <Grid container spacing={2}>
-            <Grid md={12}>
-                    <Typography variant="h3"sx={{mb:2}}>Overview</Typography>
-                </Grid> 
                 <Grid md={12}>
-                    <Typography variant="h4">Remote Fluidos Node IP</Typography>
-                    {ips && ips.map((ip, idx) => <Typography key={ip} variant="body1">IP{idx+1}: {ip}</Typography> )}
-                   
-                </Grid> 
+                    <Typography variant="h3" sx={{ mb: 2 }}>Overview</Typography>
+                </Grid>
+                <Grid md={12}>
+                    <Typography variant="h4">Remote Fluidos Node</Typography>
+                    {isLoading && <Grid md={12}><Box sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 2
+                    }} component="div">
+                        <CircularProgress />
+                    </Box> </Grid>}
+                    {ips && ips.map((ip, idx) => <Typography key={ip} variant="body1">IP{idx + 1}: {ip}</Typography>)}
+
+                </Grid>
 
                 <Grid md={12}>
                     <Typography variant="h4"> Nodes Metric</Typography>
-                </Grid> 
+                </Grid>
                 {
                     isLoading ? <Grid md={12}><Box sx={{
                         display: 'flex',
@@ -61,8 +70,8 @@ function NodeInfoPage(props) {
                         padding: 2
                     }} component="div">
                         <CircularProgress />
-                    </Box> </Grid> : 
-                    nodearray && metricarray && nodearray.map(node => <SingleNode configureAlert={props.configureAlert} key={node.metadata.name} node={node} metric={metricarray.find(x=> x.metadata.name==node.metadata.name)} />)
+                    </Box> </Grid> :
+                        nodearray && metricarray && nodearray.map(node => <SingleNode configureAlert={props.configureAlert} key={node.metadata.name} node={node} metric={metricarray.find(x => x.metadata.name == node.metadata.name)} />)
                 }
 
             </Grid>

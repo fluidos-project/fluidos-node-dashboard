@@ -4,8 +4,9 @@ import { Button, Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { ReservationCard } from "../../components/ReservationCard";
 import { Link } from "react-router-dom";
+import InfoIcon from '@mui/icons-material/Info';
 
-export function ReservationPage(props){
+export function ReservationPage(props) {
 
     const [reservationsArray, setReservationsArray] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
@@ -32,6 +33,9 @@ export function ReservationPage(props){
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Reservations</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Reservations are used to reserve (and eventually buy) Peering Candidates</Typography>
             </Grid>
             <Grid item md={12}>
                 <Button

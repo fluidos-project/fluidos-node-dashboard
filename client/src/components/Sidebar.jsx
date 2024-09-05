@@ -24,7 +24,7 @@ const Sidebar = () => {
           <ListItem
               button
               component={NavLink}
-              to="/info"
+              to="/"
               sx={{
                 '&.active': {
                   backgroundColor: 'rgba(0, 0, 0, 0.08)', // BG color active element

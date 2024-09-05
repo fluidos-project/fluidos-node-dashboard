@@ -3,7 +3,7 @@ import API from "../../utils/API";
 import { Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { TransactionCard } from "../../components/TransactionCard";
-
+import InfoIcon from '@mui/icons-material/Info';
 
 export function TransactionPage(props){
 
@@ -32,6 +32,9 @@ export function TransactionPage(props){
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Transactions</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> A Transaction Resource is automatically created after a successful resource reservation </Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

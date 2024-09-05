@@ -9,10 +9,12 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import calculateAge from "../../utils/age";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import handleCopy from "../../utils/handleCopy";
+import { K8SliceType } from "../../components/FlavorType/K8SliceType";
 
 
 function SingleSolverPage(props) {
     const [solver, setsolver] = useState();
+    const [peeringCandidates, setPeeringCandidates] = useState([])
     const { name } = useParams();
     //console.log(name);
 
@@ -21,8 +23,11 @@ function SingleSolverPage(props) {
         const fetchSolver = async () => {
             try {
                 const singlesolver = await API.getSingleSolver(name);
+                const peeringC = await API.getPeeringCandidates();
                 setsolver(singlesolver);
-                console.log(singlesolver)
+                const filteredPeerCandidates = peeringC.filter(x => x.spec.solverID === singlesolver.metadata.name);
+                setPeeringCandidates(filteredPeerCandidates);
+                console.log(filteredPeerCandidates)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -30,6 +35,7 @@ function SingleSolverPage(props) {
         }
 
         fetchSolver();
+
     }, [])
 
 
@@ -41,7 +47,7 @@ function SingleSolverPage(props) {
                     <Typography variant="h3"> Solvers</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {solver ? <DisplaySolverInfo configureAlert={props.configureAlert} solver={solver} /> :
+                    {solver ? <DisplaySolverInfo configureAlert={props.configureAlert} solver={solver} peeringCandidates={peeringCandidates} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -77,9 +83,9 @@ function DisplaySolverInfo(props) {
     }
 
 
-    const copyClipboard=() =>{
+    const copyClipboard = () => {
         handleCopy(props.solver.status.credentials.token, props.configureAlert);
-       };
+    };
 
 
     return (
@@ -233,6 +239,40 @@ function DisplaySolverInfo(props) {
                     </TableContainer>
                 </Grid>
             }
+
+            {/* PeeringCandidate Table */}
+            <Grid item xs={12}>
+                <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                    <Table sx={{ minWidth: 300 }} aria-label="peering candidate table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell colSpan={2} sx={{ backgroundColor: 'success.main', color: 'white' }} >
+                                    <Typography variant="h6" gutterBottom>
+                                        Peering Candidates Found
+                                    </Typography>
+                                </TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                props.peeringCandidates.length > 0 ? props.peeringCandidates.map((p, idx) =>
+                                    <TableRow key={idx}>
+                                        <TableCell component="th" scope="row">N.{idx+1}</TableCell>
+                                        <TableCell><Link relative="path" to={`../../flavors/available/${p.metadata.name}`}>{p.metadata.name}</Link></TableCell>
+                                    </TableRow>
+                                ) :
+                                    <TableRow >
+                                        <TableCell component="th" scope="row"></TableCell>
+                                        <TableCell>No Peering Candidates found with this request</TableCell>
+                                    </TableRow>
+                            }
+
+
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Grid>
+
         </Grid>
 
         </>

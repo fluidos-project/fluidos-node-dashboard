@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { PeeringCadidateCard } from "../../components/PeeringCandidatesCard";
 import { ContractCard } from "../../components/ContractCard";
-
+import InfoIcon from '@mui/icons-material/Info';
 export function ContractPage() {
 
     const [contractsArray, setContractsArray] = useState([]);
@@ -32,6 +32,9 @@ export function ContractPage() {
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Contracts</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Contracts are automatically created after a Flavor is correctly reserved and bought</Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

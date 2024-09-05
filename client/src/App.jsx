@@ -63,7 +63,7 @@ function App() {
             {alert && <AlertComponent alert={alert} configureAlert={configureAlert}/>}
             <BreadcrumbsComponent />
             <Routes>
-              <Route path="/" element={<Navigate to="/flavors" replace />} />
+              <Route path="/" element={<NodeInfoPage configureAlert={configureAlert}/>} />
 
               <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
@@ -93,7 +93,7 @@ function App() {
               <Route path="/transactions" element={<TransactionPage configureAlert={configureAlert} />} />
               <Route path="/transactions/:name" element={<SingleTransactionPage configureAlert={configureAlert} />} />
 
-              <Route path="/info" element={<NodeInfoPage configureAlert={configureAlert}/>} />
+              
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>

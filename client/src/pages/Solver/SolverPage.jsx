@@ -4,7 +4,7 @@ import { Button, Grid, Typography } from "@mui/material";
 import { SkeletonCard } from "../../components/SkeletonCard";
 import { SolverCard } from "../../components/SolverCard";
 import { Link } from "react-router-dom";
-
+import InfoIcon from '@mui/icons-material/Info';
 
 
 
@@ -35,6 +35,9 @@ export function SolverPage(props) {
         <Grid container spacing={2}>
             <Grid item md={12}>
                 <Typography variant="h3"> Solvers</Typography>
+            </Grid>
+            <Grid item md={12}>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Solvers are requests for resources for remote providers </Typography>
             </Grid>
             <Grid item md={12}>
                 <Button

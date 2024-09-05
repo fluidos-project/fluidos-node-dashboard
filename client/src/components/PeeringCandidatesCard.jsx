@@ -43,17 +43,7 @@ export function PeeringCadidateCard(props) {
                     {details()}
 
                 </CardContent>
-                <CardActions>
-                    <Button
-                        component={Link}
-                        relative="path"
-                        size="medium"
-                        variant="contained"
-                        to={props.element.metadata.name}
-                    >
-                        More Info
-                    </Button>
-                </CardActions>
+                
             </Card>
         </>
     )
