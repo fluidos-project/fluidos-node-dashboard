@@ -78,11 +78,11 @@ class Status {
     this.allocation = new ResourceRef(data.allocation);
     this.contract = new ResourceRef(data.contract);
     this.credentials = new Credentials(data.credentials);
-    this.discoveryPhase = data.discoveryPhase || 'This request does not integrate the automatic discovery phase';
+    this.discoveryPhase = data.discoveryPhase || '-';
     this.findCandidate = data.findCandidate || '';
-    this.peering = data.peering || 'This request does not integrate the automatic reservation phase';
-    this.reservationPhase = data.reservationPhase || 'Reservation is separated from the Solver Request';
-    this.reserveAndBuy = data.reserveAndBuy || 'This request does not integrate the automatic reservation phase';
+    this.peering = data.peering || '-';
+    this.reservationPhase = data.reservationPhase || '-';
+    this.reserveAndBuy = data.reserveAndBuy || '-';
     this.solverPhase = new SolverPhase(data.solverPhase);
   }
 }

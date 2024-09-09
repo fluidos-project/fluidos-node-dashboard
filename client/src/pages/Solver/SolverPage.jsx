@@ -37,7 +37,7 @@ export function SolverPage(props) {
                 <Typography variant="h3"> Solvers</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Solvers are requests for resources to remote providers </Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Solvers triggers request for remote resources </Typography>
             </Grid>
             <Grid item md={12}>
                 <Button

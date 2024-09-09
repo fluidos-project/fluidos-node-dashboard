@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 export function CreateSolverRequestPage(props) {
   const [formValues, setFormValues] = useState({
     name: '',
-    type: '',
+    type: 'K8Slice',
     intentID: '',
     architectureFilter: { mode: 'Match', value: '' },
     cpuFilter: { mode: 'Match', min: '', max: '', value: '' },
@@ -214,7 +214,7 @@ export function CreateSolverRequestPage(props) {
             </>
           )}
           {/* fiels for other FlavorType */}
-          { formValues.type !== 'K8Slice' &&
+          { (formValues.type !== 'K8Slice' || formValues.type === '')  && 
             <Typography variant="h5" m={3}>
               FlavorType Not Implemented at the moment.
             </Typography>

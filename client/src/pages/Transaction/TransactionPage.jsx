@@ -34,7 +34,7 @@ export function TransactionPage(props){
                 <Typography variant="h3"> Transactions</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Transactions are automatically created after a successful resource reservation </Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Transaction are intermediate resources that links reservations with purchase </Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

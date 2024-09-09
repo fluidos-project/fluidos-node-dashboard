@@ -38,7 +38,7 @@ function SinglePeeringCandidatePage(props) {
             <Grid container spacing={2}>
 
                 <Grid item md={12}>
-                    <Typography variant="h3"> Peering Candidates</Typography>
+                    <Typography variant="h3"> Flavors</Typography>
                 </Grid>
                 <Grid item md={12}>
                     {peeringCandidate ? <DisplayPeeringCInfo peeringCandidate={peeringCandidate} /> :
@@ -94,7 +94,7 @@ function DisplayPeeringCInfo(props) {
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Solver Request</TableCell>
-                                <TableCell><Link relative="path" to={`../../solvers/${props.peeringCandidate.spec.solverID}`}>{props.peeringCandidate.spec.solverID}</Link></TableCell>
+                                <TableCell><Link relative="path" to={`../../../solvers/${props.peeringCandidate.spec.solverID}`}>{props.peeringCandidate.spec.solverID}</Link></TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Associated Flavor Name</TableCell>

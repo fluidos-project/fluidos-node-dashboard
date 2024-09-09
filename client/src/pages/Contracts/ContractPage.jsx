@@ -34,7 +34,7 @@ export function ContractPage() {
                 <Typography variant="h3"> Contracts</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Contracts are automatically created after a Flavor is correctly reserved and bought</Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Contract specifies the purchase agreement between consumer and provider</Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

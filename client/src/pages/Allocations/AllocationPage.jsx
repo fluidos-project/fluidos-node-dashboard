@@ -36,7 +36,7 @@ export function AllocationPage(props) {
                 <Typography variant="h3"> Allocations</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Allocations are used to activate the resources providers just purchased</Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Allocations are used to consumer the resources already purchased</Typography>
             </Grid>
             <Grid item md={12}>
                 <Button

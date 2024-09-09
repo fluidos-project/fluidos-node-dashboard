@@ -275,7 +275,7 @@ const addSolver = async (request) => {
     },
     body: JSON.stringify(request)
   });
-  
+  console.log(request)  
 
   if (response.ok) {
     const data = await response.json();

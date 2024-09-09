@@ -67,7 +67,7 @@ export function AvailableFlavorPage(props) {
                     </ButtonGroup>
                 </Grid>
                 <Grid item md={12}>
-                    <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Available Flavors represent Fluidos Peering Candidates resources: Flavors that can satisfy a specific Solver Request</Typography>
+                    <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Available flavors are resources that can be bought from remote clusters </Typography>
                 </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (

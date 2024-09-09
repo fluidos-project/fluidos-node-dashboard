@@ -94,7 +94,9 @@ export function CreateReservationPage(props) {
 
             props.configureAlert({ type: "success", message: result.message });
 
-             navigate(`/reservations/${formValues.name}`);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+
+            navigate(`/reservations/${formValues.name}`);
         } catch (error) {
             console.error(error);
             props.configureAlert({ type: "error", message: error.message });
