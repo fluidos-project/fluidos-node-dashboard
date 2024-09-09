@@ -38,12 +38,12 @@ export function ContractPage() {
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     contractsArray.length > 0 ? contractsArray.map(contract =>
-                        <Grid item md={4} key={contract.metadata.name} >
+                        <Grid item md={12} key={contract.metadata.name} >
                             <ContractCard element={contract} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

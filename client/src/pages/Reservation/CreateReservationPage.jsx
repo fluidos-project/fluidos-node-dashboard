@@ -13,6 +13,7 @@ import {
 } from '@mui/material';
 import { PeeringCadidateCard } from '../../components/PeeringCandidatesCard';
 import API from '../../utils/API';
+import { useNavigate } from 'react-router-dom';
 
 export function CreateReservationPage(props) {
     // Stato per i campi del form raggruppato
@@ -27,6 +28,8 @@ export function CreateReservationPage(props) {
         memory: '',
         pods: ''
     });
+
+    const navigate = useNavigate();
 
     const [solverOptions, setSolverOptions] = useState([]);
     const [peeringOptions, setPeeringOptions] = useState([]);
@@ -139,6 +142,7 @@ export function CreateReservationPage(props) {
                                 value="onlyReserve"
                                 control={<Radio />}
                                 label="Only Reserve"
+                                disabled
                             />
                             <FormControlLabel
                                 value="reserveAndBuy"

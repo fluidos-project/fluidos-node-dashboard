@@ -71,12 +71,12 @@ export function AvailableFlavorPage(props) {
                 </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     peeringArray.length > 0 ? peeringArray.map(peeringC =>
-                        <Grid item md={4} key={peeringC.metadata.name} >
+                        <Grid item md={12} key={peeringC.metadata.name} >
                            <FlavorCard element={peeringC.spec.flavor} peeringcandidate={peeringC}/>
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

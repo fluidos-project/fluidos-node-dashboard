@@ -40,7 +40,7 @@ export function AllocationCard(props) {
                                     Error
                                 </Typography>
                             ) : <Typography color="purple" sx={{ ml: 1 }}>
-                                On going
+                                Ongoing
                             </Typography>
                             }
                         </Box>

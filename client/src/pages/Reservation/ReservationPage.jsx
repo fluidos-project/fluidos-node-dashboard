@@ -50,12 +50,12 @@ export function ReservationPage(props) {
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     reservationsArray.length > 0 ? reservationsArray.map(reservation =>
-                        <Grid item md={4} key={reservation.metadata.name} >
+                        <Grid item md={12} key={reservation.metadata.name} >
                             <ReservationCard element={reservation} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

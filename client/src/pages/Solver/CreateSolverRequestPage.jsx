@@ -69,7 +69,7 @@ export function CreateSolverRequestPage(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formValues);
+    //console.log(formValues);
 
     try {
       const result = await API.addSolver(formValues);
@@ -214,7 +214,7 @@ export function CreateSolverRequestPage(props) {
             </>
           )}
           {/* fiels for other FlavorType */}
-          {
+          { formValues.type !== 'K8Slice' &&
             <Typography variant="h5" m={3}>
               FlavorType Not Implemented at the moment.
             </Typography>

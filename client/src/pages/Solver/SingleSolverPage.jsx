@@ -27,7 +27,7 @@ function SingleSolverPage(props) {
                 setsolver(singlesolver);
                 const filteredPeerCandidates = peeringC.filter(x => x.spec.solverID === singlesolver.metadata.name);
                 setPeeringCandidates(filteredPeerCandidates);
-                console.log(filteredPeerCandidates)
+                console.log(singlesolver)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })

@@ -52,12 +52,12 @@ export function AllocationPage(props) {
 
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     allocationsArray.length > 0 ? allocationsArray.map(allocation =>
-                        <Grid item md={4} key={allocation.metadata.name} >
+                        <Grid item md={12} key={allocation.metadata.name} >
                             <AllocationCard element={allocation} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

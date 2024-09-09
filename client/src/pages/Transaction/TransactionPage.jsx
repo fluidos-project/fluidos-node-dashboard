@@ -34,16 +34,16 @@ export function TransactionPage(props){
                 <Typography variant="h3"> Transactions</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> A Transaction Resource is automatically created after a successful resource reservation </Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Transactions are automatically created after a successful resource reservation </Typography>
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     transactionsArray.length > 0 ? transactionsArray.map(transaction =>
-                        <Grid item md={4} key={transaction.metadata.name} >
+                        <Grid item md={12} key={transaction.metadata.name} >
                             <TransactionCard element={transaction} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

@@ -37,7 +37,7 @@ export function SolverPage(props) {
                 <Typography variant="h3"> Solvers</Typography>
             </Grid>
             <Grid item md={12}>
-                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Solvers are requests for resources for remote providers </Typography>
+                <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Solvers are requests for resources to remote providers </Typography>
             </Grid>
             <Grid item md={12}>
                 <Button
@@ -52,12 +52,12 @@ export function SolverPage(props) {
             </Grid>
             {
                 isLoading ? [...Array(6)].map((_, index) => (
-                    <Grid item md={4} key={index} >
+                    <Grid item md={12} key={index} >
                         <SkeletonCard />
                     </Grid>
                 )) :
                     solversArray.length > 0 ? solversArray.map(solver =>
-                        <Grid item md={4} key={solver.metadata.name} >
+                        <Grid item md={12} key={solver.metadata.name} >
                             <SolverCard element={solver} />
                         </Grid>
                     ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >

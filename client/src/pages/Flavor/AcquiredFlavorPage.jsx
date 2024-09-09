@@ -78,15 +78,15 @@ export function RemoteFlavorPage(props) {
 
                 {
                     isLoading ? [...Array(6)].map((_, index) => (
-                        <Grid item md={4} key={index} >
+                        <Grid item md={12} key={index} >
                             <SkeletonCard />
                         </Grid>
                     )) :
                         flavorsArray.length > 0 ? flavorsArray.map(flavor =>
-                            <Grid item md={4} key={flavor.metadata.name} >
+                            <Grid item md={12} key={flavor.metadata.name} >
                                 <FlavorCard element={flavor} />
                             </Grid>
-                        ) : <Grid item md={4} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
+                        ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
                             <Typography variant="h5"> There are no flavors purchased</Typography>
 
                         </Grid>
