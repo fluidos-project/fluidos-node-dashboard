@@ -57,9 +57,9 @@ export function CreateAllocationPage(props) {
       contract: selectedContract,
     }));
 
-    //get solver info
     try {
-
+      
+      // from all the reservations, I select the one with the correct contract to be able to retrieve the info about the Solver request
       const reservation = reservations.find((res) => res.status.contract.name === selectedContract);
       if (reservation) {
         const solver = await API.getSingleSolver(reservation.spec.solverID)
@@ -87,8 +87,7 @@ export function CreateAllocationPage(props) {
       console.log(result);
       props.configureAlert({ type: 'success', message: result.message });
 
-      // Navigate after successful submit
-      navigate(`/allocations/${formValues.name}`);
+      navigate(`/allocations`);
     } catch (error) {
       console.error(error);
       props.configureAlert({ type: 'error', message: error.message });

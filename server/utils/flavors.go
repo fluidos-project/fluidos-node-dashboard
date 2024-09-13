@@ -73,3 +73,6 @@ func GetSingleFlavor(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(flavor)
 }
+
+func AddFlavors(w http.ResponseWriter, r *http.Request)     {}
+func AddFlavorsYAML(w http.ResponseWriter, r *http.Request) {}

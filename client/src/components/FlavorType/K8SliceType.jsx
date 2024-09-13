@@ -1,5 +1,6 @@
-import { Card, Typography, CardContent, Button, Box, CardActions, Table, TableContainer, TableCell, TableRow, TableHead, TableBody } from "@mui/material"
+import {Table, TableContainer, TableCell, TableRow, TableHead, TableBody } from "@mui/material"
 
+// Table to show the Specs from a K8Slice Flavor
 export function K8SliceType(props) {
     return (
         <TableContainer>

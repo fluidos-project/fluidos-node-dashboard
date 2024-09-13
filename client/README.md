@@ -34,3 +34,6 @@ The Routing of the app is organized in the following way:
 - `/allocations/new`: [CreateAllocationPage](/client/src/pages/Allocations/CreateAllocationPage.jsx) component. It allows to create a new Allocation to start the purchased resource.
 
 -  `/*`: [NotFoundPage](/client/src/pages/utils/NotFoundPage.jsx) component. It is used to inform the user that the requested page is missing.
+
+### Future Updates
+- Adding support for others FlavorType such as VM, Sensor, Service. At the moment only K8Slice is supported.

@@ -6,13 +6,13 @@ export function AlertComponent(props) {
 
     useEffect(() => {
         if (props.alert.type !== "") {
-            setVisible(true);  // Rendi visibile l'Alert
+            setVisible(true); 
             const timer = setTimeout(() => {
-                setVisible(false);  // Nascondi l'Alert dopo 2 secondi
-                props.configureAlert({ type: "", message: "" });  // Resetta l'alert
+                setVisible(false);  // Hide Alert after 2 seconds
+                props.configureAlert({ type: "", message: "" }); 
             }, 2000);
 
-            return () => clearTimeout(timer);  // Pulisce il timer
+            return () => clearTimeout(timer); 
         }
     }, [props.alert]);
 

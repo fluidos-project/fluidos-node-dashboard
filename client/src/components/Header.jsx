@@ -10,7 +10,7 @@ function Header() {
           Fluidos Node Dashboard
         </Typography>
 
-        {/*<Button color="inherit" component={Link} to="/info">
+        {/*<Button color="inherit" component={Link} to="/">
           Nodes Info
         </Button>*/}
       </Toolbar>

@@ -8,7 +8,6 @@ export function AllocationCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
-    //console.log(props.element)
 
     return (
         <>
@@ -28,6 +27,7 @@ export function AllocationCard(props) {
                         </Box>
                     </Typography>
 
+                    {/* General error mapping for the status. It should be improved server side */ }
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.primary">
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             Allocation Status:

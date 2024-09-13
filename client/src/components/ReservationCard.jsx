@@ -9,7 +9,6 @@ export function ReservationCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
-    //console.log(props.element)
 
     return (
         <>

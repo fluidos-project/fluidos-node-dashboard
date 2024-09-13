@@ -2,7 +2,7 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import Grid from '@mui/system/Unstable_Grid/Grid';
 import { Breadcrumbs, Paper, Typography } from '@mui/material';
 import API from '../utils/API';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import categories from '../utils/palette';
 
 export function SingleNode(props) {
@@ -18,7 +18,7 @@ export function SingleNode(props) {
     let MemoryTotal_Ki =0;
 
     
-
+    // adapt metrics from server in a standard unit 
     const convertToKiB = (memoryString) => {
         const match = memoryString.match(/^(\d+)([KMGT]?i)$/);    
         
@@ -47,21 +47,28 @@ export function SingleNode(props) {
         CPU_usage_Milli = parseInt(props.metric.usage.cpu.replace('n', ''), 10) / 1000000;
         CPU_total_Milli = parseInt(props.node.status.capacity.cpu) * 1000;
         CPU_used = (CPU_usage_Milli / CPU_total_Milli) * 100;
-        CPU_used= Math.round(CPU_used*100)/100;
+        CPU_used= Math.round(CPU_used);
 
         Memory_usage_Ki = convertToKiB(props.metric.usage.memory);
         MemoryTotal_Ki = convertToKiB(props.node.status.capacity.memory);
         Memory_used = (Memory_usage_Ki / MemoryTotal_Ki) * 100;
-        Memory_used = Math.round(Memory_used*100) / 100;
+        Memory_used = Math.round(Memory_used);
     }else{
        err = true;
     }
 
-    const paletteNames = Object.keys(categories);
-    const randomPaletteName1 = paletteNames[Math.floor(Math.random() * paletteNames.length)];
-    const randomPaletteName2 = paletteNames[Math.floor(Math.random() * paletteNames.length)];
-    const selectedPalette1 = categories[randomPaletteName1];
-    const selectedPalette2 = categories[randomPaletteName2];
+    // charts randomly changes color, only for graphical purposes
+    const selectedPalette1 = useMemo(() => {
+        const paletteNames = Object.keys(categories);
+        const randomPaletteName = paletteNames[Math.floor(Math.random() * paletteNames.length)];
+        return categories[randomPaletteName];
+    }, []);
+    
+    const selectedPalette2 = useMemo(() => {
+        const paletteNames = Object.keys(categories);
+        const randomPaletteName = paletteNames[Math.floor(Math.random() * paletteNames.length)];
+        return categories[randomPaletteName];
+    }, []);
 
     return (
         <>

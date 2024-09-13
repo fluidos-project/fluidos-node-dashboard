@@ -16,7 +16,7 @@ export function ReservationPage(props) {
         const fetchReservations = async () => {
             try {
                 const reservations = await API.getReservations();
-                console.log(reservations)
+               
                 setReservationsArray(reservations);
                 setIsLoading(false);
             } catch (error) {

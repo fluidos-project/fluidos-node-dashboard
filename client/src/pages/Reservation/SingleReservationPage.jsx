@@ -10,12 +10,10 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import calculateAge from "../../utils/age";
 
 
-// Check when reservation or buy is not done yet, if there are some errors
 
 function SingleReservationPage(props) {
     const [reservation, setReservation] = useState();
     const { name } = useParams();
-    //console.log(name);
 
     useEffect(() => {
 
@@ -101,7 +99,7 @@ function DisplayReservationInfo(props) {
             {/* Reservation Specs Table */}
             <Grid item xs={12}>
                 <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                    <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
+                    <Table sx={{ minWidth: 300 }} aria-label="reservation specs table">
                         <TableHead>
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
@@ -140,7 +138,7 @@ function DisplayReservationInfo(props) {
             {/* Status Table */}
             <Grid item xs={12}>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 300 }} aria-label="partition table">
+                    <Table sx={{ minWidth: 300 }} aria-label="status table">
                         <TableHead>
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >

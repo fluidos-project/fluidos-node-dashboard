@@ -17,7 +17,7 @@ export function AvailableFlavorPage(props) {
         const fetchPeeringCandidates = async () => {
             try {
                 const peeringCandidates = await API.getPeeringCandidates();
-                console.log(peeringCandidates)
+                
                 setPeeringArray(peeringCandidates);
                 setIsLoading(false);
             } catch (error) {

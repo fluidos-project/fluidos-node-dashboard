@@ -82,7 +82,6 @@ func AddReservation(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed to create dynamic client: %v", err)
 	}
 
-	// Leggere i dati dal body della richiesta
 	var reservationData map[string]interface{}
 	err = json.NewDecoder(r.Body).Decode(&reservationData)
 	if err != nil {
@@ -91,7 +90,6 @@ func AddReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Recuperare informazioni su Seller dal PeeringCandidate
 	gvr_pc := schema.GroupVersionResource{
 		Group:    "advertisement.fluidos.eu",
 		Version:  "v1alpha1",
@@ -110,13 +108,14 @@ func AddReservation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Retrieve Seller information from Candidate
 	seller := models.OwnershipInfo{
 		Domain: ownerData["domain"].(string),
 		IP:     ownerData["ip"].(string),
 		NodeID: ownerData["nodeID"].(string),
 	}
 
-	// Recuperare informazioni sul Buyer dalla ConfigMap
+	// Retrieve Buyer information from ConfigMap
 	gvr_cm := schema.GroupVersionResource{
 		Group:    "",
 		Version:  "v1",

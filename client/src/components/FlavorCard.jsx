@@ -35,7 +35,7 @@ export default function FlavorCard(props) {
             } else {
                 setFlavorSection("local");
             }
-            console.log(flavorSection)
+           
         };
 
         updateSection();

@@ -42,21 +42,44 @@ const getSingleFlavor = async (name) => {
   }
 }
 
-// NODES API
-const getNodeInfo = async () => {
-  const response = await fetch(`${SERVER_URL}/nodes`, {
-    method: 'GET'
-  })
+const addFlavor = async(data) => {
+  const response = await fetch(`${SERVER_URL}/flavors`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  });
 
   if (response.ok) {
-    const nodesArray = await response.json();
-    const nodesArrayObj = nodesArray.map(n => new NodeInfo(n));
-    return nodesArrayObj
+    const data = await response.json();
+    return data;
   }
   else {
     const errDetails = await response.text();
     throw errDetails;
   }
+
+}
+
+const addFlavorYAML = async(data) => {
+  const response = await fetch(`${SERVER_URL}/flavorsYAML`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: data
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+
 }
 
 //SOLVER API
@@ -85,6 +108,26 @@ const getSingleSolver = async (name) => {
     const solver = await response.json();
     const solverObj = new Solver(solver);
     return solverObj
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+const addSolver = async (request) => {
+  const response = await fetch(`${SERVER_URL}/solvers`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+  console.log(request)  
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
   }
   else {
     const errDetails = await response.text();
@@ -197,6 +240,25 @@ const getSingleReservation = async (name) => {
   }
 }
 
+const addReservation = async (request) => {
+  const response = await fetch(`${SERVER_URL}/reservations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
 // ALLOCATIONS API
 const getAllocations = async () => {
   const response = await fetch(`${SERVER_URL}/allocations`, {
@@ -230,6 +292,26 @@ const getSingleAllocation = async (name) => {
     const errDetails = await response.text();
     throw errDetails;
   }
+}
+
+const addAllocation = async (request) => {
+  const response = await fetch(`${SERVER_URL}/allocations`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+
 }
 
 // TRANSACTIONS API
@@ -267,63 +349,23 @@ const getSingleTransaction = async (name) => {
   }
 }
 
-const addSolver = async (request) => {
-  const response = await fetch(`${SERVER_URL}/solvers`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(request)
-  });
-  console.log(request)  
+
+
+// NODES API
+const getNodeInfo = async () => {
+  const response = await fetch(`${SERVER_URL}/nodes`, {
+    method: 'GET'
+  })
 
   if (response.ok) {
-    const data = await response.json();
-    return data;
+    const nodesArray = await response.json();
+    const nodesArrayObj = nodesArray.map(n => new NodeInfo(n));
+    return nodesArrayObj
   }
   else {
     const errDetails = await response.text();
     throw errDetails;
   }
-}
-
-const addReservation = async (request) => {
-  const response = await fetch(`${SERVER_URL}/reservations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(request)
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    return data;
-  }
-  else {
-    const errDetails = await response.text();
-    throw errDetails;
-  }
-}
-
-const addAllocation = async (request) => {
-  const response = await fetch(`${SERVER_URL}/allocations`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(request)
-  });
-
-  if (response.ok) {
-    const data = await response.json();
-    return data;
-  }
-  else {
-    const errDetails = await response.text();
-    throw errDetails;
-  }
-
 }
 
 const getNodes = async () => {
@@ -360,6 +402,7 @@ const getMetrics = async () => {
   }
 }
 
+// ConfigMap API
 const getNetManagerConfigCM = async () => {
   const response = await fetch(`${SERVER_URL}/configmaps/fluidos-network-manager-config`, {
     method: 'GET'
@@ -377,16 +420,37 @@ const getNetManagerConfigCM = async () => {
   }
 }
 
+const addFluidosNode = async (request) => {
+  const response = await fetch(`${SERVER_URL}/nodes/addFluidosNode`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(request)
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
+
+
 
 
 const API = {
-  getFlavors, getSingleFlavor,
+  getFlavors, getSingleFlavor, addFlavor, addFlavorYAML, 
   getSolvers, getSingleSolver, addSolver,
   getPeeringCandidates, getSinglePeeringCandidate,
   getContracts, getSingleContract,
   getReservations, getSingleReservation, addReservation,
   getAllocations, getSingleAllocation, addAllocation,
   getTransactions, getSingleTransaction,
-  getNodeInfo, getNodes, getMetrics, getNetManagerConfigCM
+  getNodeInfo, getNodes, getMetrics, getNetManagerConfigCM, addFluidosNode
 };
 export default API 

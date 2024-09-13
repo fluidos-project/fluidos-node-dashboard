@@ -32,6 +32,7 @@ import SingleRemoteFlavorPage from './pages/Flavor/SingleAcquiredFlavorPage';
 import { CreateSolverRequestPage } from './pages/Solver/CreateSolverRequestPage';
 import { CreateReservationPage } from './pages/Reservation/CreateReservationPage';
 import { CreateAllocationPage } from './pages/Allocations/CreateAllocationPage';
+import { CreateFlavorPage } from './pages/Flavor/CreateFlavorPage';
 
 
 
@@ -67,6 +68,7 @@ function App() {
 
               <Route path="/flavors" element={<FlavorsPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/:name" element={<SingleFlavorPage configureAlert={configureAlert} />} />
+              <Route path="/flavors/new" element={<CreateFlavorPage configureAlert={configureAlert} />} />
 
               <Route path="/flavors/acquired" element={<RemoteFlavorPage configureAlert={configureAlert}/>} />
               <Route path="/flavors/acquired/:name" element={<SingleRemoteFlavorPage configureAlert={configureAlert}/>} />

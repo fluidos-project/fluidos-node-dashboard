@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import API from "../../utils/API";
 import { useState, useEffect } from "react";
-import { Breadcrumbs, CircularProgress, Grid, Paper, Typography } from "@mui/material";
+import {CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
@@ -15,7 +15,6 @@ import calculateAge from "../../utils/age";
 function SingleTransactionPage(props) {
     const [transaction, setTransaction] = useState();
     const { name } = useParams();
-    //console.log(name);
 
     useEffect(() => {
 
@@ -109,7 +108,7 @@ function DisplayTransactionInfo(props) {
                 {/* Transaction info Table */}
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="Transaction specs table">
+                        <Table sx={{ minWidth: 300 }} aria-label="transaction info table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
@@ -141,7 +140,7 @@ function DisplayTransactionInfo(props) {
                 {/* Configuration Table */}
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="owner table">
+                        <Table sx={{ minWidth: 300 }} aria-label="configuration table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >

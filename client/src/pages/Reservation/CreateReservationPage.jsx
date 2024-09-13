@@ -44,8 +44,6 @@ export function CreateReservationPage(props) {
                 const peeringCandidates = await API.getPeeringCandidates();
                 setPeeringOptions(peeringCandidates);
 
-                console.log(solvers);
-                console.log(peeringCandidates);
             } catch (error) {
                 console.log(error);
                 props.configureAlert({ type: "error", message: error.message });
@@ -66,7 +64,7 @@ export function CreateReservationPage(props) {
         const selectedId = event.target.value;
         setFormValues((prevValues) => ({ ...prevValues, peeringCandidate: selectedId }));
 
-        // Prendi i dettagli del candidato di peering e mostra la card
+        // Get the peering candidate details and show the card
         const selectedDetails = peeringOptions.find(candidate => candidate.metadata.name === selectedId);
         setSelectedPeeringDetails(selectedDetails);
         console.log(selectedDetails);
@@ -87,7 +85,7 @@ export function CreateReservationPage(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(formValues);
+       
 
         try {
             const result = await API.addReservation(formValues);
@@ -95,8 +93,7 @@ export function CreateReservationPage(props) {
             props.configureAlert({ type: "success", message: result.message });
 
             await new Promise((resolve) => setTimeout(resolve, 1000));
-
-            navigate(`/reservations/${formValues.name}`);
+            navigate(`/reservations`);
         } catch (error) {
             console.error(error);
             props.configureAlert({ type: "error", message: error.message });
@@ -140,6 +137,7 @@ export function CreateReservationPage(props) {
                             value={formValues.buy ? 'reserveAndBuy' : 'onlyReserve'}
                             onChange={handleRadioChange}
                         >
+                            {/* At the moment you can only "Reserve and Buy" a Flavor, so the "onlyReserve" option is not available*/}
                             <FormControlLabel
                                 value="onlyReserve"
                                 control={<Radio />}
@@ -188,12 +186,13 @@ export function CreateReservationPage(props) {
                     />
                 </Grid>
 
-                {/* Mostra i campi CPU, Memory e Pods solo se FlavorType è K8Slice */}
+                {/* Show CPU, Memory and Pods fields only if FlavorType is K8Slice */}
                 {formValues.flavorType === 'K8Slice' && (
                     <>
                         <Grid item xs={12} sm={6}>
                             <TextField
                                 label="CPU"
+                                placeholder='eg. 1000m'
                                 name="cpu"
                                 type="text"
                                 value={formValues.cpu}
@@ -207,6 +206,7 @@ export function CreateReservationPage(props) {
                             <TextField
                                 label="Memory"
                                 name="memory"
+                                placeholder='eg. 1Gi'
                                 type="text"
                                 value={formValues.memory}
                                 onChange={handleChange}
@@ -218,6 +218,7 @@ export function CreateReservationPage(props) {
                             <TextField
                                 label="Pods"
                                 name="pods"
+                                placeholder='eg. 100'
                                 type="text"
                                 value={formValues.pods}
                                 onChange={handleChange}

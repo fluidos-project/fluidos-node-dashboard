@@ -3,9 +3,6 @@ import API from "../../utils/API";
 import { useState, useEffect } from "react";
 import { Breadcrumbs, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import calculateAge from "../../utils/age";
 
@@ -15,7 +12,6 @@ import calculateAge from "../../utils/age";
 function SinglePeeringCandidatePage(props) {
     const [peeringCandidate, setPeeringCandidate] = useState();
     const { name } = useParams();
-    //console.log(name);
 
     useEffect(() => {
 

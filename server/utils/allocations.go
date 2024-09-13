@@ -79,7 +79,6 @@ func AddAllocation(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Failed to create dynamic client: %v", err)
 	}
 
-	// Decodifica i dati JSON ricevuti nel body della richiesta.
 	var allocationData map[string]interface{}
 	if err := json.NewDecoder(r.Body).Decode(&allocationData); err != nil {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
@@ -92,10 +91,8 @@ func AddAllocation(w http.ResponseWriter, r *http.Request) {
 		Contract: allocationData["contract"].(string),
 	}
 
-	// Crea la risorsa Allocation basata sui dati ricevuti.
 	allocationResource := models.NewAllocation(&allocation)
 
-	// Definisce il GroupVersionResource per Allocation.
 	gvr := schema.GroupVersionResource{
 		Group:    "nodecore.fluidos.eu",
 		Version:  "v1alpha1",

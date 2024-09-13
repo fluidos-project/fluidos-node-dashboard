@@ -14,7 +14,6 @@ import calculateAge from "../../utils/age";
 function SingleAllocationPage(props) {
     const [allocation, setAllocation] = useState();
     const { name } = useParams();
-    //console.log(name);
 
     useEffect(() => {
 
@@ -22,7 +21,6 @@ function SingleAllocationPage(props) {
             try {
                 const singleAllocation = await API.getSingleAllocation(name); 
                 setAllocation(singleAllocation);
-               console.log(singleAllocation)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -105,7 +103,7 @@ function DisplayAllocationInfo(props) {
             {/* Allocation Specs Table */}
             <Grid item xs={12}>
                 <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                    <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
+                    <Table sx={{ minWidth: 300 }} aria-label="allocation specs table">
                         <TableHead>
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
@@ -129,7 +127,7 @@ function DisplayAllocationInfo(props) {
             {/* Status Table */}
             <Grid item xs={12}>
                 <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 300 }} aria-label="partition table">
+                    <Table sx={{ minWidth: 300 }} aria-label="status table">
                         <TableHead>
                             <TableRow>
                                 <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >

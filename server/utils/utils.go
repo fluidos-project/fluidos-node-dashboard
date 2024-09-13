@@ -10,7 +10,7 @@ import (
 
 func KubernetesConfig() *rest.Config {
 
-	// it's the path of the local KUBECONFIG
+	// it's the path of the local KUBECONFIG. it is useful to be able to use the dashboard locally on your machine in a Kind environment
 	kubeconfig := "/Users/marco/Desktop/fluidosUpdate/node/tools/scripts/fluidos-consumer-1-config"
 
 	config, err := rest.InClusterConfig()

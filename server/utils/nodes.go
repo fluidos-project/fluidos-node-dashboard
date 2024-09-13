@@ -10,6 +10,7 @@ import (
 	"k8s.io/client-go/dynamic"
 )
 
+// metrics from Metric Server
 func GetNodesMetric(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
 
@@ -36,6 +37,7 @@ func GetNodesMetric(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(metrics)
 }
 
+// K8s Nodes
 func GetNodes(w http.ResponseWriter, r *http.Request) {
 	config := KubernetesConfig()
 

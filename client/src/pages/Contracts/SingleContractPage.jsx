@@ -17,14 +17,12 @@ import handleCopy from "../../utils/handleCopy";
 function SingleContractPage(props) {
     const [contract, setContract] = useState();
     const { name } = useParams();
-    //console.log(name);
 
     useEffect(() => {
 
         const fetchcontract = async () => {
             try {
                 const singlecontract = await API.getSingleContract(name);
-                console.log(singlecontract)
                 setContract(singlecontract);
             } catch (error) {
                 console.error(error)
@@ -114,7 +112,7 @@ function DisplayContractInfo(props) {
                 {/* contract info Table */}
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="contract specs table">
+                        <Table sx={{ minWidth: 300 }} aria-label="contract info table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
@@ -150,10 +148,10 @@ function DisplayContractInfo(props) {
                     </TableContainer>
                 </Grid>
 
-                {/* Configuration Table */}
+                {/* Specs Table */}
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="owner table">
+                        <Table sx={{ minWidth: 300 }} aria-label="contract specs table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'info.main', color: 'white' }} >

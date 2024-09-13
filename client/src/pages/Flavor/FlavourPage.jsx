@@ -19,7 +19,6 @@ export function FlavorsPage(props) {
         const fetchLocalFlavors = async () => {
             try {
                 const flavors = await API.getFlavors();
-                //console.log(flavors)
                 setFlavorsArray(flavors);
                 setIsLoading(false);
             } catch (error) {
@@ -84,8 +83,19 @@ export function FlavorsPage(props) {
                 <Grid item md={12}>
                     <Typography variant="body1"> <InfoIcon fontSize="small" color="primary" /> Local Flavors are resources that providers make available for sale</Typography>
                 </Grid>
-                
-                    {
+                <Grid item md={12}>
+                    <Button
+                        component={Link}
+                        relative="path"
+                        size="medium"
+                        variant="contained"
+                        to="new"
+                    >
+                        Add Flavor
+                    </Button>
+                </Grid>
+
+                {
                     isLoading ? [...Array(6)].map((_, index) => (
                         <Grid item md={12} key={index} >
                             <SkeletonCard />
@@ -99,11 +109,11 @@ export function FlavorsPage(props) {
                             <Typography variant="h5"> There are no flavors available at the moment</Typography>
 
                         </Grid>
-                    }
-                   
+                }
 
-               
-        </Grid >
+
+
+            </Grid >
         </>
     )
 

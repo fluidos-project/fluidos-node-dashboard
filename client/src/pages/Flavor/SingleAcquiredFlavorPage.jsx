@@ -27,7 +27,6 @@ function SingleRemoteFlavorPage(props) {
                 const singlecontract= contracts.filter(c=> c.spec.flavor.metadata.name==name)[0];
                 setContract(singlecontract);
                 setFlavor(singlecontract.spec.flavor);
-                console.log(singlecontract)
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -225,94 +224,3 @@ function DisplayFlavorInfo(props) {
     );
 
 }
-/*
-// OLD LAYOUT
-return (
-    <>
-        <Grid container spacing={2}>
-
-            <Grid item md={6} xs={12}>
-                <Paper
-                    elevation={4} 
-                    sx={{
-                        padding: 2, 
-                        borderRadius: 1, 
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}>
-                    <Typography variant="h6" gutterBottom>
-                        Main Info
-                    </Typography>
-                    <Typography variant="body1" > Name: {props.flavor.metadata.name}</Typography>
-                    <Typography variant="body1" > Namespace: {props.flavor.metadata.namespace}</Typography>
-                    <Typography variant="body1" > Price: {props.flavor.spec.price.amount == "" ? "-" : props.flavor.spec.price.amount} {props.flavor.spec.price.currency} </Typography>
-                    <Typography variant="body1" > Age: {age} </Typography>
-
-                </Paper>
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-                <Paper
-                    elevation={4} 
-                    sx={{
-                        padding: 1, 
-                        borderRadius: 2, 
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}>
-                    <Typography variant="h6" gutterBottom>
-                        Flavor Specs
-                    </Typography>
-                    {props.flavor.spec.availability ? <Typography variant="body1" color="green" sx={{ mb: 1.5 }}> The Flavor is Available </Typography> : <Typography variant="body1" sx={{ mb: 1.5 }} color="red"> The flavor is not Available </Typography>}
-                    <Typography variant="body1" > Type of Flavor: {props.flavor.spec.flavorType.typeIdentifier}</Typography>
-                    <Typography variant="body1" > Architecture: {props.flavor.spec.flavorType.typeData.characteristics.architecture}</Typography>
-                    <Typography variant="body1" > CPU: {props.flavor.spec.flavorType.typeData.characteristics.cpu}</Typography>
-                    <Typography variant="body1" > GPU: {props.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</Typography>
-                    <Typography variant="body1" > Storage: {props.flavor.spec.flavorType.typeData.characteristics.storage }</Typography>
-
-                </Paper>
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-                <Paper
-                    elevation={4}
-                    sx={{
-                        padding: 1, 
-                        borderRadius: 2, 
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}>
-                    <Typography variant="h6" gutterBottom>
-                        Owner
-                    </Typography>
-                    <Typography variant="body1" >Domain: {props.flavor.spec.owner.domain}</Typography>
-                    <Typography variant="body1" >IPv4 address: {props.flavor.spec.owner.ip}</Typography>
-                    <Typography variant="body1" >Node ID: {props.flavor.spec.owner.nodeID}</Typography>
-                </Paper>
-            </Grid>
-
-            <Grid item md={6} xs={12}>
-                <Paper
-                    elevation={4} 
-                    sx={{
-                        padding: 1, 
-                        borderRadius: 2, 
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                    }}>
-                    <Typography variant="h6" gutterBottom>
-                        Location
-                    </Typography>
-                    <Typography variant="body1" >Country: {props.flavor.spec.location.country}</Typography>
-                    <Typography variant="body1" >City: {props.flavor.spec.location.city}</Typography>
-                    <Typography variant="body1" >Additional Note: {props.flavor.spec.location.additionalNotes}</Typography>
-                </Paper>
-            </Grid>
-
-        </Grid>
-    </>
-)*/

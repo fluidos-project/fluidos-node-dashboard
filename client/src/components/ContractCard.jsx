@@ -9,7 +9,6 @@ export function ContractCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
-    //console.log(props.element)
 
     return (
         <>

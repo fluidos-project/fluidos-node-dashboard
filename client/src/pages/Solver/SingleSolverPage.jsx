@@ -3,9 +3,6 @@ import API from "../../utils/API";
 import { useState, useEffect } from "react";
 import { Breadcrumbs, CircularProgress, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import relativeTime from 'dayjs/plugin/relativeTime';
 import calculateAge from "../../utils/age";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import handleCopy from "../../utils/handleCopy";
@@ -25,9 +22,9 @@ function SingleSolverPage(props) {
                 const singlesolver = await API.getSingleSolver(name);
                 const peeringC = await API.getPeeringCandidates();
                 setsolver(singlesolver);
-                const filteredPeerCandidates = peeringC.filter(x => x.spec.solverID === singlesolver.metadata.name);
+                const filteredPeerCandidates = peeringC.filter(x => x.spec.solverID === singlesolver.metadata.name); // only the candidates discovered with this specific request are showed.
                 setPeeringCandidates(filteredPeerCandidates);
-                console.log(singlesolver)
+
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -254,10 +251,11 @@ function DisplaySolverInfo(props) {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
+                            { /* the solver could found some candidates, so they are showed here.
+                            Sometimes the request could not found anything, so the table is empty. */
                                 props.peeringCandidates.length > 0 ? props.peeringCandidates.map((p, idx) =>
                                     <TableRow key={idx}>
-                                        <TableCell component="th" scope="row">N.{idx+1}</TableCell>
+                                        <TableCell component="th" scope="row">N.{idx + 1}</TableCell>
                                         <TableCell><Link relative="path" to={`../../flavors/available/${p.metadata.name}`}>{p.metadata.name}</Link></TableCell>
                                     </TableRow>
                                 ) :

@@ -13,6 +13,8 @@ import {
   FormControlLabel,
   Radio,
   Checkbox,
+  Switch,
+  Tooltip
 } from '@mui/material';
 import API from '../../utils/API';
 import { useNavigate } from 'react-router-dom';
@@ -30,6 +32,8 @@ export function CreateSolverRequestPage(props) {
     reserveAndBuy: true,
     establishPeering: true,
   });
+
+  const [showIntentField, setShowIntentField] = useState(false);
 
   const navigate = useNavigate();
 
@@ -69,14 +73,19 @@ export function CreateSolverRequestPage(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    //console.log(formValues);
+
+    // Intent ID field automatically filled
+    if (formValues.intentID === '') {
+      formValues.intentID = `intent-${formValues.name}`;
+    }
+    console.log(formValues);
 
     try {
       const result = await API.addSolver(formValues);
 
       props.configureAlert({ type: "success", message: result.message });
 
-      navigate(`/solvers/${formValues.name}`);
+      navigate(`/solvers`);
     } catch (error) {
       console.error(error)
       props.configureAlert({ type: "error", message: error });
@@ -98,6 +107,7 @@ export function CreateSolverRequestPage(props) {
       {formValues[field].mode === 'Match' ? (
         <TextField
           label="Value"
+          placeholder={label === "CPU" ? "eg. 1000m" : label === "Memory" ? "eg. 1Gi" : "eg. 100"}
           fullWidth
           required
           value={formValues[field].value}
@@ -107,6 +117,7 @@ export function CreateSolverRequestPage(props) {
         <Box display="flex" gap={2}>
           <TextField
             label="Min Value"
+            placeholder={label === "CPU" ? "eg. 1000m" : label === "Memory" ? "eg. 1Gi" : "eg. 100"}
             fullWidth
             required
             value={formValues[field].min}
@@ -115,6 +126,7 @@ export function CreateSolverRequestPage(props) {
           <TextField
             label="Max Value (Optional)"
             fullWidth
+            placeholder={label === "CPU" ? "eg. 5000m" : label === "Memory" ? "eg. 100Gi" : "eg. 500"}
             value={formValues[field].max}
             onChange={(e) => handleSubFieldChange(field, 'max', e.target.value)}
           />
@@ -133,7 +145,7 @@ export function CreateSolverRequestPage(props) {
           {/* Name */}
           <Grid item xs={12}>
             <TextField
-              label="Nome"
+              label="Name"
               fullWidth
               required
               value={formValues.name}
@@ -159,16 +171,33 @@ export function CreateSolverRequestPage(props) {
             </FormControl>
           </Grid>
 
-          {/* Intent ID */}
+          {/* Switch for IntentID*/}
           <Grid item xs={12}>
-            <TextField
-              label="Intent ID"
-              fullWidth
-              required
-              value={formValues.intentID}
-              onChange={(e) => handleChange('intentID', e.target.value)}
-            />
+            <Tooltip title="If not enabled, IntentID is automatically generated in the form: Intent-{Solver name}" arrow>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={showIntentField}
+                    onChange={() => setShowIntentField((prev) => !prev)}
+                  />
+                }
+                label="Show Intent ID"
+              />
+            </Tooltip>
           </Grid>
+
+          {/* Intent ID */}
+          {showIntentField && (
+            <Grid item xs={12}>
+              <TextField
+                label="Intent ID"
+                fullWidth
+                required
+                value={formValues.intentID}
+                onChange={(e) => handleChange('intentID', e.target.value)}
+              />
+            </Grid>
+          )}
 
           {/* Flags */}
           <Grid item xs={12}>
@@ -201,7 +230,7 @@ export function CreateSolverRequestPage(props) {
                   }
                 />
               }
-              label={formValues.type === 'K8Slice'? "Establish Liqo Peering" : `Activate ${formValues.type}`}
+              label={formValues.type === 'K8Slice' ? "Establish Liqo Peering" : `Activate ${formValues.type}`}
             />
           </Grid>
 
@@ -213,20 +242,21 @@ export function CreateSolverRequestPage(props) {
               {renderAdditionalFields('podsFilter', 'Pods')}
             </>
           )}
-          {/* fiels for other FlavorType */}
-          { (formValues.type !== 'K8Slice' || formValues.type === '')  && 
+          {/* fields for other FlavorType */}
+          {(formValues.type !== 'K8Slice' || formValues.type === '') &&
             <Typography variant="h5" m={3}>
               FlavorType Not Implemented at the moment.
             </Typography>
           }
         </Grid>
 
-        {/*  ArchitectureFilter */}
+        {/*  ArchitectureFilter: it only has "Match", not "Range" */}
         {formValues.type === 'K8Slice' && (
           <Grid item xs={12} sm={4}>
             <Typography variant="h6">Architecture</Typography>
             <TextField
               label="Value"
+              placeholder='eg. amd64'
               fullWidth
               required
               value={formValues.architectureFilter.value}
@@ -237,7 +267,6 @@ export function CreateSolverRequestPage(props) {
           </Grid>
         )}
 
-        {/* Submit */}
         <Box mt={4}>
           <Button variant="contained" color="primary" disabled={formValues.type !== 'K8Slice'} type="submit">
             Send Request

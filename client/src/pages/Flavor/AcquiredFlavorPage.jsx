@@ -21,7 +21,7 @@ export function RemoteFlavorPage(props) {
                 const flavors = contracts.map(c => new Flavor(c.spec.flavor));
                 setFlavorsArray(flavors);
                 setIsLoading(false)
-                console.log(flavors)
+                
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })

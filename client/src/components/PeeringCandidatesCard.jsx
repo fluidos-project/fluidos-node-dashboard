@@ -10,7 +10,6 @@ export function PeeringCadidateCard(props) {
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
-    //console.log(props.element)
 
     //for future updates to support other flavorType
     const details = () => {

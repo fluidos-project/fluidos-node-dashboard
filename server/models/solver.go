@@ -22,9 +22,7 @@ type SolverData struct {
 	EstablishPeering   bool   `json:"establishPeering"`
 }
 
-// Funzione per creare la risorsa Solver
 func CreateSolverResource(solverData *SolverData) *unstructured.Unstructured {
-	// Mappa i dati dal JSON in una struttura che rappresenta la risorsa Solver in Kubernetes
 	solverResource := map[string]interface{}{
 		"apiVersion": "nodecore.fluidos.eu/v1alpha1",
 		"kind":       "Solver",
@@ -64,17 +62,20 @@ func CreateSolverResource(solverData *SolverData) *unstructured.Unstructured {
 	return &unstructured.Unstructured{Object: solverResource}
 }
 
-// Helper per creare i dati dei filtri
+// Helper to create filter data. Pay attention to server side validation
 func createFilterData(filter *Filter) map[string]interface{} {
+	data := make(map[string]interface{})
+
 	if filter.Mode == "Match" {
-		return map[string]interface{}{
-			"value": filter.Value,
-		}
+		data["value"] = filter.Value
 	} else if filter.Mode == "Range" {
-		return map[string]interface{}{
-			"min": filter.Min,
-			"max": filter.Max,
+		if filter.Min != "" {
+			data["min"] = filter.Min
+		}
+		if filter.Max != "" {
+			data["max"] = filter.Max
 		}
 	}
-	return nil
+
+	return data
 }
