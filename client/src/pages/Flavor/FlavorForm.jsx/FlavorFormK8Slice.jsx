@@ -2,6 +2,7 @@ import {
     Box,
     Button,
     Grid,
+    InputAdornment,
     TextField,
     Typography,
 } from '@mui/material';
@@ -15,7 +16,7 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
         podsStep: false,
     });
 
-    // Funzione di validazione per assicurarsi che Min sia divisibile per Step
+    // Validation function to ensure that Min is divisible by Step
     const validatePartitionability = (minValue, stepValue) => {
         return stepValue !== 0 && minValue % stepValue === 0;
     };
@@ -23,11 +24,10 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
     const handlePartitionabilityChange = (path, value, minKey, stepKey) => {
         handleChange(path, value);
 
-        // Ottenere i valori attuali di Min e Step
         const minValue = path[path.length - 1] === minKey ? value : flavor.spec.flavorType.typeData.policies.partitionability[minKey];
         const stepValue = path[path.length - 1] === stepKey ? value : flavor.spec.flavorType.typeData.policies.partitionability[stepKey];
 
-        // Validare se Min è divisibile per Step
+        // Validate if Min is divisible by Step
         if (!validatePartitionability(minValue, stepValue)) {
             setErrors((prevErrors) => ({ ...prevErrors, [stepKey]: true }));
         } else {
@@ -35,7 +35,6 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
         }
     };
 
-    // Funzione per verificare se esistono errori
     const hasErrors = () => {
         return Object.values(errors).some((error) => error);
     };
@@ -64,26 +63,35 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                     {/* CPU */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="CPU (nanocores)"
+                            label="CPU (in nanocores)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.cpu}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'cpu'], e.target.value)}
                             required
                             placeholder='eg. 1000000'
                             type='number'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">n</InputAdornment>,
+                            }}
+                            inputProps={{ min:0, step: 1}}
+
                         />
                     </Grid>
 
                     {/* Memory */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="Memory (Mi)"
+                            label="Memory (in Mi)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.memory}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'memory'], e.target.value)}
                             required
                             placeholder='eg. 4096'
                             type='number'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Mi</InputAdornment>,
+                            }}
+                            inputProps={{ min:0, step: 0.01}}
                         />
                     </Grid>
 
@@ -94,7 +102,7 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.gpu.model}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'gpu', 'model'], e.target.value)}
-                        
+
                             placeholder='eg. NVIDIA Tesla K80'
                         />
                     </Grid>
@@ -102,26 +110,31 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                     {/* GPU Cores */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="GPU Cores (nanocores)"
+                            label="GPU (in fraction)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.gpu.cores}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'gpu', 'cores'], e.target.value)}
-                            
-                            placeholder='eg. 2000000'
+
+                            placeholder='eg. 1; 0,5; 0,1'
                             type='number'
+                            inputProps={{ min: 0, max:1, step: 0.001 }}
+
                         />
                     </Grid>
 
                     {/* GPU Memory */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="GPU Memory (Mi)"
+                            label="GPU Memory (in Mi)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.gpu.memory}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'gpu', 'memory'], e.target.value)}
-                            
                             placeholder='eg. 3860000'
                             type='number'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Mi</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 0.01 }}
                         />
                     </Grid>
 
@@ -135,30 +148,35 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             required
                             type='number'
                             placeholder='eg. 20'
+                            inputProps={{ min: 0, step: 1 }}
                         />
                     </Grid>
 
                     {/* Storage */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="Storage (Gi)"
+                            label="Storage (in Gi)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.characteristics.storage}
                             onChange={(e) => handleChange(['spec', 'flavorType', 'typeData', 'characteristics', 'storage'], e.target.value)}
                             required
                             type='number'
                             placeholder='eg. 100'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Gi</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 0.01 }}
                         />
                     </Grid>
                 </Grid>
 
-                {/* Sezione Partitionability */}
+                {/*  Partitionability */}
                 <Typography variant="h5" mt={4} mb={2}>Partitionability</Typography>
                 <Grid container spacing={3}>
                     {/* CPU Min */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="CPU Min (nanocores)"
+                            label="CPU Min (in nanocores)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.cpuMin}
                             onChange={(e) => handlePartitionabilityChange(
@@ -170,13 +188,17 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             required
                             placeholder='eg. 500'
                             type='number'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">n</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 1 }}
                         />
                     </Grid>
 
                     {/* CPU Step */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="CPU Step (nanocores)"
+                            label="CPU Step (in nanocore)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.cpuStep}
                             onChange={(e) => handlePartitionabilityChange(
@@ -190,13 +212,17 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             type='number'
                             error={errors.cpuStep}
                             helperText={errors.cpuStep ? "CPU Min must be divisible by CPU Step." : ''}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">n</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 1 }}
                         />
                     </Grid>
 
                     {/* Memory Min */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="Memory Min (Mi)"
+                            label="Memory Min (in Mi)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.memoryMin}
                             onChange={(e) => handlePartitionabilityChange(
@@ -208,13 +234,17 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             required
                             placeholder='eg. 1'
                             type='number'
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Mi</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 0.01 }}
                         />
                     </Grid>
 
                     {/* Memory Step */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="Memory Step (Mi)"
+                            label="Memory Step (in Mi)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.memoryStep}
                             onChange={(e) => handlePartitionabilityChange(
@@ -228,13 +258,17 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                             type='number'
                             error={errors.memoryStep}
                             helperText={errors.memoryStep ? "Memory Min must be divisible by Memory Step." : ''}
+                            InputProps={{
+                                startAdornment: <InputAdornment position="start">Mi</InputAdornment>,
+                            }}
+                            inputProps={{ min: 0, step: 0.01 }}
                         />
                     </Grid>
 
                     {/* GPU Min */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="GPU Min (nanocores)"
+                            label="GPU Min (in fraction)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.gpuMin}
                             onChange={(e) => handlePartitionabilityChange(
@@ -243,16 +277,17 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                                 'gpuMin',
                                 'gpuStep'
                             )}
-                            
-                            placeholder='eg. 1000000'
+
+                            placeholder='eg. 0,5'
                             type='number'
+                            inputProps={{ min: 0, max:1, step: 0.001 }}
                         />
                     </Grid>
 
                     {/* GPU Step */}
                     <Grid item xs={12} sm={4}>
                         <TextField
-                            label="GPU Step (nanocores)"
+                            label="GPU Step (in fraction)"
                             fullWidth
                             value={flavor.spec.flavorType.typeData.policies.partitionability.gpuStep}
                             onChange={(e) => handlePartitionabilityChange(
@@ -261,8 +296,9 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                                 'gpuMin',
                                 'gpuStep'
                             )}
-                            
-                            placeholder='eg. 5000'
+                            inputProps={{ min: 0, max:1, step: 0.001 }}
+
+                            placeholder='eg. 0,1'
                             type='number'
                             error={errors.gpuStep}
                             helperText={errors.gpuStep ? "GPU Min must be divisible by GPU Step." : ''}
@@ -281,6 +317,7 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                                 'podsMin',
                                 'podsStep'
                             )}
+                            inputProps={{ min: 0, step: 1 }}
                             required
                             type='number'
                             placeholder='eg. 10'
@@ -299,6 +336,7 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                                 'podsMin',
                                 'podsStep'
                             )}
+                            inputProps={{ min: 0, step: 1 }}
                             required
                             type='number'
                             placeholder='eg. 1'
@@ -308,7 +346,7 @@ export function FlavorFormK8Slice({ flavor, handleChange, goToPreviousPage, hand
                     </Grid>
                 </Grid>
 
-                {/* Pulsanti per tornare alla pagina precedente e inviare il form */}
+                {/* Buttons */}
                 <Box mt={4} display="flex" gap={2}>
                     <Button variant="outlined" color="primary" onClick={goToPreviousPage}>
                         Previous

@@ -4,6 +4,8 @@ import { NotFoundPage } from "../utils/NotFoundPage";
 import { FlavorFormPage1 } from "./FlavorForm.jsx/FlavorFormPage1";
 import { FlavorFormK8Slice } from "./FlavorForm.jsx/FlavorFormK8Slice";
 import { useNavigate } from "react-router-dom";
+import API from "../../utils/API";
+
 
 export function CreateFlavorPage(props) {
     const navigate = useNavigate();
@@ -62,12 +64,11 @@ export function CreateFlavorPage(props) {
           const updatedFlavor = { ...prevFlavor };
           let current = updatedFlavor;
     
-          // Itera fino al penultimo livello
+          // Iterate to the penultimate level
           for (let i = 0; i < keyPath.length - 1; i++) {
             current = current[keyPath[i]];
           }
     
-          // Aggiorna il valore
           current[keyPath[keyPath.length - 1]] = value;
     
           return updatedFlavor;
@@ -79,9 +80,9 @@ export function CreateFlavorPage(props) {
         console.log(flavor);
 
         try {
-            //const result = await API.addSolver(formValues);
+            const result = await API.addFlavor(flavor);
       
-            //props.configureAlert({ type: "success", message: result.message });
+            props.configureAlert({ type: "success", message: result.message });
       
             navigate("/flavors")
           } catch (error) {
@@ -105,7 +106,7 @@ export function CreateFlavorPage(props) {
     return (
         <Box>
             {currentPage === 1 ? (
-                <FlavorFormPage1 flavor={flavor} setFlavor={setFlavor} handleChange={handleChange} goToNextPage={goToNextPage} />
+                <FlavorFormPage1 flavor={flavor} setFlavor={setFlavor} handleChange={handleChange} goToNextPage={goToNextPage} configureAlert={props.configureAlert}/>
             ): renderSecondPage() }
             
         </Box>

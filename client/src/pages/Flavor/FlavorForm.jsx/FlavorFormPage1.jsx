@@ -1,44 +1,55 @@
 import { Box, Button, Grid, MenuItem, Select, TextField, Typography, FormControl, InputLabel, Modal, Backdrop, Fade } from '@mui/material';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import API from '../../../utils/API';
+import yaml from 'js-yaml'; 
 
 
-// Prima pagina del form
 export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange, configureAlert }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
+    const [yamlContent, setYamlContent] = useState('');
+    const [yamlError, setYamlError] = useState(false);
 
-    const handleSubmitConfig = () => {
+    const handleSubmitConfig = async (e) => {
+        e.preventDefault();
+        console.log(yamlContent)
         try {
-            //const result = await API.addSolver(formValues);
+            yaml.load(yamlContent);
+            const result = await API.addFlavorYAML(yamlContent);
       
-            //props.configureAlert({ type: "success", message: result.message });
+            configureAlert({ type: "success", message: result.message });
       
             navigate("/flavors")
+            
           } catch (error) {
             console.error(error)
-            props.configureAlert({ type: "error", message: error });
+            setYamlError(true)
+            configureAlert({ type: "error", message: error });
           }
 
     }
 
     const modalStyle = {
         position: 'absolute',
-        top: '35%',
+        top: '40%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: 600,
+        width: 700,
         bgcolor: 'background.paper',
         border: 'none',
-        boxShadow: 24,
+        boxShadow: 20,
         borderRadius: 2,
         p: 4,
         maxHeight: '75vh',
         overflow: 'auto',
     };
-    const [yamlContent, setYamlContent] = useState('');
+
     const handleChangeYAML = (event) => {
         setYamlContent(event.target.value);
+        setYamlError(false)
     };
 
     return (
@@ -81,7 +92,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                         </Grid>
                     </Grid>
 
-                    {/* Sezione Location */}
+                    {/* Location */}
                     <Typography variant="h5" mt={4} mb={2}>Location</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4}>
@@ -138,7 +149,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                         </Grid>
                     </Grid>
 
-                    {/* Sezione Price */}
+                    {/* Price */}
                     <Typography variant="h5" mt={4} mb={2}>Price</Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4}>
@@ -150,6 +161,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                 required
                                 placeholder='eg. 479.99'
                                 type='number'
+                                inputProps={{ min:0, step:0.01}}
 
                             />
                         </Grid>
@@ -169,8 +181,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                     <MenuItem value="AUD">AUD - Australian Dollar</MenuItem>
                                     <MenuItem value="CAD">CAD - Canadian Dollar</MenuItem>
                                     <MenuItem value="CHF">CHF - Swiss Franc</MenuItem>
-                                    
-                                    {/* Puoi aggiungere altre valute se necessario */}
+                                
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -183,11 +194,12 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                 required
                                 placeholder='eg. 365'
                                 type='number'
+                                inputProps={{ min:0, step:1}}
                             />
                         </Grid>
                     </Grid>
 
-                    {/* Pulsante per passare alla pagina successiva */}
+                    {/* next page */}
                     <Box mt={4} display="flex" gap={2}>
                         <Button variant="contained" type="submit" color="primary">
                             Next
@@ -198,6 +210,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                     </Box>
                 </form>
             </Box>
+            
             {/* Modal for YAML config*/}
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -221,11 +234,13 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                         <TextField
                             multiline
                             fullWidth
-                            rows={10} // Adjust the number of visible rows as needed
+                            rows={10} 
                             variant="outlined"
                             value={yamlContent}
                             onChange={handleChangeYAML}
                             sx={{ mb: 2 }}
+                            error={yamlError}
+                            helperText={yamlError && "Check configuration"}
                         />
 
                         <Button variant="contained" color="primary" onClick={handleSubmitConfig}>

@@ -18,7 +18,7 @@ func main() {
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
 	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
 	router.HandleFunc("/api/flavors", utils.AddFlavors).Methods("POST")
-	router.HandleFunc("/api/flavorsYAML", utils.AddFlavors).Methods("POST")
+	router.HandleFunc("/api/flavorsYAML", utils.AddFlavorsYAML).Methods("POST")
 
 	router.HandleFunc("/api/reservations", utils.GetReservations).Methods("GET")
 	router.HandleFunc("/api/reservations/{name}", utils.GetSingleReservation).Methods("GET")
