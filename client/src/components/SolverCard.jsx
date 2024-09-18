@@ -21,7 +21,7 @@ export function SolverCard(props) {
                     </Typography>
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.secondary">
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Flavor Type: {props.element.spec.selector.flavorType}</span>
+                            <span>{props.element.spec.selector.flavorType === '' ? "Solver without FlavorType filter": `Flavor Type: ${props.element.spec.selector.flavorType}` }</span>
                             <span>AGE: {age}</span>
                         </Box>
                     </Typography>

@@ -205,3 +205,39 @@ func AddFlavorsYAML(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Flavor via YAML created successfully"})
 }
+
+func DeleteFlavor(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		log.Fatalf("Failed to create dynamic client: %v", err)
+	}
+
+	// Recupera il nome del Flavor dai parametri della richiesta
+	vars := mux.Vars(r)
+	flavorName := vars["name"]
+	if flavorName == "" {
+		http.Error(w, "Flavor name is required", http.StatusBadRequest)
+		return
+	}
+
+	// Definisce il GVR (GroupVersionResource) per il Flavor
+	gvr := schema.GroupVersionResource{
+		Group:    "nodecore.fluidos.eu",
+		Version:  "v1alpha1",
+		Resource: "flavors",
+	}
+
+	// Elimina il Flavor specificato
+	err = clientset.Resource(gvr).Namespace("fluidos").Delete(r.Context(), flavorName, metav1.DeleteOptions{})
+	if err != nil {
+		http.Error(w, "Failed to delete Flavor or Flavor Not Found", http.StatusInternalServerError)
+		return
+	}
+
+	// Risposta di successo
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Flavor deleted successfully"})
+}

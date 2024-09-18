@@ -118,44 +118,67 @@ function DisplaySolverInfo(props) {
                 </TableContainer>
             </Grid>
 
-            {/* Solver Specs Table */}
-            <Grid item xs={12}>
-                <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                    <Table sx={{ minWidth: 300 }} aria-label="solver specs table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
-                                    <Typography variant="h6" gutterBottom>
-                                        Solver Specs
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Type of requested Flavor</TableCell>
-                                <TableCell>{props.solver.spec.selector.flavorType}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Architecture Filter</TableCell>
-                                <TableCell>{getFilterString(props.solver.spec.selector.filters.architectureFilter)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">CPU Filter</TableCell>
-                                <TableCell>{getFilterString(props.solver.spec.selector.filters.cpuFilter)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Memory Filter</TableCell>
-                                <TableCell>{getFilterString(props.solver.spec.selector.filters.memoryFilter)}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Pods Filter</TableCell>
-                                <TableCell>{getFilterString(props.solver.spec.selector.filters.podsFilter)}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+            {/* Solver Specs Table only for K8Slice*/}
+            {props.solver.spec.selector.flavorType !== '' &&
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="solver specs table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Solver Specs
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Type of requested Flavor</TableCell>
+                                    <TableCell>{props.solver.spec.selector.flavorType}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Architecture Filter</TableCell>
+                                    <TableCell>{getFilterString(props.solver.spec.selector.filters.architectureFilter)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">CPU Filter</TableCell>
+                                    <TableCell>{getFilterString(props.solver.spec.selector.filters.cpuFilter)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Memory Filter</TableCell>
+                                    <TableCell>{getFilterString(props.solver.spec.selector.filters.memoryFilter)}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Pods Filter</TableCell>
+                                    <TableCell>{getFilterString(props.solver.spec.selector.filters.podsFilter)}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>}
+
+            {props.solver.spec.selector.flavorType === '' &&
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="solver specs table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Solver Specs
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">The Solver request does not include any Specification</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>}
 
             {/* Status Table */}
             <Grid item xs={12}>
@@ -237,39 +260,77 @@ function DisplaySolverInfo(props) {
                 </Grid>
             }
 
-            {/* PeeringCandidate Table */}
-            <Grid item xs={12}>
-                <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                    <Table sx={{ minWidth: 300 }} aria-label="peering candidate table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'success.main', color: 'white' }} >
-                                    <Typography variant="h6" gutterBottom>
-                                        Peering Candidates Found
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            { /* the solver could found some candidates, so they are showed here.
+            {/* PeeringCandidate Table with filter on FlavorType */}
+            {props.solver.spec.selector.flavorType !== '' &&
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="peering candidate table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'success.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Peering Candidates Found
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                { /* the solver could found some candidates, so they are showed here.
                             Sometimes the request could not found anything, so the table is empty. */
-                                props.peeringCandidates.length > 0 ? props.peeringCandidates.map((p, idx) =>
-                                    <TableRow key={idx}>
-                                        <TableCell component="th" scope="row">N.{idx + 1}</TableCell>
-                                        <TableCell><Link relative="path" to={`../../flavors/available/${p.metadata.name}`}>{p.metadata.name}</Link></TableCell>
-                                    </TableRow>
-                                ) :
-                                    <TableRow >
-                                        <TableCell component="th" scope="row"></TableCell>
-                                        <TableCell>No Peering Candidates found with this request</TableCell>
-                                    </TableRow>
-                            }
+                                    props.peeringCandidates.length > 0 ? props.peeringCandidates.map((p, idx) =>
+                                        <TableRow key={idx}>
+                                            <TableCell component="th" scope="row">N.{idx + 1}</TableCell>
+                                            <TableCell><Link relative="path" to={`../../flavors/available/${p.metadata.name}`}>{p.metadata.name}</Link></TableCell>
+                                        </TableRow>
+                                    ) :
+                                        <TableRow >
+                                            <TableCell component="th" scope="row"></TableCell>
+                                            <TableCell>No Peering Candidates found with this request</TableCell>
+                                        </TableRow>
+                                }
 
 
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>}
+
+            {/* PeeringCandidate Table without filter on FlavorType: it is a list of all available flavors*/}
+            {props.solver.spec.selector.flavorType === '' &&
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="peering candidate table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={4} sx={{ backgroundColor: 'success.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Available Flavor List
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                { /* the solver could found some candidates, so they are showed here.
+                            Sometimes the request could not found anything, so the table is empty. */
+                                    props.peeringCandidates.length > 0 ? props.peeringCandidates.map((p, idx) =>
+                                        <TableRow key={idx}> {console.log(p)}
+                                            <TableCell component="th" scope="row">N.{idx + 1}</TableCell>
+                                            <TableCell><Link relative="path" to={`../../flavors/available/${p.metadata.name}`}>{p.metadata.name}</Link></TableCell>
+                                            <TableCell>{p.spec.flavor.spec.flavorType.typeIdentifier}</TableCell>
+                                            <TableCell>{`${p.spec.flavor.spec.owner.nodeID} (${p.spec.flavor.spec.owner.ip})`}</TableCell>
+                                        </TableRow>
+                                    ) :
+                                        <TableRow >
+                                            <TableCell component="th" scope="row"></TableCell>
+                                            <TableCell>No Flavor found with this request</TableCell>
+                                        </TableRow>
+                                }
+
+
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>}
 
         </Grid>
 

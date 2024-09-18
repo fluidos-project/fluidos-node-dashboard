@@ -30,6 +30,23 @@ export function FlavorsPage(props) {
         fetchLocalFlavors();
     }, [])
 
+    const handleDelete = async (idx, name) => {
+        //console.log(idx, name)
+        try {
+            const result = await API.deleteFlavor(name);
+            //console.log(result)
+      
+            props.configureAlert({ type: "success", message: result.message });
+            const newArray = flavorsArray.filter(f => f.metadata.name !=name);
+            //console.log(newArray)
+            setFlavorsArray(newArray);
+            
+          } catch (error) {
+            console.error(error)
+            props.configureAlert({ type: "error", message: error });
+          }
+    }
+
     // Make the Skeleton last at leats 1 second
     /*
     useEffect(() => {
@@ -101,9 +118,9 @@ export function FlavorsPage(props) {
                             <SkeletonCard />
                         </Grid>
                     )) :
-                        flavorsArray.length > 0 ? flavorsArray.map(flavor =>
-                            <Grid item md={12} mb={12} key={flavor.metadata.name} >
-                                <FlavorCard element={flavor} />
+                        flavorsArray.length > 0 ? flavorsArray.map((flavor, idx) =>
+                            <Grid item md={12}  key={flavor.metadata.name} >
+                                <FlavorCard element={flavor} idx= {idx} handleDelete={handleDelete} configureAlert={props.configureAlert}/>
                             </Grid>
                         ) : <Grid item md={12} sx={{ display: 'flex', justifyContent: 'center', height: '100%' }} >
                             <Typography variant="h5"> There are no flavors available at the moment</Typography>

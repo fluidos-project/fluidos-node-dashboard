@@ -82,6 +82,21 @@ const addFlavorYAML = async(data) => {
 
 }
 
+const deleteFlavor = async (name) => {
+  const response = await fetch(`${SERVER_URL}/flavors/${name}`, {
+    method: 'DELETE'
+  })
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
 //SOLVER API
 const getSolvers = async () => {
   const response = await fetch(`${SERVER_URL}/solvers`, {
@@ -439,18 +454,33 @@ const addFluidosNode = async (request) => {
   }
 }
 
+const deleteFluidosNode = async (index) => {
+  const response = await fetch(`${SERVER_URL}/nodes/deleteFluidosNode/${index}`, {
+    method: 'PUT',
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    return data;
+  }
+  else {
+    const errDetails = await response.text();
+    throw errDetails;
+  }
+}
+
 
 
 
 
 const API = {
-  getFlavors, getSingleFlavor, addFlavor, addFlavorYAML, 
+  getFlavors, getSingleFlavor, addFlavor, addFlavorYAML, deleteFlavor, 
   getSolvers, getSingleSolver, addSolver,
   getPeeringCandidates, getSinglePeeringCandidate,
   getContracts, getSingleContract,
   getReservations, getSingleReservation, addReservation,
   getAllocations, getSingleAllocation, addAllocation,
   getTransactions, getSingleTransaction,
-  getNodeInfo, getNodes, getMetrics, getNetManagerConfigCM, addFluidosNode
+  getNodeInfo, getNodes, getMetrics, getNetManagerConfigCM, addFluidosNode, deleteFluidosNode
 };
 export default API 

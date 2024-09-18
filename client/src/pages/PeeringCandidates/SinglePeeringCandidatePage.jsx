@@ -109,83 +109,111 @@ function DisplayPeeringCInfo(props) {
                 </TableContainer>
             </Grid>
 
-            {/* Candidate Specs Table */}
-            <Grid item xs={12}>
-                <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                    <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
-                                    <Typography variant="h6" gutterBottom>
-                                        Peering Candidate Specs
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Type of Candidate</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Architecture</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.architecture}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">CPU cores</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.cpu}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Memory</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Pods</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.pods}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Storage</TableCell>
-                                <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.storage}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+            {/* Candidate Specs Table for K8Slice FlavorType */}
 
-            {/* Partitionability Table */}
-            <Grid item xs={12}>
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 300 }} aria-label="partition table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
-                                    <Typography variant="h6" gutterBottom>
-                                        Partitionability Info
-                                    </Typography>
-                                </TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            <TableRow>
-                                <TableCell component="th" scope="row">CPU (min ; step) </TableCell>
-                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuStep}`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Memory (min ; step) </TableCell>
-                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryStep}`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">GPU (min ; step) </TableCell>
-                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuStep}`}</TableCell>
-                            </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Pods (min ; step) </TableCell>
-                                <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsStep}`}</TableCell>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </Grid>
+            {props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier=="K8Slice" && <>
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Peering Candidate Specs
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Type of Candidate</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Architecture</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.architecture}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">CPU cores</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.cpu}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Memory</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Pods</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.pods}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Storage</TableCell>
+                                    <TableCell>{props.peeringCandidate.spec.flavor.spec.flavorType.typeData.characteristics.storage}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+
+                {/* Partitionability Table */}
+                <Grid item xs={12}>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 300 }} aria-label="partition table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Partitionability Info 
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">CPU (min ; step) </TableCell>
+                                    <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.cpuStep}`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Memory (min ; step) </TableCell>
+                                    <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.memoryStep}`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">GPU (min ; step) </TableCell>
+                                    <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.gpuStep}`}</TableCell>
+                                </TableRow>
+                                <TableRow>
+                                    <TableCell component="th" scope="row">Pods (min ; step) </TableCell>
+                                    <TableCell>{`${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsMin};${props.peeringCandidate.spec.flavor.spec.flavorType.typeData.policies.partitionability.podsStep}`}</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </>
+            }
+
+            {/* PeeringCandidate Specs Table for other FlavorType*/}
+            {props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier !== "K8Slice" &&
+                    <Grid item xs={12}>
+                        <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                            <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                            <Typography variant="h6" gutterBottom>
+                                                Flavor Specs 
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>This FlavorType is not supported by the Dashboard at the moment</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>}
+
 
             {/* Location Table */}
             <Grid item xs={12}>

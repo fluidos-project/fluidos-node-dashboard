@@ -2,14 +2,17 @@ import { Card, Typography, CardContent, Button, Box, CardActions, Table, TableCo
 import { useEffect, useState } from "react";
 import { styled } from '@mui/material/styles';
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import dayjs from "dayjs"
 import calculateAge from "../utils/age";
 import { K8SliceType } from "./FlavorType/K8SliceType";
+import API from "../utils/API";
+
 
 
 export default function FlavorCard(props) {
-    const [flavorSection, setFlavorSection] = useState("local");
+    const [flavorSection, setFlavorSection] = useState('');
+    const navigate = useNavigate();
 
     const age = calculateAge(props.element.metadata.creationTimestamp)
 
@@ -19,7 +22,7 @@ export default function FlavorCard(props) {
             case 'K8Slice':
                 return <K8SliceType element={props.element} />;
             default:
-                return <p>Unknown Type</p>;
+                return <p>Specs table has to be implemented for this FlavorType</p>;
         }
     }
 
@@ -35,12 +38,11 @@ export default function FlavorCard(props) {
             } else {
                 setFlavorSection("local");
             }
-           
+
         };
 
         updateSection();
     });
-
 
     return (
         <Card sx={{ minWidth: 300 }}>
@@ -72,16 +74,26 @@ export default function FlavorCard(props) {
                 {specs()}
 
             </CardContent>
-            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
+            <CardActions sx={{ display: 'flex', justifyContent: 'left' }}>
                 <Button
                     component={Link}
                     relative="path"
                     size="medium"
                     variant="contained"
-                    to={flavorSection=="available"? props.peeringcandidate.metadata.name: props.element.metadata.name}
+                    to={flavorSection == "available" ? props.peeringcandidate.metadata.name : props.element.metadata.name}
                 >
                     More Info
                 </Button>
+                {flavorSection == "local" &&
+                    <Button
+                        onClick={()=>props.handleDelete(props.idx, props.element.metadata.name)}
+                        relative="path"
+                        size="medium"
+                        variant="contained"
+                        color="error"
+                    >
+                        Delete
+                    </Button>}
 
             </CardActions>
         </Card>

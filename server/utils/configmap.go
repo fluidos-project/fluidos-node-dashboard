@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -96,4 +98,71 @@ func AddFluidosNodeCM(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]string{"message": "Fluidos Node added successfully"})
+}
+
+func DeleteFluidosNode(w http.ResponseWriter, r *http.Request) {
+	config := KubernetesConfig()
+
+	clientset, err := dynamic.NewForConfig(config)
+	if err != nil {
+		http.Error(w, "Failed to create dynamic client", http.StatusInternalServerError)
+		log.Fatalf("Failed to create dynamic client: %v", err)
+		return
+	}
+
+	gvr := schema.GroupVersionResource{
+		Group:    "",
+		Version:  "v1",
+		Resource: "configmaps",
+	}
+
+	vars := mux.Vars(r)
+	indexStr := vars["index"]
+	if indexStr == "" {
+		http.Error(w, "Index is required", http.StatusBadRequest)
+		return
+	}
+
+	index, err := strconv.Atoi(indexStr)
+	if err != nil {
+		http.Error(w, "Invalid index format", http.StatusBadRequest)
+		return
+	}
+
+	cm, err := clientset.Resource(gvr).Namespace("fluidos").Get(r.Context(), "fluidos-network-manager-config", metav1.GetOptions{})
+	if err != nil {
+		http.Error(w, "Failed to get ConfigMap", http.StatusInternalServerError)
+		log.Println("Failed to get ConfigMap:", err)
+		return
+	}
+
+	data := cm.Object["data"].(map[string]interface{})
+	currentLocal := data["local"].(string)
+
+	if currentLocal == "" {
+		http.Error(w, "No entries found in 'local'", http.StatusBadRequest)
+		return
+	}
+
+	localEntries := strings.Split(currentLocal, ",")
+	if index < 0 || index >= len(localEntries) {
+		http.Error(w, "Invalid index", http.StatusBadRequest)
+		return
+	}
+
+	// Rimuove l'entry in base all'indice
+	localEntries = append(localEntries[:index], localEntries[index+1:]...)
+
+	data["local"] = strings.Join(localEntries, ",")
+	cm.Object["data"] = data
+
+	_, err = clientset.Resource(gvr).Namespace("fluidos").Update(r.Context(), cm, metav1.UpdateOptions{})
+	if err != nil {
+		http.Error(w, "Failed to update ConfigMap", http.StatusInternalServerError)
+		log.Println("Failed to update ConfigMap:", err)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(map[string]string{"message": "Fluidos Node removed successfully"})
 }

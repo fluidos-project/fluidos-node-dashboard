@@ -24,7 +24,7 @@ function SingleRemoteFlavorPage(props) {
         const fetchFlavor = async () => {
             try {
                 const contracts = await API.getContracts();
-                const singlecontract= contracts.filter(c=> c.spec.flavor.metadata.name==name)[0];
+                const singlecontract = contracts.filter(c => c.spec.flavor.metadata.name == name)[0];
                 setContract(singlecontract);
                 setFlavor(singlecontract.spec.flavor);
             } catch (error) {
@@ -45,7 +45,7 @@ function SingleRemoteFlavorPage(props) {
                     <Typography variant="h3"> Flavors</Typography>
                 </Grid>
                 <Grid item md={12}>
-                    {flavor ? <DisplayFlavorInfo flavor={flavor} contract={contract}/> :
+                    {flavor ? <DisplayFlavorInfo flavor={flavor} contract={contract} /> :
                         <Box sx={{
                             display: 'flex',
                             flexDirection: 'column',
@@ -108,54 +108,78 @@ function DisplayFlavorInfo(props) {
                                     <TableCell component="th" scope="row">Contract ID</TableCell>
                                     <TableCell><Link relative="path" to={`../../../contracts/${props.contract.metadata.name}`}>{props.contract.metadata.name}</Link></TableCell>
                                 </TableRow>
-                                
+
                             </TableBody>
                         </Table>
                     </TableContainer>
                 </Grid>
 
-                {/* Flavor Specs Table */}
-                <Grid item xs={12}>
-                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                        <Table sx={{ minWidth: 300 }} aria-label="flavor specs table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
-                                        <Typography variant="h6" gutterBottom>
-                                            Flavor Specs
-                                        </Typography>
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Availability</TableCell>
-                                    <TableCell>{props.flavor.spec.availability ? "The Flavor is Available" : "The flavor is not Available"}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Type of Flavor</TableCell>
-                                    <TableCell>{props.flavor.spec.flavorType.typeIdentifier}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Architecture</TableCell>
-                                    <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.architecture}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">CPU</TableCell>
-                                    <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.cpu}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">GPU</TableCell>
-                                    <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</TableCell>
-                                </TableRow>
-                                <TableRow>
-                                    <TableCell component="th" scope="row">Storage</TableCell>
-                                    <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.storage}</TableCell>
-                                </TableRow>
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Grid>
+                {/* Flavor Specs Table for K8Slice*/}
+                {props.flavor.spec.flavorType.typeIdentifier === "K8Slice" &&
+                    <Grid item xs={12}>
+                        <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                            <Table sx={{ minWidth: 300 }} aria-label="flavor specs table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                            <Typography variant="h6" gutterBottom>
+                                                Flavor Specs
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">Availability</TableCell>
+                                        <TableCell>{props.flavor.spec.availability ? "The Flavor is Available" : "The flavor is not Available"}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">Type of Flavor</TableCell>
+                                        <TableCell>{props.flavor.spec.flavorType.typeIdentifier}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">Architecture</TableCell>
+                                        <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.architecture}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">CPU</TableCell>
+                                        <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.cpu}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">GPU</TableCell>
+                                        <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.gpu.cores}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell component="th" scope="row">Storage</TableCell>
+                                        <TableCell>{props.flavor.spec.flavorType.typeData.characteristics.storage}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>}
+
+                {/* Flavor Specs Table for other FlavorType*/}
+                {props.flavor.spec.flavorType.typeIdentifier !== "K8Slice" &&
+                    <Grid item xs={12}>
+                        <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                            <Table sx={{ minWidth: 300 }} aria-label="flavor specs table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                            <Typography variant="h6" gutterBottom>
+                                                Flavor Specs
+                                            </Typography>
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>This FlavorType is not supported by the Dashboard at the moment</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>}
 
                 {/* Owner Table */}
                 <Grid item xs={12}>

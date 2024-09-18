@@ -19,6 +19,7 @@ func main() {
 	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
 	router.HandleFunc("/api/flavors", utils.AddFlavors).Methods("POST")
 	router.HandleFunc("/api/flavorsYAML", utils.AddFlavorsYAML).Methods("POST")
+	router.HandleFunc("/api/flavors/{name}", utils.DeleteFlavor).Methods("DELETE")
 
 	router.HandleFunc("/api/reservations", utils.GetReservations).Methods("GET")
 	router.HandleFunc("/api/reservations/{name}", utils.GetSingleReservation).Methods("GET")
@@ -45,6 +46,7 @@ func main() {
 	router.HandleFunc("/api/nodes", utils.GetNodes).Methods("GET")
 	router.HandleFunc("/api/configmaps/{name}", utils.GetConfigMapByName).Methods("GET")
 	router.HandleFunc("/api/nodes/addFluidosNode", utils.AddFluidosNodeCM).Methods("PUT")
+	router.HandleFunc("/api/nodes/deleteFluidosNode/{index:[0-9]+}", utils.DeleteFluidosNode).Methods("PUT")
 
 	// --- FILE SERVING FOR BUILD ---
 

@@ -11,12 +11,12 @@ type Filter struct {
 
 type SolverData struct {
 	Name               string `json:"name"`
-	Type               string `json:"type"`
+	Type               string `json:"type,omitempty"`
 	IntentID           string `json:"intentID"`
-	ArchitectureFilter Filter `json:"architectureFilter"`
-	CPUFilter          Filter `json:"cpuFilter"`
-	MemoryFilter       Filter `json:"memoryFilter"`
-	PodsFilter         Filter `json:"podsFilter"`
+	ArchitectureFilter Filter `json:"architectureFilter,omitempty"`
+	CPUFilter          Filter `json:"cpuFilter,omitempty"`
+	MemoryFilter       Filter `json:"memoryFilter,omitempty"`
+	PodsFilter         Filter `json:"podsFilter,omitempty"`
 	FindCandidate      bool   `json:"findCandidate"`
 	ReserveAndBuy      bool   `json:"reserveAndBuy"`
 	EstablishPeering   bool   `json:"establishPeering"`
@@ -31,32 +31,52 @@ func CreateSolverResource(solverData *SolverData) *unstructured.Unstructured {
 			"namespace": "fluidos",
 		},
 		"spec": map[string]interface{}{
-			"selector": map[string]interface{}{
-				"flavorType": solverData.Type,
-				"filters": map[string]interface{}{
-					"architectureFilter": map[string]interface{}{
-						"name": solverData.ArchitectureFilter.Mode,
-						"data": createFilterData(&solverData.ArchitectureFilter),
-					},
-					"cpuFilter": map[string]interface{}{
-						"name": solverData.CPUFilter.Mode,
-						"data": createFilterData(&solverData.CPUFilter),
-					},
-					"memoryFilter": map[string]interface{}{
-						"name": solverData.MemoryFilter.Mode,
-						"data": createFilterData(&solverData.MemoryFilter),
-					},
-					"podsFilter": map[string]interface{}{
-						"name": solverData.PodsFilter.Mode,
-						"data": createFilterData(&solverData.PodsFilter),
-					},
-				},
-			},
 			"intentID":         solverData.IntentID,
 			"findCandidate":    solverData.FindCandidate,
 			"reserveAndBuy":    solverData.ReserveAndBuy,
 			"establishPeering": solverData.EstablishPeering,
 		},
+	}
+
+	selector := map[string]interface{}{}
+
+	// Add field only if they are present. This section should be updated to supports other FlavorType
+	if solverData.Type != "" {
+		selector["flavorType"] = solverData.Type
+	}
+
+	filters := map[string]interface{}{}
+	if solverData.ArchitectureFilter.Mode != "" {
+		filters["architectureFilter"] = map[string]interface{}{
+			"name": solverData.ArchitectureFilter.Mode,
+			"data": createFilterData(&solverData.ArchitectureFilter),
+		}
+	}
+	if solverData.CPUFilter.Mode != "" {
+		filters["cpuFilter"] = map[string]interface{}{
+			"name": solverData.CPUFilter.Mode,
+			"data": createFilterData(&solverData.CPUFilter),
+		}
+	}
+	if solverData.MemoryFilter.Mode != "" {
+		filters["memoryFilter"] = map[string]interface{}{
+			"name": solverData.MemoryFilter.Mode,
+			"data": createFilterData(&solverData.MemoryFilter),
+		}
+	}
+	if solverData.PodsFilter.Mode != "" {
+		filters["podsFilter"] = map[string]interface{}{
+			"name": solverData.PodsFilter.Mode,
+			"data": createFilterData(&solverData.PodsFilter),
+		}
+	}
+
+	if len(filters) > 0 {
+		selector["filters"] = filters
+	}
+
+	if len(selector) > 0 {
+		solverResource["spec"].(map[string]interface{})["selector"] = selector
 	}
 
 	return &unstructured.Unstructured{Object: solverResource}

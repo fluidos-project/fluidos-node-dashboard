@@ -4,6 +4,7 @@ import Grid from '@mui/system/Unstable_Grid/Grid';
 import { Breadcrumbs, Button, CircularProgress, Modal, Paper, Typography, TextField, Box, Fade } from '@mui/material';
 import API from '../../utils/API';
 import { SingleNode } from '../../components/SingleNodeInfo';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Function to validate IP address
 const isValidIP = (ip) => {
@@ -24,6 +25,7 @@ function NodeInfoPage(props) {
     const [showNodeModal, setShowNodeModal] = useState(false); // Used to show/hide the "Add Node" button and the form.
     const [ipError, setIpError] = useState(''); // Error message for IP validation
     const [formValid, setFormValid] = useState(false); // Form validation state
+    const [showEditing, setShowEditing] = useState(false) //manage Delete button and Add Nodes Button
 
     const handleOpen = () => setShowNodeModal(true);
     const handleClose = () => setShowNodeModal(false);
@@ -91,6 +93,28 @@ function NodeInfoPage(props) {
         }
     };
 
+    const handleShowEditing = () => {
+        setShowEditing(prev => !prev);
+    }
+
+    const handleDelete = async (indexList) => {
+        console.log(indexList)
+            ;
+
+        try {
+            const result = await API.deleteFluidosNode(indexList);
+            const newIPs = ips.filter((ip, idx) => idx != indexList);
+            setIPs(newIPs)
+            props.configureAlert({ type: "success", message: result.message })
+
+        } catch (error) {
+            console.error(error)
+            props.configureAlert({ type: "error", message: error });
+        }
+    }
+
+
+
     useEffect(() => {
         // Check if the form is valid
         setFormValid(isValidIP(newNode.ip));
@@ -105,8 +129,8 @@ function NodeInfoPage(props) {
                 <Grid md={12}>
                     <Box display="flex" alignItems="center" justifyContent="left" mb={2}>
                         <Typography mr={4} variant="h4">REMOTE FLUIDOS Nodes</Typography>
-                        <Button variant="contained" onClick={handleOpen} color="primary">
-                            Add Node
+                        <Button variant="contained" onClick={handleShowEditing} color="primary">
+                            {showEditing ? "View Node" : "Edit Nodes"}
                         </Button>
                     </Box>
                     {isLoading && (
@@ -123,8 +147,31 @@ function NodeInfoPage(props) {
                         </Grid>
                     )}
                     {ips && ips.map((ip, idx) => (
-                        <Typography key={ip} variant="body1">IP{idx + 1}: {ip}</Typography>
+                        <Box key={ip} mb={1} display="flex" alignItems="center" justifyContent="left" gap={1}>
+
+                            {showEditing && <Button
+                                onClick={() => handleDelete(idx)}
+
+                                variant="contained"
+                                size="small"
+                                color="error"
+                                sx={{
+                                    minWidth: 'auto', // Rimuove la larghezza minima predefinita
+                                    width: 30,        // Imposta la larghezza del pulsante
+                                    height: 30,       // Imposta l'altezza del pulsante
+                                    padding: 0,       // Rimuove il padding interno
+                                }}
+                            >
+                                <DeleteIcon fontSize='small' />
+                            </Button>}
+                            <Typography variant="body1">IP{idx + 1}: {ip}</Typography>
+                        </Box>
                     ))}
+                    {
+                        showEditing && <Button variant="contained" onClick={handleOpen} color="primary">
+                            Add Node
+                        </Button>
+                    }
                 </Grid>
 
                 <Grid md={12}>

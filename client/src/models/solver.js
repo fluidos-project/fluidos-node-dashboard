@@ -38,7 +38,18 @@ class Spec {
     this.findCandidate = data.findCandidate || false;
     this.intentID = data.intentID || '';
     this.reserveAndBuy = data.reserveAndBuy || false;
-    this.selector = new Selector(data.selector);
+    if (data.selector && data.selector.flavorType !== undefined) {
+      this.selector = new Selector(data.selector);
+  } else {
+      this.selector = new SelectorGeneric();
+  }
+
+  }
+}
+class SelectorGeneric {
+  constructor(data) {
+    this.filters = {};
+    this.flavorType = '';
   }
 }
 
