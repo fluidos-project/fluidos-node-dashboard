@@ -186,7 +186,7 @@ function DisplaySolverInfo(props) {
                     <Table sx={{ minWidth: 300 }} aria-label="status table">
                         <TableHead>
                             <TableRow>
-                                <TableCell colSpan={2} sx={{ backgroundColor: 'error.main', color: 'white' }} >
+                                <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
                                     <Typography variant="h6" gutterBottom>
                                         Status
                                     </Typography>
@@ -230,7 +230,7 @@ function DisplaySolverInfo(props) {
                         <Table sx={{ minWidth: 300 }} aria-label="credentials table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'info.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
                                             Credentials
                                         </Typography>

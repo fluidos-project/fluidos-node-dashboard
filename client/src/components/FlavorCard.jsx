@@ -22,7 +22,9 @@ export default function FlavorCard(props) {
             case 'K8Slice':
                 return <K8SliceType element={props.element} />;
             default:
-                return <p>Specs table has to be implemented for this FlavorType</p>;
+                return <Typography variant="body1" component="div">
+                    Specs are not implemented for this FlavorType
+                </Typography>
         }
     }
 
@@ -86,7 +88,7 @@ export default function FlavorCard(props) {
                 </Button>
                 {flavorSection == "local" &&
                     <Button
-                        onClick={()=>props.handleDelete(props.idx, props.element.metadata.name)}
+                        onClick={() => props.handleDelete(props.idx, props.element.metadata.name)}
                         relative="path"
                         size="medium"
                         variant="contained"

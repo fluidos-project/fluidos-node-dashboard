@@ -86,160 +86,161 @@ export function CreateSolverRequestPage(props) {
         name: formValues.name,
         intentID: formValues.intentID,
         findCandidate: formValues.findCandidate,
-        reserveAndBuy: formValues.reserveAndBuy,
-        establishPeering: formValues.establishPeering
+        reserveAndBuy: false,
+        establishPeering: false
       }
     }
 
-      if (formValues.type == 'K8Slice') {
-        requestValue = {
-          name: formValues.name,
-          type: formValues.type,
-          intentID: formValues.intentID,
-          architectureFilter: formValues.architectureFilter,
-          cpuFilter: formValues.cpuFilter,
-          memoryFilter: formValues.memoryFilter,
-          podsFilter: formValues.podsFilter,
-          findCandidate: formValues.findCandidate,
-          reserveAndBuy: formValues.reserveAndBuy,
-          establishPeering: formValues.establishPeering,
-        }
-
+    if (formValues.type == 'K8Slice') {
+      requestValue = {
+        name: formValues.name,
+        type: formValues.type,
+        intentID: formValues.intentID,
+        architectureFilter: formValues.architectureFilter,
+        cpuFilter: formValues.cpuFilter,
+        memoryFilter: formValues.memoryFilter,
+        podsFilter: formValues.podsFilter,
+        findCandidate: formValues.findCandidate,
+        reserveAndBuy: formValues.reserveAndBuy,
+        establishPeering: formValues.establishPeering,
       }
-      console.log(requestValue);
 
-      try {
-        const result = await API.addSolver(requestValue);
+    }
+    console.log(requestValue);
 
-        props.configureAlert({ type: "success", message: result.message });
+    try {
+      const result = await API.addSolver(requestValue);
 
-        navigate(`/solvers`);
-      } catch (error) {
-        console.error(error)
-        props.configureAlert({ type: "error", message: error });
-      }
-    };
-  
+      props.configureAlert({ type: "success", message: result.message });
 
-    // rendering new fields
-    const renderAdditionalFields = (field, label) => (
-      <Grid item xs={12} sm={4}>
-        <Typography variant="h6">{label}</Typography>
-        <RadioGroup
-          row
-          value={formValues[field].mode}
-          onChange={(e) => handleSubFieldChange(field, 'mode', e.target.value)}
-        >
-          <FormControlLabel value="Match" control={<Radio />} label="Match" />
-          <FormControlLabel value="Range" control={<Radio />} label="Range" />
-        </RadioGroup>
-        {formValues[field].mode === 'Match' ? (
+      navigate(`/solvers`);
+    } catch (error) {
+      console.error(error)
+      props.configureAlert({ type: "error", message: error });
+    }
+  };
+
+
+  // rendering new fields
+  const renderAdditionalFields = (field, label) => (
+    <Grid item xs={12} sm={4}>
+      <Typography variant="h6">{label}</Typography>
+      <RadioGroup
+        row
+        value={formValues[field].mode}
+        onChange={(e) => handleSubFieldChange(field, 'mode', e.target.value)}
+      >
+        <FormControlLabel value="Match" control={<Radio />} label="Match" />
+        <FormControlLabel value="Range" control={<Radio />} label="Range" />
+      </RadioGroup>
+      {formValues[field].mode === 'Match' ? (
+        <TextField
+          label="Value"
+          placeholder={label === "CPU" ? "eg. 1000m" : label === "Memory" ? "eg. 1Gi" : "eg. 100"}
+          fullWidth
+          required
+          value={formValues[field].value}
+          onChange={(e) => handleSubFieldChange(field, 'value', e.target.value)}
+        />
+      ) : (
+        <Box display="flex" gap={2}>
           <TextField
-            label="Value"
+            label="Min Value"
             placeholder={label === "CPU" ? "eg. 1000m" : label === "Memory" ? "eg. 1Gi" : "eg. 100"}
             fullWidth
             required
-            value={formValues[field].value}
-            onChange={(e) => handleSubFieldChange(field, 'value', e.target.value)}
+            value={formValues[field].min}
+            onChange={(e) => handleSubFieldChange(field, 'min', e.target.value)}
           />
-        ) : (
-          <Box display="flex" gap={2}>
+          <TextField
+            label="Max Value (Optional)"
+            fullWidth
+            placeholder={label === "CPU" ? "eg. 5000m" : label === "Memory" ? "eg. 100Gi" : "eg. 500"}
+            value={formValues[field].max}
+            onChange={(e) => handleSubFieldChange(field, 'max', e.target.value)}
+          />
+        </Box>
+      )}
+    </Grid>
+  );
+
+  return (
+    <Box p={4}>
+      <form onSubmit={handleSubmit}>
+        <Typography variant="h4" mb={3}>
+          Create new Request
+        </Typography>
+        <Grid container spacing={3}>
+          {/* Name */}
+          <Grid item xs={12}>
             <TextField
-              label="Min Value"
-              placeholder={label === "CPU" ? "eg. 1000m" : label === "Memory" ? "eg. 1Gi" : "eg. 100"}
+              label="Name"
               fullWidth
               required
-              value={formValues[field].min}
-              onChange={(e) => handleSubFieldChange(field, 'min', e.target.value)}
+              value={formValues.name}
+              onChange={(e) => handleChange('name', e.target.value)}
             />
-            <TextField
-              label="Max Value (Optional)"
-              fullWidth
-              placeholder={label === "CPU" ? "eg. 5000m" : label === "Memory" ? "eg. 100Gi" : "eg. 500"}
-              value={formValues[field].max}
-              onChange={(e) => handleSubFieldChange(field, 'max', e.target.value)}
-            />
-          </Box>
-        )}
-      </Grid>
-    );
+          </Grid>
 
-    return (
-      <Box p={4}>
-        <form onSubmit={handleSubmit}>
-          <Typography variant="h4" mb={3}>
-            Create new Request
-          </Typography>
-          <Grid container spacing={3}>
-            {/* Name */}
-            <Grid item xs={12}>
-              <TextField
-                label="Name"
-                fullWidth
+          {/* FlavorType (Select) */}
+          <Grid item xs={12}>
+            <FormControl fullWidth required>
+              <InputLabel>FlavorType</InputLabel>
+              <Select
+                label="FlavorType"
                 required
-                value={formValues.name}
-                onChange={(e) => handleChange('name', e.target.value)}
-              />
-            </Grid>
+                value={formValues.type}
+                onChange={(e) => handleChange('type', e.target.value)}
+              >
+                <MenuItem value="No Filter">No Filter</MenuItem>
+                <MenuItem value="K8Slice">K8Slice</MenuItem>
+                <MenuItem value="VM">VM</MenuItem>
+                <MenuItem value="Service">Service</MenuItem>
+                <MenuItem value="Sensor">Sensor</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
 
-            {/* FlavorType (Select) */}
-            <Grid item xs={12}>
-              <FormControl fullWidth required>
-                <InputLabel>FlavorType</InputLabel>
-                <Select
-                  label="FlavorType"
-                  required
-                  value={formValues.type}
-                  onChange={(e) => handleChange('type', e.target.value)}
-                >
-                  <MenuItem value="No Filter">No Filter</MenuItem>
-                  <MenuItem value="K8Slice">K8Slice</MenuItem>
-                  <MenuItem value="VM">VM</MenuItem>
-                  <MenuItem value="Service">Service</MenuItem>
-                  <MenuItem value="Sensor">Sensor</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-
-            {/* Switch for IntentID*/}
-            <Grid item xs={12}>
-              <Tooltip title="If not enabled, IntentID is automatically generated in the form: Intent-{Solver name}" arrow>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={showIntentField}
-                      onChange={() => setShowIntentField((prev) => !prev)}
-                    />
-                  }
-                  label="Show Intent ID"
-                />
-              </Tooltip>
-            </Grid>
-
-            {/* Intent ID */}
-            {showIntentField && (
-              <Grid item xs={12}>
-                <TextField
-                  label="Intent ID"
-                  fullWidth
-                  required
-                  value={formValues.intentID}
-                  onChange={(e) => handleChange('intentID', e.target.value)}
-                />
-              </Grid>
-            )}
-
-            {/* Flags */}
-            <Grid item xs={12}>
+          {/* Switch for IntentID*/}
+          <Grid item xs={12}>
+            <Tooltip title="If not enabled, IntentID is automatically generated in the form: Intent-{Solver name}" arrow>
               <FormControlLabel
                 control={
-                  <Checkbox
-                    checked={formValues.findCandidate}
-                    onChange={(e) => handleChange('findCandidate', e.target.checked)}
+                  <Switch
+                    checked={showIntentField}
+                    onChange={() => setShowIntentField((prev) => !prev)}
                   />
                 }
-                label="Find Candidate"
+                label="Show Intent ID"
               />
+            </Tooltip>
+          </Grid>
+
+          {/* Intent ID */}
+          {showIntentField && (
+            <Grid item xs={12}>
+              <TextField
+                label="Intent ID"
+                fullWidth
+                required
+                value={formValues.intentID}
+                onChange={(e) => handleChange('intentID', e.target.value)}
+              />
+            </Grid>
+          )}
+
+          {/* Flags */}
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={formValues.findCandidate}
+                  onChange={(e) => handleChange('findCandidate', e.target.checked)}
+                />
+              }
+              label="Find Candidate"
+            />
+            {formValues.type !== "No Filter" && <>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -262,47 +263,48 @@ export function CreateSolverRequestPage(props) {
                 }
                 label={formValues.type === 'K8Slice' ? "Establish Liqo Peering" : `Activate ${formValues.type}`}
               />
-            </Grid>
-
-            {/* fields for K8Slice */}
-            {formValues.type === 'K8Slice' && (
-              <>
-                {renderAdditionalFields('cpuFilter', 'CPU')}
-                {renderAdditionalFields('memoryFilter', 'Memory')}
-                {renderAdditionalFields('podsFilter', 'Pods')}
-              </>
-            )}
-            {/* fields for other FlavorType */}
-            {(formValues.type !== 'K8Slice' && formValues.type !== 'No Filter') &&
-              <Typography variant="h5" m={3}>
-                FlavorType Not Implemented at the moment.
-              </Typography>
-            }
+            </>}
           </Grid>
 
-          {/*  ArchitectureFilter: it only has "Match", not "Range" */}
+          {/* fields for K8Slice */}
           {formValues.type === 'K8Slice' && (
-            <Grid item xs={12} sm={4}>
-              <Typography variant="h6">Architecture</Typography>
-              <TextField
-                label="Value"
-                placeholder='eg. amd64'
-                fullWidth
-                required
-                value={formValues.architectureFilter.value}
-                onChange={(e) =>
-                  handleSubFieldChange('architectureFilter', 'value', e.target.value)
-                }
-              />
-            </Grid>
+            <>
+              {renderAdditionalFields('cpuFilter', 'CPU')}
+              {renderAdditionalFields('memoryFilter', 'Memory')}
+              {renderAdditionalFields('podsFilter', 'Pods')}
+            </>
           )}
+          {/* fields for other FlavorType */}
+          {(formValues.type !== 'K8Slice' && formValues.type !== 'No Filter') &&
+            <Typography variant="h5" m={3}>
+              FlavorType Not Implemented at the moment.
+            </Typography>
+          }
+        </Grid>
 
-          <Box mt={4}>
-            <Button variant="contained" color="primary" disabled={formValues.type !== 'K8Slice' && formValues.type !== 'No Filter'} type="submit">
-              Send Request
-            </Button>
-          </Box>
-        </form>
-      </Box>
-    );
-  }
+        {/*  ArchitectureFilter: it only has "Match", not "Range" */}
+        {formValues.type === 'K8Slice' && (
+          <Grid item xs={12} sm={4}>
+            <Typography variant="h6">Architecture</Typography>
+            <TextField
+              label="Value"
+              placeholder='eg. amd64'
+              fullWidth
+              required
+              value={formValues.architectureFilter.value}
+              onChange={(e) =>
+                handleSubFieldChange('architectureFilter', 'value', e.target.value)
+              }
+            />
+          </Grid>
+        )}
+
+        <Box mt={4}>
+          <Button variant="contained" color="primary" disabled={formValues.type !== 'K8Slice' && formValues.type !== 'No Filter'} type="submit">
+            Send Request
+          </Button>
+        </Box>
+      </form>
+    </Box>
+  );
+}

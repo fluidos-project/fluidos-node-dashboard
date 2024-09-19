@@ -86,9 +86,9 @@ class FilterData {
 
 class Status {
   constructor(data) {
-    this.allocation = new ResourceRef(data.allocation);
-    this.contract = new ResourceRef(data.contract);
-    this.credentials = new Credentials(data.credentials);
+    this.allocation = data.allocation ? new ResourceRef(data.allocation) : new ResourceRef({});
+    this.contract = data.contract ? new ResourceRef(data.contract) : new ResourceRef({});
+    this.credentials = data.credentials ? new Credentials(data.credentials) : new Credentials({});
     this.discoveryPhase = data.discoveryPhase || '-';
     this.findCandidate = data.findCandidate || '';
     this.peering = data.peering || '-';
