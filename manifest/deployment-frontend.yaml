@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard-frontend
+  labels:
+    app: dashboard-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dashboard-frontend
+  template:
+    metadata:
+      labels:
+        app: dashboard-frontend
+    spec:
+      containers:
+        - name: dashboard-frontend
+          image: frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: REACT_APP_BACKEND_ADDRESS
+              value: backend-service
+            - name: REACT_APP_BACKEND_PORT
+              value: "3001"
+          imagePullPolicy: IfNotPresent

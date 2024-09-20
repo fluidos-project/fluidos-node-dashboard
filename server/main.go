@@ -15,6 +15,8 @@ func main() {
 	router := mux.NewRouter()
 	corsRouter := utils.EnableCors(router)
 
+	http.Handle("/", corsRouter)
+
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
 	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
 	router.HandleFunc("/api/flavors", utils.AddFlavors).Methods("POST")

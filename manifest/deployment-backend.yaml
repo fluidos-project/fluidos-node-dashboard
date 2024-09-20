@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dashboardfluidos
+  name: dashboard-backend
   labels:
-    app: dashboard
+    app: dashboard-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: dashboard
+      app: dashboard-backend
   template:
     metadata:
       labels:
-        app: dashboard
+        app: dashboard-backend
     spec:
       containers:
-        - name: dashboard
-          image: dashboardfluidos:latest
+        - name: dashboard-backend
+          image: backend:latest
           ports:
             - containerPort: 3001
           imagePullPolicy: IfNotPresent

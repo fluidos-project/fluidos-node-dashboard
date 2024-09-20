@@ -18,7 +18,6 @@ RUN mkdir -p /app/dist
 
 # Copia il binario e i file statici
 COPY --from=builder /app/dashboardfluidos /dashboardfluidos
-COPY --from=builder /app/dist /app/dist
 
 # Installazione di ca-certificates se necessario per HTTPS
 RUN apk --no-cache add ca-certificates

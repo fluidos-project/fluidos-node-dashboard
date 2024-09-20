@@ -7,10 +7,30 @@ import { PeeringCandidate } from "../models/peeringCandidate";
 import { Reservation } from "../models/reservation";
 import { Solver } from "../models/solver";
 import { Transaction } from "../models/transactions";
-const SERVER_URL = "http://localhost:3001/api";
+
+// USE THESE FOR DEVELOPMENT
+/*
+const backend_address = 'localhost';
+const backend_port = 3001;
+
+const backend_address = window._env_?.REACT_APP_BACKEND_ADDRESS || 'localhost';
+const backend_port = window._env_?.REACT_APP_BACKEND_PORT || '3001';
+*/
+
+
+//console.log(process.env);
+console.log(window._env_);
+
+const backend_address = window._env_.REACT_APP_BACKEND_ADDRESS || 'localhost';
+const backend_port = window._env_.REACT_APP_BACKEND_PORT || '3001';
+
+
+const SERVER_URL = `http://${backend_address}:${backend_port}/api`;
+
 
 // FLAVOR API
 const getFlavors = async () => {
+  console.log(SERVER_URL)
   const response = await fetch(`${SERVER_URL}/flavors`, {
     method: 'GET'
   })
