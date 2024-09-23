@@ -3,6 +3,6 @@ kind: ClusterRole
 metadata:
   name: fluidos-resources
 rules:
-- apiGroups: ["nodecore.fluidos.eu", "reservation.fluidos.eu", "advertisement.fluidos.eu"]
-  resources: ["flavors", "solvers", "peeringcandidates", "allocations", "contracts", "transactions", "reservations"]
+- apiGroups: ["nodecore.fluidos.eu", "reservation.fluidos.eu", "advertisement.fluidos.eu", "metrics.k8s.io", ""]
+  resources: ["flavors", "solvers", "peeringcandidates", "allocations", "contracts", "transactions", "reservations", "nodes", "configmaps"]
   verbs: ["get", "list", "create", "update", "delete"]

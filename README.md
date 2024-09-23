@@ -5,9 +5,10 @@ This allows a FLUIDOS node to extend its _capabilities_, _resources_ and _servic
 This dashboard simplifies how you interact with the most important resources defined in the FLUIDOS node, which can be used to visualize, reserve and buy resources from a remote FLUIDOS node through a GUI instead of using the Kubernetes Custom Resources underneath.
 
 ## Usage
-The dashboard can be installed in a Kubernetes cluster through the manifest `deploymentDashboard.yaml` in `/manifest`.
+The dashboard can be installed in a Kubernetes cluster through the manifests in `/manifest`. You need to deploy the Deployment, the Services and the Ingress.
+In addition, remember to install the [Ingress Controller](https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.2/deploy/static/provider/cloud/deploy.yaml).
 
-The Dashboard can also be executed locally on your machine (e.g. for development purposed). You must set the `kubeconfig` variable ( in `server/utils/utils.go`) which is used to specify the path of local configuration of Kubernetes-consumer-cluster.
-Then the dashboard can be started with:
-`go run main.go` for the server (in `/server`)
-`npm run dev` for the frontend (in `/client`)
+The Dashboard can also be executed locally on your machine (at [localhost:8080](http://localhost:8080/)) through the command:
+```bash
+kubectl port-forward --namespace ingress-nginx service/ingress-nginx-controller 8080:80
+```

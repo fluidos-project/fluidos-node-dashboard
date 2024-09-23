@@ -25,8 +25,6 @@ RUN apk --no-cache add ca-certificates
 # Imposta la directory di lavoro
 WORKDIR /app
 
-# Espone la porta su cui il server ascolterà
-EXPOSE 8080
 
 # Esegui il binario
 ENTRYPOINT ["/dashboardfluidos"]

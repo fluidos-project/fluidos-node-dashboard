@@ -21,7 +21,7 @@ spec:
             - containerPort: 80
           env:
             - name: REACT_APP_BACKEND_ADDRESS
-              value: backend-service
+              value: localhost #backend-service.default.svc.cluster.local
             - name: REACT_APP_BACKEND_PORT
-              value: "3001"
+              value: "8080"
           imagePullPolicy: IfNotPresent

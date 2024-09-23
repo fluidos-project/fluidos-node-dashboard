@@ -3,19 +3,24 @@ package main
 import (
 	"log"
 	"net/http"
-	"os"
-	"path/filepath"
+	"time"
 
 	"server/utils"
 
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func main() {
 	router := mux.NewRouter()
-	corsRouter := utils.EnableCors(router)
 
-	http.Handle("/", corsRouter)
+	//  CORS
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
 
 	router.HandleFunc("/api/flavors", utils.GetFlavors).Methods("GET")
 	router.HandleFunc("/api/flavors/{name}", utils.GetSingleFlavor).Methods("GET")
@@ -51,27 +56,33 @@ func main() {
 	router.HandleFunc("/api/nodes/deleteFluidosNode/{index:[0-9]+}", utils.DeleteFluidosNode).Methods("PUT")
 
 	// --- FILE SERVING FOR BUILD ---
+	/*
 
-	distDir := "./dist"
+		distDir := "./dist"
 
-	// Manage requests for static files in the assets folder
-	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(distDir, "assets")))))
+		router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(distDir, "assets")))))
 
-	// Handle all other requests by redirecting them to index.html
-	router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		// Costruisci il percorso del file richiesto
-		path := filepath.Join(distDir, r.URL.Path)
 
-		// Check if the file exists
-		if _, err := os.Stat(path); os.IsNotExist(err) || err != nil {
-			// If the file does not exist, index.html is needed
-			http.ServeFile(w, r, filepath.Join(distDir, "index.html"))
-		} else {
-			// If the file exists, serve it directly
-			http.FileServer(http.Dir(distDir)).ServeHTTP(w, r)
-		}
-	})
+		router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+			path := filepath.Join(distDir, r.URL.Path)
+
+
+			if _, err := os.Stat(path); os.IsNotExist(err) || err != nil {
+
+				http.ServeFile(w, r, filepath.Join(distDir, "index.html"))
+			} else {
+
+				http.FileServer(http.Dir(distDir)).ServeHTTP(w, r)
+			}
+		})*/
+
+	server := &http.Server{
+		Addr:              ":3001",
+		ReadHeaderTimeout: 5 * time.Second,
+		Handler:           c.Handler(router),
+	}
 
 	log.Println("Server is starting on port 3001...")
-	log.Fatal(http.ListenAndServe(":3001", corsRouter))
+	log.Fatal(server.ListenAndServe())
 }
