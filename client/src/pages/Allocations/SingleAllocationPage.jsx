@@ -90,10 +90,6 @@ function DisplayAllocationInfo(props) {
                                 <TableCell component="th" scope="row">Age</TableCell>
                                 <TableCell>{age}</TableCell>
                             </TableRow>
-                            <TableRow>
-                                <TableCell component="th" scope="row">Intent ID</TableCell>
-                                <TableCell>{props.allocation.spec.intentID}</TableCell>
-                            </TableRow>
 
                         </TableBody>
                     </Table>

@@ -22,7 +22,7 @@ function SingleSolverPage(props) {
                 const singlesolver = await API.getSingleSolver(name);
                 const peeringC = await API.getPeeringCandidates();
                 setsolver(singlesolver);
-                const filteredPeerCandidates = peeringC.filter(x => x.spec.solverID === singlesolver.metadata.name); // only the candidates discovered with this specific request are showed.
+                const filteredPeerCandidates = peeringC.filter(x => x.spec.interestedSolverIDs.includes(singlesolver.metadata.name) ); // only the candidates discovered with this specific request are showed.
                 setPeeringCandidates(filteredPeerCandidates);
 
             } catch (error) {

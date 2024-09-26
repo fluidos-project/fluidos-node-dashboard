@@ -19,7 +19,6 @@ const backend_port = window._env_?.REACT_APP_BACKEND_PORT || '3001';
 
 
 //console.log(process.env);
-console.log(window._env_);
 
 const backend_address = window._env_.REACT_APP_BACKEND_ADDRESS || 'localhost';
 const backend_port = window._env_.REACT_APP_BACKEND_PORT || '3001';
@@ -30,7 +29,6 @@ const SERVER_URL = `http://${backend_address}:${backend_port}/api`;
 
 // FLAVOR API
 const getFlavors = async () => {
-  console.log(SERVER_URL)
   const response = await fetch(`${SERVER_URL}/flavors`, {
     method: 'GET'
   })
@@ -197,6 +195,7 @@ const getSinglePeeringCandidate = async (name) => {
   if (response.ok) {
     const candidate = await response.json();
     const candidateObj = new PeeringCandidate(candidate);
+    
     return candidateObj
   }
   else {

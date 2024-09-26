@@ -20,7 +20,6 @@ func NewAllocation(data *Allocation) *unstructured.Unstructured {
 				"namespace": "fluidos",
 			},
 			"spec": map[string]interface{}{
-				"intentID": data.IntentID,
 				"contract": map[string]interface{}{
 					"name":      data.Contract,
 					"namespace": "fluidos",

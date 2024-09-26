@@ -87,7 +87,6 @@ func AddAllocation(w http.ResponseWriter, r *http.Request) {
 
 	allocation := models.Allocation{
 		Name:     allocationData["name"].(string),
-		IntentID: allocationData["intentID"].(string),
 		Contract: allocationData["contract"].(string),
 	}
 

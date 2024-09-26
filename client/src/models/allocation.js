@@ -35,7 +35,6 @@ class ManagedField {
 class Spec {
   constructor(data) {
     this.contract = new ContractReference(data.contract);
-    this.intentID = data.intentID || '';
   }
 }
 

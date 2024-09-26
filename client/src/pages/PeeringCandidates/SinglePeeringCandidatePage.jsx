@@ -19,6 +19,7 @@ function SinglePeeringCandidatePage(props) {
             try {
                 const singlepeer = await API.getSinglePeeringCandidate(name);
                 setPeeringCandidate(singlepeer);
+
             } catch (error) {
                 console.error(error)
                 props.configureAlert({ type: "error", message: error })
@@ -89,8 +90,17 @@ function DisplayPeeringCInfo(props) {
                                 <TableCell>{age}</TableCell>
                             </TableRow>
                             <TableRow>
-                                <TableCell component="th" scope="row">Solver Request</TableCell>
-                                <TableCell><Link relative="path" to={`../../../solvers/${props.peeringCandidate.spec.solverID}`}>{props.peeringCandidate.spec.solverID}</Link></TableCell>
+                                <TableCell component="th" scope="row">Interested Solvers</TableCell>
+
+                                <TableCell>
+                                    <Box display="flex" gap={2}>
+                                        {props.peeringCandidate.spec.interestedSolverIDs.map((solver, index) => (
+                                            <Link key={index} relative="path" to={`../../../solvers/${solver}`}>
+                                                {solver}
+                                            </Link>
+                                        ))}
+                                    </Box>
+                                </TableCell>
                             </TableRow>
                             <TableRow>
                                 <TableCell component="th" scope="row">Associated Flavor Name</TableCell>
@@ -111,7 +121,7 @@ function DisplayPeeringCInfo(props) {
 
             {/* Candidate Specs Table for K8Slice FlavorType */}
 
-            {props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier=="K8Slice" && <>
+            {props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier == "K8Slice" && <>
                 <Grid item xs={12}>
                     <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
                         <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
@@ -162,7 +172,7 @@ function DisplayPeeringCInfo(props) {
                                 <TableRow>
                                     <TableCell colSpan={2} sx={{ backgroundColor: 'warning.main', color: 'white' }} >
                                         <Typography variant="h6" gutterBottom>
-                                            Partitionability Info 
+                                            Partitionability Info
                                         </Typography>
                                     </TableCell>
                                 </TableRow>
@@ -193,26 +203,26 @@ function DisplayPeeringCInfo(props) {
 
             {/* PeeringCandidate Specs Table for other FlavorType*/}
             {props.peeringCandidate.spec.flavor.spec.flavorType.typeIdentifier !== "K8Slice" &&
-                    <Grid item xs={12}>
-                        <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
-                            <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
-                                            <Typography variant="h6" gutterBottom>
-                                                Flavor Specs 
-                                            </Typography>
-                                        </TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    <TableRow>
-                                        <TableCell>This FlavorType is not supported by the Dashboard at the moment</TableCell>
-                                    </TableRow>
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </Grid>}
+                <Grid item xs={12}>
+                    <TableContainer component={Paper} sx={{ marginBottom: 2 }}>
+                        <Table sx={{ minWidth: 300 }} aria-label="candidate specs table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell colSpan={2} sx={{ backgroundColor: 'secondary.main', color: 'white' }} >
+                                        <Typography variant="h6" gutterBottom>
+                                            Flavor Specs
+                                        </Typography>
+                                    </TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow>
+                                    <TableCell>This FlavorType is not supported by the Dashboard at the moment</TableCell>
+                                </TableRow>
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>}
 
 
             {/* Location Table */}

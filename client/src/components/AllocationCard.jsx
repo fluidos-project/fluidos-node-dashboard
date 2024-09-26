@@ -22,7 +22,6 @@ export function AllocationCard(props) {
 
                     <Typography component="div" sx={{ mb: 1.5 }} color="text.secondary">
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <span>Intent ID: {props.element.spec.intentID}</span>
                             <span>AGE: {age}</span>
                         </Box>
                     </Typography>
@@ -44,6 +43,9 @@ export function AllocationCard(props) {
                             </Typography>
                             }
                         </Box>
+                    </Typography>
+                    <Typography variant="body1" component="div">
+                        Contract ID: <Link relative="path" to={`../contracts/${props.element.spec.contract.name}`}>{props.element.spec.contract.name}</Link>
                     </Typography>
 
                 </CardContent>

@@ -110,7 +110,6 @@ export function CreateSolverRequestPage(props) {
 
     try {
       const result = await API.addSolver(requestValue);
-
       props.configureAlert({ type: "success", message: result.message });
 
       navigate(`/solvers`);

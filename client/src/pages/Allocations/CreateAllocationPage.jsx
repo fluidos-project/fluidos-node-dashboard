@@ -17,7 +17,6 @@ export function CreateAllocationPage(props) {
   const [formValues, setFormValues] = useState({
     name: '',
     solver: '',
-    intentID: '',
     reservation: '',
     contract: '',
   });
@@ -68,7 +67,6 @@ export function CreateAllocationPage(props) {
           ...prevValues,
           reservation: reservation.metadata.name,
           solver: reservation.spec.solverID,
-          intentID: solver.spec.intentID,
         }));
         //console.log(solver)
       }
@@ -130,15 +128,12 @@ export function CreateAllocationPage(props) {
             </FormControl>
           </Grid>
 
-          {/* Display Solver, Intent ID, and Reservation based on Contract Selection */}
+          {/* Display Solver, and Reservation based on Contract Selection */}
           {formValues.contract && (
             <>
               <Grid item xs={12}>
                 <Typography variant="body1">
                   <strong>Solver:</strong> {formValues.solver}
-                </Typography>
-                <Typography variant="body1">
-                  <strong>Intent ID:</strong> {formValues.intentID}
                 </Typography>
                 <Typography variant="body1">
                   <strong>Reservation:</strong> {formValues.reservation}

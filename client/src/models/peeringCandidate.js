@@ -35,7 +35,8 @@ class Spec {
   constructor(data) {
     this.available = data.available || false;
     this.flavor = new Flavor(data.flavor);
-    this.solverID = data.solverID || '';
+    //this.solverID = data.solverID || '';
+    this.interestedSolverIDs = data.interestedSolverIDs.map(solver => solver.toString())
   }
 }
 
