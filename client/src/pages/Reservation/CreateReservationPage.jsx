@@ -14,6 +14,7 @@ import {
 import { PeeringCadidateCard } from '../../components/PeeringCandidatesCard';
 import API from '../../utils/API';
 import { useNavigate } from 'react-router-dom';
+import validateName from '../../utils/validateName';
 
 export function CreateReservationPage(props) {
     // Stato per i campi del form raggruppato
@@ -30,7 +31,7 @@ export function CreateReservationPage(props) {
     });
 
     const navigate = useNavigate();
-
+    const [nameError, setNameError] = useState('');
     const [solverOptions, setSolverOptions] = useState([]);
     const [peeringOptions, setPeeringOptions] = useState([]);
     const [selectedPeeringDetails, setSelectedPeeringDetails] = useState(null);
@@ -54,6 +55,16 @@ export function CreateReservationPage(props) {
 
     const handleChange = (event) => {
         const { name, value, type, checked } = event.target;
+
+        if (name === 'name') {
+            if (!validateName(value)) {
+                setNameError(
+                    'Invalid name'
+                );
+            } else {
+                setNameError('');
+            }
+        }
         setFormValues((prevValues) => ({
             ...prevValues,
             [name]: type === 'checkbox' ? checked : value,
@@ -85,7 +96,14 @@ export function CreateReservationPage(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-       
+
+        if (!validateName(formValues.name)) {
+            setNameError(
+                'Invalid name'
+            );
+            return;
+        }
+
 
         try {
             const result = await API.addReservation(formValues);
@@ -111,6 +129,8 @@ export function CreateReservationPage(props) {
                         onChange={handleChange}
                         fullWidth
                         required
+                        error={!!nameError}
+                        helperText={nameError}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -230,7 +250,7 @@ export function CreateReservationPage(props) {
                 )}
 
                 <Grid item xs={12}>
-                    <Button type="submit" disabled={peeringOptions.filter(candidate => candidate.spec.available).length === 0} variant="contained" color="primary">
+                    <Button type="submit" disabled={peeringOptions.filter(candidate => candidate.spec.available).length === 0 || !!nameError} variant="contained" color="primary">
                         Submit
                     </Button>
                 </Grid>

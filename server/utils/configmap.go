@@ -150,7 +150,6 @@ func DeleteFluidosNode(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Rimuove l'entry in base all'indice
 	localEntries = append(localEntries[:index], localEntries[index+1:]...)
 
 	data["local"] = strings.Join(localEntries, ",")

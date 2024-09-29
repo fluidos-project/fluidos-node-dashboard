@@ -1,6 +1,6 @@
 # Server Fluidos Dashboard
 
-Backend for the Dashboard.
+Backend for the FLUIDOS NODE Dashboard.
 
 ### Information
 The Backend is a Webserver in Go used to retrieve information of the Custom Resources deployed in a Fluidos Node.
@@ -16,8 +16,11 @@ The main resources are:
 
 - GET `api/flavors`: Retrieves all the Flavor Resources that I (as provider) make available for the sale
 - GET `api/flavors/{name}`: Retrieves a Flavor with a specific name.
-- POST `api/solvers`: Creates a new Solver Requests in the Node.
+- POST `api/flavors`: Create a new Flavor resource.
+- GET `api/flavorsYAML/`: Create a new Flavor resource through a YAML manifest.
+- DELETE `api/flavors/{name}`: Delete a Flavor resource.
 
+- POST `api/solvers`: Creates a new Solver Requests in the Node.
 - GET `api/solvers`: Retrieves the list of Solver Requests created in the Node.
 - GET `api/solver/{name}`: Retrieves a Solver request with a specific name.
 
@@ -43,3 +46,6 @@ The main resources are:
 - GET `api/metrics`: Retrieves metrics associated with all nodes in the cluster.
 
 - GET `/api/configmaps/{name}`: Retrieves info associated with a specific ConfigMap.
+
+- PUT `/api/nodes/addFluidosNode`: It updates the ConfigMap `fluidos-network-manager-config` to add a new Fluidos Node provider through IP+Port.
+- PUT `api/nodes/deleteFluidosNode/{index:[0-9]+}`: It updates the ConfigMap `fluidos-network-manager-config` to remove a Fluidos Node provider.

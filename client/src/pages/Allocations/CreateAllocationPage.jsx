@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import API from '../../utils/API';
 import { useNavigate } from 'react-router-dom';
+import validateName from '../../utils/validateName';
 
 export function CreateAllocationPage(props) {
   const [formValues, setFormValues] = useState({
@@ -21,7 +22,7 @@ export function CreateAllocationPage(props) {
     contract: '',
   });
 
-  const [solvers, setSolvers] = useState([]);
+  const [nameError, setNameError] = useState('');
   const [reservations, setReservations] = useState([]);
   const [contracts, setContracts] = useState([]);
 
@@ -34,15 +35,25 @@ export function CreateAllocationPage(props) {
         setReservations(reservations);
       } catch (error) {
         console.error(error);
-        props.configureAlert({ type: 'error', message: error.message });
+        props.configureAlert({ type: 'error', message: error });
       }
     };
 
     fetchReservations();
-
   }, []);
 
+
   const handleChange = (field, value) => {
+    if (field === 'name') {
+      if (!validateName(value)) {
+        setNameError(
+          'Invalid name'
+        );
+      } else {
+        setNameError('');
+      }
+    }
+
     setFormValues((prevValues) => ({
       ...prevValues,
       [field]: value,
@@ -57,27 +68,30 @@ export function CreateAllocationPage(props) {
     }));
 
     try {
-      
-      // from all the reservations, I select the one with the correct contract to be able to retrieve the info about the Solver request
       const reservation = reservations.find((res) => res.status.contract.name === selectedContract);
       if (reservation) {
-        const solver = await API.getSingleSolver(reservation.spec.solverID)
-
         setFormValues((prevValues) => ({
           ...prevValues,
           reservation: reservation.metadata.name,
           solver: reservation.spec.solverID,
         }));
-        //console.log(solver)
       }
     } catch (error) {
       console.error(error);
-      props.configureAlert({ type: 'error', message: error.message });
+      props.configureAlert({ type: 'error', message: error });
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateName(formValues.name)) {
+      setNameError(
+        'Invalid name'
+      );
+      return;
+    }
+
     console.log(formValues);
 
     try {
@@ -88,7 +102,7 @@ export function CreateAllocationPage(props) {
       navigate(`/allocations`);
     } catch (error) {
       console.error(error);
-      props.configureAlert({ type: 'error', message: error.message });
+      props.configureAlert({ type: 'error', message: error });
     }
   };
 
@@ -107,6 +121,8 @@ export function CreateAllocationPage(props) {
               required
               value={formValues.name}
               onChange={(e) => handleChange('name', e.target.value)}
+              error={!!nameError} 
+              helperText={nameError} 
             />
           </Grid>
 
@@ -145,7 +161,7 @@ export function CreateAllocationPage(props) {
 
         {/* Submit Button */}
         <Box mt={4}>
-          <Button variant="contained" color="primary" type="submit">
+          <Button variant="contained" color="primary" type="submit" disabled={!!nameError}>
             Submit
           </Button>
         </Box>

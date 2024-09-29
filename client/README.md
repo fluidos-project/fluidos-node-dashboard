@@ -4,10 +4,11 @@ This is a React frontend to interact with the Fluidos Node Resources.
 
 ### Pages and routing
 The Routing of the app is organized in the following way:
-- `/`: [NodeInfoPage](/client/src/pages/Nodes/NodeInfoPage.jsx) component. It shows the main metrics of every node in the cluster.
+- `/`: [NodeInfoPage](/client/src/pages/Nodes/NodeInfoPage.jsx) component. It shows the Remote Fluidos Nodes and the main metrics of every Kubernetes node in the cluster.
 
 - `/flavors`: [FlavorsPage](/client/src/pages/Flavor/FlavourPage.jsx) component. It shows the Flavor resource the provider make available to sell.
 - `/flavors/:name`: [SingleFlavorPage](/client/src/pages/Flavor/SingleFlavorPage.jsx) component. It shows the Flavor resource with the specified `name`.
+- `/flavors/new`: [CreateFlavorPage](/client/src/pages/Flavor/CreateFlavorPage.jsx) component. It allows to create a new Flavor Resource inside the Fluidos Node.
 
 - `/flavors/acquired`: [RemoteFlavorPage](/client/src/pages/Flavor/AcquiredFlavorPage.jsx) component. It shows the Flavor resources correctly bought. 
 - `/flavors/acquired:name`: [SingleRemoteFlavorPage](/client/src/pages/Flavor/SingleAcquiredFlavorPage.jsx) component. It shows the Flavor resource with the specified `name`.

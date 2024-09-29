@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import API from '../../utils/API';
 import { useNavigate } from 'react-router-dom';
+import validateName from '../../utils/validateName';
 
 export function CreateSolverRequestPage(props) {
   const [formValues, setFormValues] = useState({
@@ -32,13 +33,25 @@ export function CreateSolverRequestPage(props) {
     reserveAndBuy: true,
     establishPeering: true,
   });
-
+  const [nameError, setNameError] = useState('');
   const [showIntentField, setShowIntentField] = useState(false);
 
   const navigate = useNavigate();
 
   // update fields form
   const handleChange = (field, value) => {
+
+    if (field === 'name') {
+      if (!validateName(value)) {
+        setNameError(
+          'Invalid name'
+        );
+      } else {
+        setNameError('');
+      }
+    }
+
+
     setFormValues((prevValues) => ({
       ...prevValues,
       [field]: value,
@@ -74,6 +87,13 @@ export function CreateSolverRequestPage(props) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     let requestValue = {};
+
+    if (!validateName(formValues.name)) {
+      setNameError(
+        'Invalid name'
+      );
+      return;
+    }
 
     // Intent ID field automatically filled
     if (formValues.intentID === '') {
@@ -178,6 +198,8 @@ export function CreateSolverRequestPage(props) {
               required
               value={formValues.name}
               onChange={(e) => handleChange('name', e.target.value)}
+              error={!!nameError} 
+              helperText={nameError} 
             />
           </Grid>
 
@@ -299,7 +321,7 @@ export function CreateSolverRequestPage(props) {
         )}
 
         <Box mt={4}>
-          <Button variant="contained" color="primary" disabled={formValues.type !== 'K8Slice' && formValues.type !== 'No Filter'} type="submit">
+          <Button variant="contained" color="primary" disabled={(formValues.type !== 'K8Slice' && formValues.type !== 'No Filter') || !!nameError} type="submit" >
             Send Request
           </Button>
         </Box>

@@ -2,10 +2,11 @@ import { Box, Button, Grid, MenuItem, Select, TextField, Typography, FormControl
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import API from '../../../utils/API';
-import yaml from 'js-yaml'; 
+import yaml from 'js-yaml';
+import validateName from '../../../utils/validateName';
 
 
-export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange, configureAlert }) {
+export function FlavorFormPage1({ flavor, setFlavor, nameError, goToNextPage, handleChange, configureAlert }) {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -15,20 +16,21 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
 
     const handleSubmitConfig = async (e) => {
         e.preventDefault();
+
         console.log(yamlContent)
         try {
             yaml.load(yamlContent);
             const result = await API.addFlavorYAML(yamlContent);
-      
+
             configureAlert({ type: "success", message: result.message });
-      
+
             navigate("/flavors")
-            
-          } catch (error) {
+
+        } catch (error) {
             console.error(error)
             setYamlError(true)
             configureAlert({ type: "error", message: error });
-          }
+        }
 
     }
 
@@ -69,7 +71,9 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                 required
                                 value={flavor.name}
                                 onChange={(e) => handleChange(['name'], e.target.value)}
-                                placeholder='eg. Flavor1234'
+                                placeholder='eg. flavor1234'
+                                error={!!nameError}
+                                helperText={nameError}
 
                             />
                         </Grid>
@@ -161,7 +165,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                 required
                                 placeholder='eg. 479.99'
                                 type='number'
-                                inputProps={{ min:0, step:0.01}}
+                                inputProps={{ min: 0, step: 0.01 }}
 
                             />
                         </Grid>
@@ -181,7 +185,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                     <MenuItem value="AUD">AUD - Australian Dollar</MenuItem>
                                     <MenuItem value="CAD">CAD - Canadian Dollar</MenuItem>
                                     <MenuItem value="CHF">CHF - Swiss Franc</MenuItem>
-                                
+
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -194,14 +198,14 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                                 required
                                 placeholder='eg. 365'
                                 type='number'
-                                inputProps={{ min:0, step:1}}
+                                inputProps={{ min: 0, step: 1 }}
                             />
                         </Grid>
                     </Grid>
 
                     {/* next page */}
                     <Box mt={4} display="flex" gap={2}>
-                        <Button variant="contained" type="submit" color="primary">
+                        <Button variant="contained" type="submit" color="primary" disabled={!!nameError}>
                             Next
                         </Button>
                         <Button variant="outlined" color="primary" onClick={handleOpen}>
@@ -210,7 +214,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                     </Box>
                 </form>
             </Box>
-            
+
             {/* Modal for YAML config*/}
             <Modal
                 aria-labelledby="transition-modal-title"
@@ -234,7 +238,7 @@ export function FlavorFormPage1({ flavor, setFlavor, goToNextPage, handleChange,
                         <TextField
                             multiline
                             fullWidth
-                            rows={10} 
+                            rows={10}
                             variant="outlined"
                             value={yamlContent}
                             onChange={handleChangeYAML}

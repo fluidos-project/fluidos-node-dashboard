@@ -87,7 +87,7 @@ func AddSolver(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request payload", http.StatusBadRequest)
 		return
 	}
-	log.Print(solverData)
+
 	solverResource := models.CreateSolverResource(&solverData)
 	log.Print(solverResource)
 

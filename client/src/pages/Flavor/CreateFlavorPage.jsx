@@ -5,10 +5,12 @@ import { FlavorFormPage1 } from "./FlavorForm.jsx/FlavorFormPage1";
 import { FlavorFormK8Slice } from "./FlavorForm.jsx/FlavorFormK8Slice";
 import { useNavigate } from "react-router-dom";
 import API from "../../utils/API";
+import validateName from "../../utils/validateName";
 
 
 export function CreateFlavorPage(props) {
     const navigate = useNavigate();
+    const [nameError, setNameError] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
     const [flavor, setFlavor] = useState({
         name: '',
@@ -60,6 +62,19 @@ export function CreateFlavorPage(props) {
     });
 
     const handleChange = (keyPath, value) => {
+
+        if (keyPath.includes('name')) {
+            console.log("a")
+            if (!validateName(value)) {
+                setNameError(
+                    'Invalid name'
+                );
+            } else {
+                setNameError('');
+            }
+        }
+
+
         setFlavor((prevFlavor) => {
           const updatedFlavor = { ...prevFlavor };
           let current = updatedFlavor;
@@ -78,6 +93,8 @@ export function CreateFlavorPage(props) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log(flavor);
+
+    
 
         try {
             const result = await API.addFlavor(flavor);
@@ -106,7 +123,7 @@ export function CreateFlavorPage(props) {
     return (
         <Box>
             {currentPage === 1 ? (
-                <FlavorFormPage1 flavor={flavor} setFlavor={setFlavor} handleChange={handleChange} goToNextPage={goToNextPage} configureAlert={props.configureAlert}/>
+                <FlavorFormPage1 flavor={flavor} setFlavor={setFlavor} nameError={nameError} handleChange={handleChange} goToNextPage={goToNextPage} configureAlert={props.configureAlert}/>
             ): renderSecondPage() }
             
         </Box>
