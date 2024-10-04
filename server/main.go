@@ -55,28 +55,6 @@ func main() {
 	router.HandleFunc("/api/nodes/addFluidosNode", utils.AddFluidosNodeCM).Methods("PUT")
 	router.HandleFunc("/api/nodes/deleteFluidosNode/{index:[0-9]+}", utils.DeleteFluidosNode).Methods("PUT")
 
-	// --- FILE SERVING FOR BUILD ---
-	/*
-
-		distDir := "./dist"
-
-		router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", http.FileServer(http.Dir(filepath.Join(distDir, "assets")))))
-
-
-		router.PathPrefix("/").HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-
-			path := filepath.Join(distDir, r.URL.Path)
-
-
-			if _, err := os.Stat(path); os.IsNotExist(err) || err != nil {
-
-				http.ServeFile(w, r, filepath.Join(distDir, "index.html"))
-			} else {
-
-				http.FileServer(http.Dir(distDir)).ServeHTTP(w, r)
-			}
-		})*/
-
 	server := &http.Server{
 		Addr:              ":3001",
 		ReadHeaderTimeout: 5 * time.Second,

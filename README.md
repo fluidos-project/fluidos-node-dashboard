@@ -8,7 +8,22 @@ This dashboard simplifies how you interact with the most important resources def
 The dashboard can be installed in a Kubernetes cluster through the manifests in `/manifest`. You need to deploy the Deployment, the Services and the Ingress.
 In addition, remember to install the [Ingress Controller](https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.2/deploy/static/provider/cloud/deploy.yaml).
 
-The Dashboard can also be executed locally on your machine (at [localhost:8080](http://localhost:8080/)) through the command:
+The Dashboard can also be accessed locally on your machine (at [localhost:8080](http://localhost:8080/)) through the command:
 ```bash
 kubectl port-forward --namespace ingress-nginx service/ingress-nginx-controller 8080:80
 ```
+
+In addiction, you can run the code in a development environment. Remember to export the KUBECONFIG variable before running the backend server.
+
+## Example Images
+Overview Page
+![Overview](./img/overview.png)
+
+Flavor Section
+![Flavors List](./img/flavor1.png)
+
+Flavor Details
+![Flavor Details](./img/flavor2.png)
+
+Flavor Creation
+![Flavor Creation](./img/flavor3.png)

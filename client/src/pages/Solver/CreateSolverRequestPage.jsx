@@ -21,9 +21,10 @@ import { useNavigate } from 'react-router-dom';
 import validateName from '../../utils/validateName';
 
 export function CreateSolverRequestPage(props) {
+  const NoFilterLabel= 'all'; //it represent the "All" option in the FlavorType selection
   const [formValues, setFormValues] = useState({
     name: '',
-    type: 'No Filter',
+    type: NoFilterLabel,
     intentID: '',
     architectureFilter: { mode: 'Match', value: '' },
     cpuFilter: { mode: 'Match', min: '', max: '', value: '' },
@@ -101,7 +102,7 @@ export function CreateSolverRequestPage(props) {
     }
 
     // the request fields should match the FlavorType
-    if (formValues.type == 'No Filter') {
+    if (formValues.type == NoFilterLabel) {
       requestValue = {
         name: formValues.name,
         intentID: formValues.intentID,
@@ -213,7 +214,7 @@ export function CreateSolverRequestPage(props) {
                 value={formValues.type}
                 onChange={(e) => handleChange('type', e.target.value)}
               >
-                <MenuItem value="No Filter">No Filter</MenuItem>
+                <MenuItem value={NoFilterLabel}>All</MenuItem>
                 <MenuItem value="K8Slice">K8Slice</MenuItem>
                 <MenuItem value="VM">VM</MenuItem>
                 <MenuItem value="Service">Service</MenuItem>
@@ -261,7 +262,7 @@ export function CreateSolverRequestPage(props) {
               }
               label="Find Candidate"
             />
-            {formValues.type !== "No Filter" && <>
+            {formValues.type !== NoFilterLabel && <>
               <FormControlLabel
                 control={
                   <Checkbox
@@ -296,7 +297,7 @@ export function CreateSolverRequestPage(props) {
             </>
           )}
           {/* fields for other FlavorType */}
-          {(formValues.type !== 'K8Slice' && formValues.type !== 'No Filter') &&
+          {(formValues.type !== 'K8Slice' && formValues.type !== NoFilterLabel) &&
             <Typography variant="h5" m={3}>
               FlavorType Not Implemented at the moment.
             </Typography>
@@ -321,7 +322,7 @@ export function CreateSolverRequestPage(props) {
         )}
 
         <Box mt={4}>
-          <Button variant="contained" color="primary" disabled={(formValues.type !== 'K8Slice' && formValues.type !== 'No Filter') || !!nameError} type="submit" >
+          <Button variant="contained" color="primary" disabled={(formValues.type !== 'K8Slice' && formValues.type !== NoFilterLabel) || !!nameError} type="submit" >
             Send Request
           </Button>
         </Box>

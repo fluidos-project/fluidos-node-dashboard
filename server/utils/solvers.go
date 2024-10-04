@@ -89,7 +89,7 @@ func AddSolver(w http.ResponseWriter, r *http.Request) {
 	}
 
 	solverResource := models.CreateSolverResource(&solverData)
-	log.Print(solverResource)
+	//log.Print(solverResource)
 
 	gvr := schema.GroupVersionResource{
 		Group:    "nodecore.fluidos.eu",
