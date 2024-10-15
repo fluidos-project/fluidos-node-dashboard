@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dashboard-backend
-          image: backend:latest
+          image: dashboard-backend:latest
           ports:
             - containerPort: 3001
           imagePullPolicy: IfNotPresent

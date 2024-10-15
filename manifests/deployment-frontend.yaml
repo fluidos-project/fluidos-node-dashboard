@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: dashboard-frontend
-          image: frontend:latest
+          image: dashboard-frontend:latest
           ports:
             - containerPort: 80
           env:

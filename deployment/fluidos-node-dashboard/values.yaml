@@ -1,0 +1,47 @@
+# Default values for fluidos-node.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# host: "10.0.20.24"
+
+image:
+  # -- Pull polocy for dashboard pods
+  pullPolicy: IfNotPresent
+  # -- Tag to get other versions of the image
+  tag: "0.0.1"
+
+tls:
+  # -- Name of the secret which contains the TLS certificate
+  secretName: ""
+
+backend:
+  host: "10.0.20.24"
+  gaTrackingID: ""
+  # -- Frontend dashboard image name
+  imageName:  "fluidos-node-dashboard-backend"
+  # -- Frontend port
+  port: 30000
+  # -- Number of replicas of frontend's pods
+  replicas: 1
+  service:
+    # -- Type of service. A ClusterIP service is enough because we are using an ingress
+    type: ClusterIP
+
+ingress:
+  annotations: {}
+
+
+frontend:
+  gaTrackingID: ""
+  # -- Frontend dashboard image name
+  imageName:  "fluidos-node-dashboard-frontend"
+  # -- Frontend port
+  port: 8080
+  # -- Number of replicas of frontend's pods
+  replicas: 1
+  service:
+    # -- Type of service. A ClusterIP service is enough because we are using an ingress
+    type: ClusterIP
+
+ingress:
+  annotations: {}
