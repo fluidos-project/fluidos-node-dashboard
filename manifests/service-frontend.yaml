@@ -5,11 +5,13 @@ metadata:
   labels:
     app: dashboard-frontend
 spec:
-  type: ClusterIP  # Cambia il tipo da ClusterIP a NodePort
+  type: NodePort  # Cambia il tipo da ClusterIP a NodePort
   selector:
     app: dashboard-frontend
   ports:
     - protocol: TCP
       port: 80          # Porta esposta dal Service
       targetPort: 80      # Porta su cui il frontend ascolta all'interno del pod
+      nodePort: 32000    # Porta su cui il Service ascolta sul nodo
+
      

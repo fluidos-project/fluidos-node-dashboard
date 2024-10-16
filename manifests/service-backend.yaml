@@ -11,4 +11,5 @@ spec:
     - protocol: TCP
       port: 3001        # Porta esposta dal Service
       targetPort: 3001  # Porta su cui il backend ascolta all'interno del pod
-  type: ClusterIP       # Tipo di Service (ClusterIP è il valore predefinito)
+      nodePort: 31000    # Porta su cui il Service ascolta sul nodo
+  type: NodePort       # Tipo di Service (ClusterIP è il valore predefinito)
