@@ -21,7 +21,7 @@ spec:
             - containerPort: 80
           env:
             - name: REACT_APP_BACKEND_ADDRESS
-              value: localhost #backend-service.default.svc.cluster.local
+              value: machine-ip # Kubernetes cluster IP
             - name: REACT_APP_BACKEND_PORT
-              value: "8080"
+              value: "31000"
           imagePullPolicy: IfNotPresent
