@@ -52,7 +52,10 @@ function NodeInfoPage(props) {
 
                 setnodeArray(nodes);
                 setMetricArray(metrics);
-                setIPs(cm.data.local);
+                // if(cm.data.local) setIPs(cm.data.local); otherwise setIPs([])
+                setIPs(cm.data.local ? cm.data.local : []);
+                // if (cm.data.local) setIPs(cm.data.local
+                // setIPs(cm.data.local);
                 setIsLoading(false);
                 setDataLoaded(true); // Set dataLoaded to true after data is fetched
             } catch (error) {

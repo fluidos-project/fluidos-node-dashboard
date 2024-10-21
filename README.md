@@ -10,15 +10,14 @@ This dashboard simplifies how you interact with the most important resources def
 The dashboard can be installed in a Kubernetes cluster through the manifests in `/manifest`. You need to deploy the Deployment, the Services and the Ingress.
 
 ---
-In addition, remember to install an **Ingress Controller**.
 
-We suggest you to install the NGINX Ingress Controller as following:
+### Notice
 
-```bash
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.11.2/deploy/static/provider/cloud/deploy.yaml
-```
+The dashboard is exposed as two Kubernetes `NodePort` Services: `dashboard-backend` and `dashboard-frontend`.
+
+The dashboard-frontend service depends on the dashboard-backend service, so you need to change the value of the environment variable `REACT_APP_BACKEND_ADDRESS` into `manifests/deployment-frontend` accordingly, putting the IP address of your Kubernetes cluster, before installing the dashboard.
+
 ---
-
 Currently, we build and load the Docker images locally and so we suggest to use the custom installation script which speed up the overall installation process.
 
 You need to provide a couple of arguments to the installation scripts:
@@ -28,18 +27,11 @@ You need to provide a couple of arguments to the installation scripts:
 
 **WARNING**: If you want to install it into a k3s or Kubeadm, you might need to install it with `sudo` privilege.
 
-
 ```bash
 ./install.sh <k8s-environment> <name-of-cluster-if-kind>
 ```
 
-The Dashboard can also be accessed locally on your machine (at [localhost:8080](http://localhost:8080/)) through the command:
-
-```bash
-kubectl port-forward --namespace ingress-nginx service/ingress-nginx-controller 8080:80
-```
-
-In addiction, you can run the code in a development environment. Remember to export the KUBECONFIG variable before running the backend server.
+The Dashboard can also be accessed locally on your machine at `http://<K8s-cluster-IP>:32000`.
 
 ## Example Images
 

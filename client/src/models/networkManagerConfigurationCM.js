@@ -3,8 +3,8 @@ export class NetworkManagerConfigurationCM{
         this.apiVersion = json.apiVersion || '';
         this.kind = json.kind || '';
         this.data= {
-            local: json.data.local.split(',').map(address => address.trim())
-        }
+            local: json.data? json.data.local.split(',').map(address => address.trim()) : [],
+        };
     }
     
 }
